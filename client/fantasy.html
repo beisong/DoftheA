@@ -1,0 +1,50 @@
+<template name="fantasy">
+    <h2>Testing Page</h2>
+    <div>
+        <h3>Init League Info</h3>
+        <button type="button" id="initAllLeague">Init All League</button>
+    </div>
+    <div>
+        <h3>Init Player Info</h3>
+        <button type="button" id="initPlayerInfo">Init Pro Player info</button>
+    </div>
+
+    <div>
+        <h3>Parse Fantasy Match</h3>
+        <label>Match id:</label>
+        <input type="text" name="parsematchfantasy_input" id="parsematchfantasy_input">
+        <button type="button" id="parsematchfantasy">Parse Match ID</button>
+    </div>
+
+    <div>
+        <h3>Parse Fantasy League</h3>
+        <label>league id:</label>
+        <input type="text" name="parseleaguefantasy_input" id="parseleaguefantasy_input">
+        <button type="button" id="parseleaguefantasy">Parse League ID</button>
+    </div>
+
+
+    <div>
+        <h3>Fetch league Data</h3>
+        <label>league id:</label>
+        <input type="text" name="fetchleaguedata" id="fetchleaguedata">
+        <button type="button" id="fetchleaguedata">Fetch League Data</button>
+    </div>
+
+    <div>
+        <h3>
+            LeagueID :
+            {{oneleaguedata.league_id}}
+        </h3>
+        <ul>
+            <li>match_id| start_time | series_type| match_seq_num| lobby_type</li>
+            {{#each leaguedata}}
+                <li>
+                    {{match_id}} | {{start_time}} | {{series_type}}| {{match_seq_num}}| {{lobby_type}}
+                    | {{radiant_team_id}}
+                    | {{dire_team_id}}
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+</template>
