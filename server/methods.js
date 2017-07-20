@@ -98,10 +98,10 @@ Meteor.methods({
                                 fantasydata.role = 'Core';
                                 break;
                             case 2:
-                                fantasydata.role = 'Offlane';
+                                fantasydata.role = 'Support';
                                 break;
                             case 3:
-                                fantasydata.role = 'Support';
+                                fantasydata.role = 'Offlane';
                                 break;
                             default:
                                 fantasydata.role = '';

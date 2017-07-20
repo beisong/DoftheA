@@ -19,7 +19,7 @@ Template.fantasy.events({
     },
 
     'click #fetchleaguedata': function (event) {
-        var league_id = $("#leagueid").val();
+        var league_id = $("#leaguedata_input").val();
         Meteor.call("getLeagueData", league_id, function (error, results) {
         });
     },

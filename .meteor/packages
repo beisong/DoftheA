@@ -24,4 +24,6 @@ iron:router                             #router
 twbs:bootstrap                          #Twitter bootstrap
 session                                 #Session Package
 http                                    #HTTP for api calls
-mrt:datatables                          #Datatables
+aldeed:tabular                          #reactive tables
+
+#jquery@1.11.2
