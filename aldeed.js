@@ -8,7 +8,7 @@ TabularTables = {};
 
 Meteor.isClient && Template.registerHelper('TabularTables', TabularTables);
 //
-TabularTables.Books = new Tabular.Table({
+TabularTables.Fantasy = new Tabular.Table({
     name: "Fantasy Data",
     collection: FantasyData,
     columns: [
@@ -16,23 +16,23 @@ TabularTables.Books = new Tabular.Table({
         {data: "matchid", title: "Match ID"},
         // {data: "length", title: "length"},
         // {data: "starttime", title: "starttime"},
-        {data: "leaguename", title: "leaguename"},
-        {data: "role", title: "role"},
+        {data: "leaguename", title: "Leaguename"},
+        {data: "role", title: "Role"},
         {data: "name", title: "Name"},
-        {data: "team", title: "team"},
+        {data: "team", title: "Team"},
         {data: "gamewon", title: "Won/Lost"},
-        {data: "kills", title: "kills"},
-        {data: "deaths", title: "deaths"},
-        {data: "cs", title: "cs"},
-        {data: "gpm", title: "gpm"},
-        {data: "towerkill", title: "towerkill"},
-        {data: "roshankill", title: "roshankill"},
-        {data: "teamfight", title: "teamfight"},
-        {data: "wardsplaced", title: "wardsplaced"},
-        {data: "campsstacked", title: "campsstacked"},
-        {data: "runesgrabbed", title: "runesgrabbed"},
-        {data: "firstblood", title: "firstblood"},
-        {data: "stuns", title: "stuns"},
+        {data: "kills", title: "Kills"},
+        {data: "deaths", title: "Deaths"},
+        {data: "cs", title: "CS"},
+        {data: "gpm", title: "GPM"},
+        {data: "towerkill", title: "Towerkill"},
+        {data: "roshankill", title: "Roshankill"},
+        {data: "teamfight", title: "Teamfight"},
+        {data: "wardsplaced", title: "Wardsplaced"},
+        {data: "campsstacked", title: "Campsstacked"},
+        {data: "runesgrabbed", title: "Runesgrabbed"},
+        {data: "firstblood", title: "Firstblood"},
+        {data: "stuns", title: "Stuns"},
         {data: "fantasy_point", title: "Total Points"},
     ]
 });

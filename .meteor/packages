@@ -27,3 +27,5 @@ http                                    #HTTP for api calls
 aldeed:tabular                          #reactive tables
 
 #jquery@1.11.2
+okgrow:analytics                        #google analytics
+meteorhacks:aggregate                   #Mongo Aggregation

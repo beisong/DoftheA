@@ -1,0 +1,16 @@
+<template name="fantasyaldeedleague">
+    <h2>Aldeed League</h2>
+
+
+    <select id="role_dropdown">
+        <option selected="selected">Role</option>
+        <option value="Offlane">Offlane</option>
+        <option value="Support">Support</option>
+        <option value="Core">Core</option>
+        <option value="All">All Roles</option>
+    </select>
+
+    {{> tabular table=TabularTables.Fantasy selector=selector class="table table-bordered table-condensed table-hover"}}
+    <!--table-striped-->
+
+</template>
