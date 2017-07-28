@@ -1,0 +1,37 @@
+<template name="fantasyhome">
+    <h1>Home.html</h1>
+
+    <div class="col-md-6 col-xs-12">
+        <h2>Tournaments</h2>
+
+        {{#each tournamentlist}}
+            <div class="box">
+                <a href="/fantasy/league/{{leagueid}}">
+                    <div class="boxInner">
+                        <img src="http://cloud-3.steamusercontent.com/ugc/450653562083541278/409E73DC29CC511034EBABDB9CD181EFBF7A2CEC/"/>
+                        <div class="titleBox">{{leaguename}}</div>
+                    </div>
+                </a>
+            </div>
+        {{/each}}
+
+    </div>
+
+    <div class="col-md-6 col-xs-12">
+        <h2>Teams</h2>
+        {{#each teamlist}}
+            <div class="box">
+                <a href="/fantasy/team/{{teamid}}">
+                    <div class="boxInner">
+                        <img src="http://cloud-3.steamusercontent.com/ugc/450653562083541278/409E73DC29CC511034EBABDB9CD181EFBF7A2CEC/"/>
+                        <div class="titleBox">{{teamname}}</div>
+                    </div>
+                </a>
+            </div>
+        {{/each}}
+    </div>
+
+    <!--<div>-->
+    <!--<button type="button" id="testbutton">testbutton</button>-->
+    <!--</div>-->
+</template>

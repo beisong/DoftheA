@@ -1,4 +1,7 @@
-Template.fantasy.helpers({
+// TODO Fix Arteezy
+// TODO FIX NA TEAM
+
+Template.admin.helpers({
     oneleaguedata: function () {
         return LeagueData.findOne();
     },
@@ -8,7 +11,7 @@ Template.fantasy.helpers({
 
 })
 
-Template.fantasy.events({
+Template.admin.events({
     'click #initAllLeague': function (event) {
         Meteor.call("initLeagueData", function (error, results) {
         });

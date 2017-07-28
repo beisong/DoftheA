@@ -1,14 +1,12 @@
-// Meteor.subscribe('fantasy_data');
 
-
-Template.fantasyaldeedleague.onRendered(function () {
+Template.league.onRendered(function () {
     // console.log(Router.current().params.matchid);
 });
 
-Template.fantasyaldeedleague.helpers({
-    // selector() {
-    //     return {matchid: parseInt(Router.current().params.matchid)}; // this could be pulled from a Session var or something that is reactive
-    // },
+Template.league.helpers({
+    leagueteamlist: function () {
+        return ReactiveMethod.call('getLeagueTeamList', parseInt(Router.current().params.leagueid));
+    },
 
     selector: function () {
         var selector = {};
@@ -25,7 +23,7 @@ Template.fantasyaldeedleague.helpers({
 });
 
 
-Template.fantasyaldeedleague.events({
+Template.league.events({
     'change #role_dropdown': function (evt) {
         var currentTarget = evt.currentTarget;
         var roleValue = currentTarget.options[currentTarget.selectedIndex].value;
@@ -33,11 +31,6 @@ Template.fantasyaldeedleague.events({
     },
 });
 
-
-// TODO Fix Arteezy
-// TODO Create Dropdown filter    //Half done  --- Create auto generated select options
-
-//TODO Generate Average
 
 // http://jsfiddle.net/abhiklpm/ZEDR9/5/
 //https://jsfiddle.net/erkaner/u12te5jb/

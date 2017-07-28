@@ -29,3 +29,4 @@ aldeed:tabular                          #reactive tables
 #jquery@1.11.2
 okgrow:analytics                        #google analytics
 meteorhacks:aggregate                   #Mongo Aggregation
+simple:reactive-method                  #Solve helper method call return data

@@ -1,4 +1,82 @@
 Meteor.methods({
+    getTournamentList: function () {
+        var pipeline = [
+            {
+                "$group": {
+                    "_id": "$leagueid",
+                    "nummatch": {"$sum": 1},
+                    "leagueid": {"$first": "$leagueid"},
+                    "leaguename": {"$first": "$leaguename"}
+                }
+            }
+        ];
+
+        return FantasyData.aggregate(
+            pipeline
+        );
+        // return FantasyData.find().fetch();
+
+    },
+    getTeamList: function () {
+        var pipeline = [
+            {
+                "$group": {
+                    "_id": "$teamid",
+                    "nummatch": {"$sum": 1},
+                    "teamid": {"$first": "$teamid"},
+                    "teamname": {"$first": "$team"}
+                }
+            }
+        ];
+        return FantasyData.aggregate(
+            pipeline
+        );
+    },
+    getLeagueTeamList: function (leagueid) {
+        var pipeline = [
+            {
+                "$match": {
+                    "leagueid": leagueid
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$teamid",
+                    "nummatch": {"$sum": 1},
+                    "teamid": {"$first": "$teamid"},
+                    "teamname": {"$first": "$team"}
+                }
+            }
+        ];
+        return FantasyData.aggregate(
+            pipeline
+        );
+    },
+
+    getTournamentList_team: function (team_id) {
+        var pipeline = [
+            {
+                "$match": {
+                    'teamid': team_id
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$leagueid",
+                    "nummatch": {"$sum": 1},
+                    "leagueid": {"$first": "$leagueid"},
+                    "leaguename": {"$first": "$leaguename"}
+                }
+            }
+        ];
+
+        return FantasyData.aggregate(
+            pipeline
+        );
+        // return FantasyData.find().fetch();
+
+    },
+
     initLeagueData: function () {
         this.unblock();
         var result = Meteor.http.call("GET", "https://api.opendota.com/api/leagues");
@@ -72,6 +150,7 @@ Meteor.methods({
         var playerdata = matchdata.players;
 
         fantasydata.leagueid = matchdata.leagueid;
+        fantasydata.leaguename = getLeagueName(fantasydata.leagueid);
         fantasydata.matchid = matchid;
         fantasydata.length = matchdata.duration;
 
@@ -147,7 +226,8 @@ Meteor.methods({
                 fantasydata.stuns = roundToTwoDecimal(0.05 * onePlayer.stuns);
 
                 //Sum of all Points
-                fantasydata.fantasy_point = roundToOneDecimal(fantasydata.kills +
+                fantasydata.fantasy_point = roundToOneDecimal(
+                    fantasydata.kills +
                     fantasydata.deaths +
                     fantasydata.cs +
                     fantasydata.gpm +
@@ -160,6 +240,43 @@ Meteor.methods({
                     fantasydata.firstblood +
                     fantasydata.stuns
                 );
+
+                if (onePlayer.kills == null) {
+                    fantasydata.kills = 'NA';
+                }
+                if (onePlayer.deaths == null) {
+                    fantasydata.deaths = 'NA';
+                }
+                if (onePlayer.last_hits == null || onePlayer.denies == null) {
+                    fantasydata.cs = 'NA';
+                }
+                if (onePlayer.gold_per_min == null) {
+                    fantasydata.gpm = 'NA';
+                }
+                if (onePlayer.towers_killed == null) {
+                    fantasydata.towerkill = 'NA';
+                }
+                if (onePlayer.roshans_killed == null) {
+                    fantasydata.roshankill = 'NA';
+                }
+                if (onePlayer.teamfight_participation == null) {
+                    fantasydata.teamfight = 'NA';
+                }
+                if (onePlayer.obs_placed == null) {
+                    fantasydata.wardsplaced = 'NA';
+                }
+                if (onePlayer.camps_stacked == null) {
+                    fantasydata.campsstacked = 'NA';
+                }
+                if (onePlayer.rune_pickups == null) {
+                    fantasydata.runesgrabbed = 'NA';
+                }
+                if (onePlayer.firstblood_claimed == null) {
+                    fantasydata.firstblood = 'NA';
+                }
+                if (onePlayer.stuns == null) {
+                    fantasydata.stuns = 'NA';
+                }
 
                 FantasyData.insert(
                     fantasydata
@@ -179,3 +296,10 @@ roundToOneDecimal = function (input) {
 roundToTwoDecimal = function (input) {
     return Math.round(input * 100) / 100;
 }
+
+getLeagueName = function (leagueid) {
+    var result = LeagueInfo.findOne({leagueid: leagueid});
+    return result.name;
+
+    // return LeagueInfo.findOne({})
+};

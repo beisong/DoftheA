@@ -1,11 +1,11 @@
 // Meteor.subscribe('fantasy_data');
 
 
-Template.fantasyaldeedmatch.onRendered(function () {
+Template.fantasymatch.onRendered(function () {
     // console.log(Router.current().params.matchid);
 });
 
-Template.fantasyaldeedmatch.helpers({
+Template.fantasymatch.helpers({
     // selector() {
     //     return {matchid: parseInt(Router.current().params.matchid)}; // this could be pulled from a Session var or something that is reactive
     // },
@@ -22,7 +22,7 @@ Template.fantasyaldeedmatch.helpers({
 });
 
 
-Template.fantasyaldeedmatch.events({
+Template.fantasymatch.events({
     'change #role_dropdown': function (evt) {
         var currentTarget = evt.currentTarget;
         var roleValue = currentTarget.options[currentTarget.selectedIndex].value;
@@ -31,16 +31,15 @@ Template.fantasyaldeedmatch.events({
 });
 
 
-// TODO Fix Arteezy
-
-// TODO Create Dropdown filter    //Half done  --- Create auto generated select options
-
-// TODO Integrate aggregate with meteor publish
 
 
-// TODO Fix Route Delete old useless route
 
-// TODO Fix meteor up google analytics
+
+ 
+
+
+
+
 
 // http://jsfiddle.net/abhiklpm/ZEDR9/5/
 //https://jsfiddle.net/erkaner/u12te5jb/
