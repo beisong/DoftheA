@@ -180,27 +180,20 @@ Meteor.methods({
 
         var playercount = 0;
         var results = Meteor.http.call("GET", "https://api.opendota.com/api/matches/" + matchid);
-        // console.log(results);
 
         var fantasydata = {};
 
         var matchdata = results.data;
-        var matchid = matchdata.match_id;
         var playerdata = matchdata.players;
-
-        fantasydata.leagueid = matchdata.leagueid;
-        fantasydata.leaguename = getLeagueName(fantasydata.leagueid);
-        fantasydata.matchid = matchid;
+        fantasydata.matchid = matchdata.match_id;
+        fantasydata.leagueid = matchdata.league.leagueid;
+        fantasydata.leaguename = matchdata.league.name;
         fantasydata.length = matchdata.duration;
 
         //convert date to javascript date object
         var matchstarttime = new Date(0); // The 0 there is the key, which sets the date to the epoch
         matchstarttime.setUTCSeconds(matchdata.start_time);
         fantasydata.starttime = matchstarttime;
-
-        //get league name
-        var leagueresult = LeagueInfo.findOne({leagueid: matchdata.leagueid});
-        fantasydata.leaguename = leagueresult.name;
 
         //TI 7 TEAM
         var TI7teams = TeamData.find({leaguename: 'The International 2017'})
@@ -214,69 +207,26 @@ Meteor.methods({
                 var toinsert = true;
 
 
-                if (onePlayer.kills == null) {
-                    console.log("Player : " + onePlayer.account_id + " from Team : " + matchdata.match_id + "has null KILLS");
+                fantasydata.name = onePlayer.name;
+                fantasydata.accountid = onePlayer.account_id;
+                if (onePlayer.isRadiant) {
+                    fantasydata.team = matchdata.radiant_team.name;
+                    fantasydata.teamid = parseInt(matchdata.radiant_team.team_id);
                 }
-                if (onePlayer.deaths == null) {
-                    console.log("Player : " + onePlayer.account_id + " from Team : " + matchdata.match_id + "has null DEATHS");
-                }
-                if (onePlayer.last_hits == null || onePlayer.denies == null) {
-                    console.log("Player : " + onePlayer.account_id + " from Team : " + matchdata.match_id + " has null LAST HIT, DENIES");
-                }
-                if (onePlayer.gold_per_min == null) {
-                    console.log("Player : " + onePlayer.account_id + " from Team : " + matchdata.match_id + " has null GPM");
-                }
-                if (onePlayer.towers_killed == null) {
-                    console.log("Player : " + onePlayer.account_id + " from Team : " + matchdata.match_id + " has null TOWER KILLED");
-                }
-                if (onePlayer.roshans_killed == null) {
-                    console.log("Player : " + onePlayer.account_id + " from Team : " + matchdata.match_id + " has null Roshan KILLS");
-                }
-                if (onePlayer.teamfight_participation == null) {
-                    console.log("Player : " + onePlayer.account_id + " from Team : " + matchdata.match_id + " has null TEAMFIGHT");
-                }
-                if (onePlayer.obs_placed == null) {
-                    console.log("Player : " + onePlayer.account_id + " from Team : " + matchdata.match_id + " has null WARDS");
-                }
-                if (onePlayer.camps_stacked == null) {
-                    console.log("Player : " + onePlayer.account_id + " from Team : " + matchdata.match_id + " has null CAMPS STACK");
-                }
-                if (onePlayer.rune_pickups == null) {
-                    console.log("Player : " + onePlayer.account_id + " from Team : " + matchdata.match_id + " has null RUNES");
-                }
-                if (onePlayer.firstblood_claimed == null) {
-                    console.log("Player : " + onePlayer.account_id + " from Team : " + matchdata.match_id + " has null FB");
-                }
-                if (onePlayer.stuns == null) {
-                    console.log("Player : " + onePlayer.account_id + " from Team : " + matchdata.match_id + " has null STUNS");
+                else {
+                    fantasydata.team = matchdata.dire_team.name;
+                    fantasydata.teamid = parseInt(matchdata.dire_team.team_id);
                 }
 
-                // FB TOWER KILL ROUSHAN TEAMFIGHT
-                if (TI7teams.includes(playerresult.team_id) || TI7teams.includes(playerresult.team_id)) {
-                    if (onePlayer.kills == null ||
-                        onePlayer.last_hits == null ||
-                        onePlayer.deaths == null ||
-                        onePlayer.denies == null ||
-                        onePlayer.gold_per_min == null ||
-                        // onePlayer.towers_killed == null ||
-                        // onePlayer.roshans_killed == null ||
-                        // onePlayer.teamfight_participation == null ||
-                        onePlayer.obs_placed == null ||
-                        onePlayer.camps_stacked == null ||
-                        onePlayer.rune_pickups == null ||
-                        // onePlayer.firstblood_claimed == null ||
-                        onePlayer.stuns == null
-                    ) {
-                        toinsert = false
-                    }
-                    else {
+                if (TI7teams.includes(fantasydata.teamid) || TI7teams.includes(fantasydata.teamid)) {
+                    if (ValidFantasy(onePlayer, matchdata) && playerresult) {
 
                         // switch role;
                         if (playerresult) {
                             if (playerresult.fantasy_role >= 0) {
                                 switch (playerresult.fantasy_role) {
                                     case 0:
-                                        fantasydata.role = 'Unknown';
+                                        fantasydata.role = 'NA';
                                         break;
                                     case 1:
                                         fantasydata.role = 'Core';
@@ -288,26 +238,19 @@ Meteor.methods({
                                         fantasydata.role = 'Offlane';
                                         break;
                                     default:
-                                        fantasydata.role = '';
+                                        fantasydata.role = 'NA';
                                 }
                             }
                             else {
-                                fantasydata.role = '';
+                                fantasydata.role = 'NA';
                                 console.log(" /////////  ERROR  /////  Match:: " + matchid + " Fantasy Role Not found for player id: " + onePlayer.account_id);
-                                console.log(playerresult);
                             }
-                            fantasydata.name = playerresult.name;
-                            fantasydata.team = playerresult.team_name;
-                            fantasydata.teamid = playerresult.team_id;
 
                         }
                         else {
                             console.log(" /////////  ERROR /////  Match:: " + matchid + " Player ID not found in db: " + onePlayer.account_id);
-                            fantasydata.name = "NA";
-                            fantasydata.team = "NA";
-                            fantasydata.teamid = "NA";
                         }
-                        fantasydata.accountid = onePlayer.account_id;
+
 
                         var gamewon;
                         if ((onePlayer.isRadiant && onePlayer.radiant_win) || (!onePlayer.isRadiant && !onePlayer.radiant_win)) {
@@ -317,17 +260,18 @@ Meteor.methods({
                             fantasydata.gamewon = 'Lost';
                         }
 
+                        fantasydata.teamfight = getTeamFight(onePlayer, matchdata);
+                        fantasydata.firstblood = getFirstBlood(onePlayer, matchdata);
+
                         fantasydata.kills = roundToTwoDecimal(0.3 * onePlayer.kills);
                         fantasydata.deaths = roundToTwoDecimal(3 - 0.3 * onePlayer.deaths);
                         fantasydata.cs = roundToTwoDecimal(0.003 * (onePlayer.last_hits + onePlayer.denies));
                         fantasydata.gpm = roundToTwoDecimal(0.002 * onePlayer.gold_per_min);
-                        fantasydata.towerkill = roundToTwoDecimal(onePlayer.towers_killed);
-                        fantasydata.roshankill = roundToTwoDecimal(onePlayer.roshans_killed);
-                        fantasydata.teamfight = roundToTwoDecimal(3 * onePlayer.teamfight_participation);
+                        fantasydata.towerkill = roundToTwoDecimal(onePlayer.tower_kills);
+                        fantasydata.roshankill = roundToTwoDecimal(onePlayer.roshan_kills);
                         fantasydata.wardsplaced = roundToTwoDecimal(0.5 * onePlayer.obs_placed);
                         fantasydata.campsstacked = roundToTwoDecimal(0.5 * onePlayer.camps_stacked);
                         fantasydata.runesgrabbed = roundToTwoDecimal(0.25 * onePlayer.rune_pickups);
-                        fantasydata.firstblood = roundToTwoDecimal(4 * onePlayer.firstblood_claimed);
                         fantasydata.stuns = roundToTwoDecimal(0.05 * onePlayer.stuns);
 
                         //Sum of all Points
@@ -346,16 +290,16 @@ Meteor.methods({
                             fantasydata.stuns
                         );
 
-                        if (onePlayer.towers_killed == null) {
+                        if (onePlayer.tower_kills == null) {
                             fantasydata.towerkill = 'NA';
                         }
-                        if (onePlayer.roshans_killed == null) {
+                        if (onePlayer.roshan_kills == null) {
                             fantasydata.roshankill = 'NA';
                         }
-                        if (onePlayer.teamfight_participation == null) {
+                        if (onePlayer.kills == null || onePlayer.assists == null) {
                             fantasydata.teamfight = 'NA';
                         }
-                        if (onePlayer.firstblood_claimed == null) {
+                        if (onePlayer.kills_log == null || matchdata.first_blood_time == null) {
                             fantasydata.firstblood = 'NA';
                         }
 
@@ -364,26 +308,112 @@ Meteor.methods({
                         );
                         playercount++
                     }
+                    else {
+                        console.log("Some Fantasy score missing");
+                    }
 
+                }
+                else {
+                    // console.log("Team not in TI7");
                 }
             }
         );
         console.log("MATCH ID IS ::" + matchid + "  Players :" + playercount);
-
     },
-
 });
 
 roundToOneDecimal = function (input) {
     return Math.round(input * 10) / 10;
-}
+};
 roundToTwoDecimal = function (input) {
     return Math.round(input * 100) / 100;
-}
+};
 
 getLeagueName = function (leagueid) {
     var result = LeagueInfo.findOne({leagueid: leagueid});
     return result.name;
+};
 
-    // return LeagueInfo.findOne({})
+ValidFantasy = function (onePlayer, matchdata) {
+    var valid = true;
+    if (onePlayer.kills == null) {
+        valid = false;
+        console.log("Player : " + onePlayer.account_id + " from Match : " + matchdata.match_id + "has null KILLS");
+    }
+    if (onePlayer.deaths == null) {
+        valid = false;
+        console.log("Player : " + onePlayer.account_id + " from Match : " + matchdata.match_id + "has null DEATHS");
+        valid = false;
+    }
+    if (onePlayer.last_hits == null || onePlayer.denies == null) {
+        valid = false;
+        console.log("Player : " + onePlayer.account_id + " from Match : " + matchdata.match_id + " has null LAST HIT, DENIES");
+    }
+    if (onePlayer.gold_per_min == null) {
+        valid = false;
+        console.log("Player : " + onePlayer.account_id + " from Match : " + matchdata.match_id + " has null GPM");
+    }
+    if (onePlayer.tower_kills == null) {
+        valid = false;
+        console.log("Player : " + onePlayer.account_id + " from Match : " + matchdata.match_id + " has null TOWER KILLED");
+    }
+    if (onePlayer.roshan_kills == null) {
+        valid = false;
+        console.log("Player : " + onePlayer.account_id + " from Match : " + matchdata.match_id + " has null Roshan KILLS");
+    }
+    if (onePlayer.assists == null || onePlayer.kills == null) {
+        // valid = false;
+        console.log("Player : " + onePlayer.account_id + " from Match : " + matchdata.match_id + " has null TEAMFIGHT");
+    }
+    if (onePlayer.obs_placed == null) {
+        valid = false;
+        console.log("Player : " + onePlayer.account_id + " from Match : " + matchdata.match_id + " has null WARDS");
+    }
+    if (onePlayer.camps_stacked == null) {
+        valid = false;
+        console.log("Player : " + onePlayer.account_id + " from Match : " + matchdata.match_id + " has null CAMPS STACK");
+    }
+    if (onePlayer.rune_pickups == null) {
+        valid = false;
+        console.log("Player : " + onePlayer.account_id + " from Match : " + matchdata.match_id + " has null RUNES");
+    }
+    if (onePlayer.kills_log == null) {
+        // valid = false;
+        console.log("Player : " + onePlayer.account_id + " from Match : " + matchdata.match_id + " has null FB");
+    }
+    if (onePlayer.stuns == null) {
+        valid = false;
+        console.log("Player : " + onePlayer.account_id + " from Match : " + matchdata.match_id + " has null STUNS");
+    }
+    return valid;
+};
+
+getTeamFight = function (onePlayer, matchdata) {
+    // var teamkills =
+    var isRadiant = onePlayer.isRadiant;
+    var teamkills;
+    if (onePlayer.isRadiant) {
+        teamkills = parseInt(matchdata.radiant_score);
+    }
+    else {
+        teamkills = parseInt(matchdata.dire_score);
+    }
+    var teamfight = (onePlayer.kills + onePlayer.assists) / teamkills;
+    return roundToTwoDecimal(teamfight * 3.0);
+};
+
+getFirstBlood = function (onePlayer, matchdata) {
+    var firstBlood = false;
+
+    var firstBloodTime = parseInt(matchdata.first_blood_time);
+    var firstKillTime = parseInt(onePlayer.kills_log[0].time);
+    if (Math.abs(firstBloodTime - firstKillTime) < 2) {
+        firstBlood = true;
+    }
+    if (firstBlood) {
+        return roundToTwoDecimal(4);
+    }
+    else {
+        return roundToTwoDecimal(0);
+    }
 };

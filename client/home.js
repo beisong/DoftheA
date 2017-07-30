@@ -24,7 +24,7 @@ Template.fantasyhome.helpers({
         return ReactiveMethod.call('getTeamList');
     },
 
-})
+});
 
 Template.fantasyhome.events({
     'click #testbutton': function (event) {

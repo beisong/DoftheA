@@ -6,6 +6,14 @@ Template.fantasyleagueteam.onRendered(function () {
 });
 
 Template.fantasyleagueteam.helpers({
+    leaguename: function () {
+        var leagueinfo = LeagueInfo.findOne({leagueid: parseInt(Router.current().params.leagueid)});
+        return leagueinfo.name;
+    },
+    teamname: function () {
+        var teaminfo = TeamData.findOne({teamid: parseInt(Router.current().params.teamid)});
+        return teaminfo.teamname
+    },
     selector: function () {
         var selector = {
             leagueid: parseInt(Router.current().params.leagueid),

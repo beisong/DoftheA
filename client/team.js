@@ -27,6 +27,23 @@ Template.team.helpers({
         var selector = {teamid: parseInt(Router.current().params.teamid)};
         return selector;
     },
+    teamaverage: function () {
+        var pipeline = [
+            {
+                "$match": {
+                    'teamid': 39,
+                    'towerkill':'NA'
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$teamid",
+                    "nummatch": {"$sum": 1},
+                }
+            }
+        ];
+
+    }
 
 });
 

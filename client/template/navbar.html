@@ -7,9 +7,27 @@
                 <a class="navbar-brand" href="{{pathFor 'home'}}">DoftheA | Fantasy Points</a>
             </div>
             <ul class="nav navbar-nav">
-                <!--<li><a href="{{pathFor 'home'}}">Home</a></li>-->
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Teams
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        {{#each teamlist}}
+                            <li><a href="/fantasy/team/{{teamid}}">{{teamname}}</a></li>
+                        {{/each}}
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tournaments
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        {{#each leaguelist}}
+                            <li><a href="/fantasy/league/{{leagueid}}">{{leaguename}}</a></li>
+                        {{/each}}
+                    </ul>
+                </li>
+
                 <li><a href="/fantasy/league/5504">Mars League</a></li>
-                <!--<li><a href="/fantasy/team">Team</a></li>-->
                 <li><a href="/fantasy/team/39">Team EG</a></li>
             </ul>
         </div>
