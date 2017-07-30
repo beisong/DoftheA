@@ -69,3 +69,9 @@
 //     "is_locked" : false,
 //     "is_pro" : true,
 //     "locked_until" : 1471168800
+
+//-----------------------------------//
+//          TeamData
+//-----------------------------------//
+
+// TeamData.insert({teamid: 2512249, teamname: 'Digital Chaos', leaguename: 'The International 2017'});

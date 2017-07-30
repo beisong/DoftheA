@@ -1,13 +1,12 @@
 <template name="team">
-    <h2>Team.html</h2>
+    <h2>{{teamname}}</h2>
     <div class="btn-group-vertical">
         {{#each teamtournamentlist}}
-            {{#with teamid this}}
-                <a href="/fantasy/leagueteam/{{leagueid}}/{{path}}" class="btn  btn-default">{{leaguename}}</a>
+            {{#with teamdata this}}
+                <a href="/fantasy/leagueteam/{{leagueid}}/{{teamid}}" class="btn  btn-default">{{leaguename}}</a>
             {{/with}}
         {{/each}}
     </div>
 
-
-    <!--TODD - FIXED THIS NESTED    fantasy/5504/39-->
+    {{> tabular table=TabularTables.Fantasy selector=selector class="table table-bordered table-condensed table-hover"}}
 </template>

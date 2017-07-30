@@ -1,25 +1,28 @@
-
 Template.league.onRendered(function () {
     // console.log(Router.current().params.matchid);
 });
 
 Template.league.helpers({
+    leaguename: function () {
+        var leagueinfo = LeagueInfo.findOne({leagueid: parseInt(Router.current().params.leagueid)});
+        return leagueinfo.name;
+    },
     leagueteamlist: function () {
         return ReactiveMethod.call('getLeagueTeamList', parseInt(Router.current().params.leagueid));
     },
+    leaguedata: function (data) {
+        var result = {
+            leagueid: Router.current().params.leagueid,
+            teamid: data.teamid,
+            teamname: data.teamname,
+        };
 
+        return result;
+    },
     selector: function () {
-        var selector = {};
-        var roleValue = Session.get('role_value');
-        if (roleValue && (roleValue !== 'All')) {
-            selector = {leagueid: parseInt(Router.current().params.leagueid), role: roleValue};
-        }
-        else {
-            selector = {leagueid: parseInt(Router.current().params.leagueid)};
-        }
+        var selector = {leagueid: parseInt(Router.current().params.leagueid)};
         return selector;
     }
-
 });
 
 

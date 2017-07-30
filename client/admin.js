@@ -20,6 +20,12 @@ Template.admin.events({
         Meteor.call("initPlayerData", function (error, results) {
         });
     },
+    'click #initTI7Teams': function (event) {
+        alert("CLICKED");
+        Meteor.call("initTI7Teams", function (error, results) {
+        });
+    },
+    
 
     'click #fetchleaguedata': function (event) {
         var league_id = $("#leaguedata_input").val();

@@ -13,3 +13,7 @@ Meteor.publish('league_data', function () {
 Meteor.publish('fantasy_data', function () {
     return FantasyData.find({});
 });
+Meteor.publish('team_data', function () {
+    return TeamData.find({});
+});
+

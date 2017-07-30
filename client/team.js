@@ -5,29 +5,32 @@ Template.team.onRendered(function () {
 });
 
 Template.team.helpers({
+    teamname: function () {
+        var teaminfo = TeamData.findOne({teamid: parseInt(Router.current().params.teamid)});
+        return teaminfo.teamname
+    },
     teamtournamentlist: function () {
         return ReactiveMethod.call('getTournamentList_team', parseInt(Router.current().params.teamid));
         // { "_id" : 5504, "nummatch" : 55, "leagueid" : 5504, "leaguename" : "2017 Mars Dota 2 League" }
 
     },
-    teamid: function (data) {
-
+    teamdata: function (data) {
         var result = {
-            path: Router.current().params.teamid,
+            teamid: Router.current().params.teamid,
             leagueid: data.leagueid,
             leaguename: data.leaguename,
         };
 
         return result
-    }
-    // teamid: {
-    //     path: Router.current().params.matchid
-    // },
+    },
+    selector: function () {
+        var selector = {teamid: parseInt(Router.current().params.teamid)};
+        return selector;
+    },
 
 });
 
 
 Template.team.events({});
-//https://stackoverflow.com/questions/34528868/bind-data-in-aldded-tabular-table-on-dropdown-change-event
 
 
