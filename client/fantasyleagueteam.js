@@ -2,7 +2,7 @@
 
 
 Template.fantasyleagueteam.onRendered(function () {
-    // console.log(Router.current().params.matchid);
+    makeAllSortable();
 });
 
 Template.fantasyleagueteam.helpers({
@@ -12,7 +12,10 @@ Template.fantasyleagueteam.helpers({
     },
     teamname: function () {
         var teaminfo = TeamData.findOne({teamid: parseInt(Router.current().params.teamid)});
-        return teaminfo.teamname
+        return teaminfo.teamname;
+    },
+    leagueteam_ave: function () {
+        return ReactiveMethod.call('getLeagueTeamaverage', parseInt(Router.current().params.leagueid), parseInt(Router.current().params.teamid));
     },
     selector: function () {
         var selector = {
@@ -22,6 +25,5 @@ Template.fantasyleagueteam.helpers({
         return selector;
     }
 });
-
 
 Template.fantasyleagueteam.events({});

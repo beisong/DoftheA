@@ -1,7 +1,5 @@
-// TODO Average points
-
 Template.team.onRendered(function () {
-    // console.log(Router.current().params.matchid);
+    makeAllSortable();
 });
 
 Template.team.helpers({
@@ -20,30 +18,15 @@ Template.team.helpers({
             leagueid: data.leagueid,
             leaguename: data.leaguename,
         };
-
         return result
     },
     selector: function () {
         var selector = {teamid: parseInt(Router.current().params.teamid)};
         return selector;
     },
-    teamaverage: function () {
-        var pipeline = [
-            {
-                "$match": {
-                    'teamid': 39,
-                    'towerkill':'NA'
-                }
-            },
-            {
-                "$group": {
-                    "_id": "$teamid",
-                    "nummatch": {"$sum": 1},
-                }
-            }
-        ];
-
-    }
+    team_ave: function () {
+        return ReactiveMethod.call('getLeagueTeamaverage', false, parseInt(Router.current().params.teamid));
+    },
 
 });
 

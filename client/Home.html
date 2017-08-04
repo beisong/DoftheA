@@ -1,21 +1,87 @@
 <template name="fantasyhome">
-    <h1>Fantasy Points for TI7 Teams</h1>
-
-    <div class="col-xs-12" style="padding-left: 2%; padding-right: 2%">
-        <!--<h2>Teams</h2>-->
-        {{#each teamlist}}
-            <div class="box">
-                <a href="/fantasy/team/{{teamid}}">
-                    <div class="boxInner">
-                        <img src="/teamlogo/{{teamid}}.png">
-                        <!--<img src="http://cloud-3.steamusercontent.com/ugc/450653562083541278/409E73DC29CC511034EBABDB9CD181EFBF7A2CEC/"/>-->
-                        <div class="titleBox">{{teamname}}</div>
-                    </div>
-                </a>
-            </div>
-        {{/each}}
+    <div class="col-xs-12">
+        <h1 class="text-center"><strong>TI7 Teams Recent Stats</strong></h1>
+        <div class="col-xs-12" style="padding-left: 2%; padding-right: 2%">
+            <!--<h2>Teams</h2>-->
+            {{#each teamlist}}
+                <div class="box">
+                    <a href="/fantasy/team/{{teamid}}">
+                        <div class="boxInner">
+                            <img src="/teamlogo/{{teamid}}.png">
+                            <!--<img src="http://cloud-3.steamusercontent.com/ugc/450653562083541278/409E73DC29CC511034EBABDB9CD181EFBF7A2CEC/"/>-->
+                            <!--<div class="titleBox">{{teamname}}</div>-->
+                        </div>
+                    </a>
+                </div>
+            {{/each}}
+        </div>
     </div>
-
+    <div class="col-xs-12">
+        <h2 class="text-center"><strong>MVPs (Highest points across all Tournaments)</strong></h2>
+        <div class="col-md-4 col-xs-12">
+            <h3>Core</h3>
+            <table class="table table-striped table-condensed">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Team</th>
+                    <th>Average Points</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each league_core_mvp}}
+                    <tr>
+                        <td>{{_id}}</td>
+                        <td>{{team}}</td>
+                        <td>{{fantasy_point}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <h3>Support</h3>
+            <table class="table table-striped table-condensed">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Team</th>
+                    <th>Average Points</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each league_support_mvp}}
+                    <tr>
+                        <td>{{_id}}</td>
+                        <td>{{team}}</td>
+                        <td>{{fantasy_point}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <h3>Offlane</h3>
+            <table class="table table-striped table-condensed">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Team</th>
+                    <th>Average Points</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each league_offlane_mvp}}
+                    <tr>
+                        <td>{{_id}}</td>
+                        <td>{{team}}</td>
+                        <td>{{fantasy_point}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
     <div class=" col-xs-12">
         <h2>Tournaments</h2>
         {{#each tournamentlist}}
@@ -30,7 +96,4 @@
         {{/each}}
     </div>
 
-    <!--<div>-->
-    <!--<button type="button" id="testbutton">testbutton</button>-->
-    <!--</div>-->
 </template>

@@ -1,5 +1,5 @@
 // TODO Fix Arteezy
-// TODO FIX NA TEAM
+
 
 Template.admin.helpers({
     oneleaguedata: function () {

@@ -12,22 +12,12 @@ Template.fantasymatch.helpers({
 
     selector: function () {
         var selector = {matchid: parseInt(Router.current().params.matchid)};
-        var roleValue = Session.get('role_value');
-        if (roleValue && (roleValue !== 'All')) {
-            selector = {matchid: parseInt(Router.current().params.matchid), role: roleValue};
-        }
         return selector;
     }
 
 });
 
-
 Template.fantasymatch.events({
-    'change #role_dropdown': function (evt) {
-        var currentTarget = evt.currentTarget;
-        var roleValue = currentTarget.options[currentTarget.selectedIndex].value;
-        Session.set('role_value', roleValue);
-    },
 });
 
 

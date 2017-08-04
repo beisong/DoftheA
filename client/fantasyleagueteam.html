@@ -1,6 +1,50 @@
 <template name="fantasyleagueteam">
-    <h2><strong>{{teamname}}</strong> stats in <strong>{{leaguename}}</strong></h2>
+    <h3><strong>{{teamname}}</strong> Average Points in <strong>{{leaguename}}</strong></h3>
 
-    {{> tabular table=TabularTables.Fantasy selector=selector class="table table-bordered table-condensed table-hover"}}
-    <!--table-striped-->
+    <table class="table table-striped averagetable">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Kills</th>
+            <th>Deaths</th>
+            <th>CS</th>
+            <th>GPM</th>
+            <th>Tower</th>
+            <th>Roshan</th>
+            <th>Teamfights</th>
+            <th>Wards</th>
+            <th>Camps Stacked</th>
+            <th>Runes</th>
+            <th>First Blood</th>
+            <th>Stuns</th>
+            <th>Total Points</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each leagueteam_ave}}
+            <tr>
+                <td>{{_id}}</td>
+                <td>{{role}}</td>
+                <td>{{kills}}</td>
+                <td>{{deaths}}</td>
+                <td>{{cs}}</td>
+                <td>{{gpm}}</td>
+                <td>{{towerkill}}</td>
+                <td>{{roshankill}}</td>
+                <td>{{teamfight}}</td>
+                <td>{{wardsplaced}}</td>
+                <td>{{campsstacked}}</td>
+                <td>{{runesgrabbed}}</td>
+                <td>{{firstblood}}</td>
+                <td>{{stuns}}</td>
+                <td>{{fantasy_point}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+
+
+
+    {{> tabular table=TabularTables.Fantasy selector=selector class="table table-bordered table-condensed table-striped"}}
 </template>

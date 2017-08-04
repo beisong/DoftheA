@@ -1,5 +1,3 @@
-// TODO <<Home page>> Sort team
-
 Template.fantasyhome.helpers({
 
     tournamentlist: function () {
@@ -22,6 +20,15 @@ Template.fantasyhome.helpers({
 
     teamlist: function () {
         return ReactiveMethod.call('getTeamList');
+    },
+    league_core_mvp: function () {
+        return ReactiveMethod.call('getLeagueMVP', 'Core', false, false, false);
+    },
+    league_support_mvp: function () {
+        return ReactiveMethod.call('getLeagueMVP', 'Support', false, false, false);
+    },
+    league_offlane_mvp: function () {
+        return ReactiveMethod.call('getLeagueMVP', 'Offlane', false, false, false);
     },
 
 });

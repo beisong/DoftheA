@@ -1,3 +1,6 @@
+//TODO SOMETHING IS WRONG HERE -> find paparazi points dont tele
+// http://dofthea.ga/fantasy/leagueteam/5353/2640025
+
 Meteor.methods({
     getTournamentList: function () {
         var pipeline = [
@@ -41,7 +44,7 @@ Meteor.methods({
 //-----------------------------------//
         return TeamData.find({}).fetch();
     },
-    getLeagueTeamList: function (leagueid) {
+    getLeagueTeamList: function (leagueid, stage, day) {
         var pipeline = [
             {
                 "$match": {
@@ -57,6 +60,23 @@ Meteor.methods({
                 }
             }
         ];
+        if (stage) {
+            pipeline[0].$match =
+            {
+                "leagueid": leagueid,
+                "stage": stage,
+
+            };
+            if (day) {
+                pipeline[0].$match =
+                {
+                    "leagueid": leagueid,
+                    "stage": stage,
+                    "day": day,
+
+                };
+            }
+        }
         return FantasyData.aggregate(
             pipeline
         );
@@ -85,6 +105,256 @@ Meteor.methods({
         // return FantasyData.find().fetch();
 
     },
+
+    getLeagueTeamaverage: function (leagueid, teamid) {
+        var pipeline = [
+            {
+                "$match": {
+                    "teamid": teamid
+                }
+            },
+            {
+                $group: {
+                    _id: "$name",
+                    kills: {$avg: "$kills"},
+                    deaths: {$avg: "$deaths"},
+                    cs: {$avg: "$cs"},
+                    gpm: {$avg: "$gpm"},
+                    towerkill: {$avg: "$towerkill"},
+                    roshankill: {$avg: "$roshankill"},
+                    teamfight: {$avg: "$teamfight"},
+                    wardsplaced: {$avg: "$wardsplaced"},
+                    campsstacked: {$avg: "$campsstacked"},
+                    runesgrabbed: {$avg: "$runesgrabbed"},
+                    firstblood: {$avg: "$firstblood"},
+                    stuns: {$avg: "$stuns"},
+                    fantasy_point: {$avg: "$fantasy_point"},
+                    role: {$first: "$role"}
+                }
+            },
+            {
+                $project: {
+                    kills: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$kills', 100]},
+                                    {$mod: [{$multiply: ['$kills', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    deaths: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$deaths', 100]},
+                                    {$mod: [{$multiply: ['$deaths', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    cs: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$cs', 100]},
+                                    {$mod: [{$multiply: ['$cs', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    gpm: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$gpm', 100]},
+                                    {$mod: [{$multiply: ['$gpm', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    towerkill: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$towerkill', 100]},
+                                    {$mod: [{$multiply: ['$towerkill', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    roshankill: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$roshankill', 100]},
+                                    {$mod: [{$multiply: ['$roshankill', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    teamfight: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$teamfight', 100]},
+                                    {$mod: [{$multiply: ['$teamfight', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    wardsplaced: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$wardsplaced', 100]},
+                                    {$mod: [{$multiply: ['$wardsplaced', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    campsstacked: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$campsstacked', 100]},
+                                    {$mod: [{$multiply: ['$campsstacked', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    runesgrabbed: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$runesgrabbed', 100]},
+                                    {$mod: [{$multiply: ['$runesgrabbed', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    firstblood: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$firstblood', 100]},
+                                    {$mod: [{$multiply: ['$firstblood', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    stuns: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$stuns', 100]},
+                                    {$mod: [{$multiply: ['$stuns', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    fantasy_point: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$fantasy_point', 100]},
+                                    {$mod: [{$multiply: ['$fantasy_point', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    role: 1
+                }
+            }
+        ];
+
+
+        if (leagueid) {
+            pipeline[0].$match = {
+                "leagueid": leagueid,
+                "teamid": teamid
+            };
+        }
+        return FantasyData.aggregate(
+            pipeline
+        );
+    },
+    getLeagueMVP: function (role, leagueid, stage, day) {
+        var pipeline = [
+            {
+                "$match": {
+                    "role": role
+                }
+            },
+            {
+                $group: {
+                    _id: "$name",
+                    team: {$first: "$team"},
+                    teamid: {$first: "$teamid"},
+                    fantasy_point: {$avg: "$fantasy_point"},
+                }
+            },
+            {
+                $sort: {
+                    fantasy_point: -1
+                }
+            },
+            {
+                $project: {
+                    fantasy_point: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$fantasy_point', 100]},
+                                    {$mod: [{$multiply: ['$fantasy_point', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    },
+                    team: 1,
+                    teamid: 1
+                }
+            },
+            {
+                $limit: 10
+            }
+        ];
+
+        if (leagueid) {
+            if (stage) {
+                pipeline[0].$match =
+                {
+                    "leagueid": leagueid,
+                    "role": role,
+                    "stage": stage,
+
+                };
+                if (day) {
+                    pipeline[0].$match =
+                    {
+                        "leagueid": leagueid,
+                        "role": role,
+                        "stage": stage,
+                        "day": day,
+
+                    };
+                }
+            }
+            else {
+                pipeline[0].$match =
+                {
+                    "leagueid": leagueid,
+                    "role": role
+                };
+            }
+        }
+
+        return FantasyData.aggregate(
+            pipeline
+        );
+
+    },
     initLeagueData: function () {
         this.unblock();
         var result = Meteor.http.call("GET", "https://api.opendota.com/api/leagues");
@@ -98,7 +368,8 @@ Meteor.methods({
                 ticket: oneLeague.ticket,
             });
         });
-    },
+    }
+    ,
     initPlayerData: function () {
         this.unblock();
         var result = Meteor.http.call("GET", "https://api.opendota.com/api/proPlayers");
@@ -106,7 +377,8 @@ Meteor.methods({
         allPlayerData.forEach(function (onePlayer) {
             ProPlayerData.insert(onePlayer);
         });
-    },
+    }
+    ,
     initTI7Teams: function () {
         this.unblock();
         TeamData.insert({teamid: 2586976, teamname: 'OG Dota2', leaguename: 'The International 2017'});
@@ -127,8 +399,11 @@ Meteor.methods({
         TeamData.insert({teamid: 2512249, teamname: 'Digital Chaos', leaguename: 'The International 2017'});
         TeamData.insert({teamid: 2672298, teamname: 'Infamous', leaguename: 'The International 2017'});
         TeamData.insert({teamid: 1333179, teamname: 'Cloud9', leaguename: 'The International 2017'});
+        TeamData.insert({teamid: 4593831, teamname: 'PlanetDog', leaguename: 'The International 2017'});
+        TeamData.insert({teamid: 3214108, teamname: 'Team NP', leaguename: 'The International 2017'});
 
-    },
+    }
+    ,
     getLeagueData: function (leagueid) {
         this.unblock();
         console.log("LEAGUE ID IS :" + leagueid);
@@ -163,7 +438,8 @@ Meteor.methods({
                 }
             }
         );
-    },
+    }
+    ,
     insertLeagueFantasy: function (leagueid) {
         this.unblock();
         var matchcount = 0;
@@ -174,7 +450,8 @@ Meteor.methods({
             matchcount++;
             console.log(" ///  " + matchcount + " ///  MatchID : " + oneMatch.match_id);
         });
-    },
+    }
+    ,
     insertMatchFantasy: function (matchid) {       // Match ID to be changed to league id
         this.unblock();
 
@@ -185,6 +462,8 @@ Meteor.methods({
 
         var matchdata = results.data;
         var playerdata = matchdata.players;
+        fantasydata.day = 2;
+        fantasydata.stage = 'group';
         fantasydata.matchid = matchdata.match_id;
         fantasydata.leagueid = matchdata.league.leagueid;
         fantasydata.leaguename = matchdata.league.name;
@@ -319,7 +598,8 @@ Meteor.methods({
             }
         );
         console.log("MATCH ID IS ::" + matchid + "  Players :" + playercount);
-    },
+    }
+    ,
 });
 
 roundToOneDecimal = function (input) {
@@ -406,14 +686,20 @@ getFirstBlood = function (onePlayer, matchdata) {
     var firstBlood = false;
 
     var firstBloodTime = parseInt(matchdata.first_blood_time);
-    var firstKillTime = parseInt(onePlayer.kills_log[0].time);
-    if (Math.abs(firstBloodTime - firstKillTime) < 2) {
-        firstBlood = true;
-    }
-    if (firstBlood) {
-        return roundToTwoDecimal(4);
+    if (onePlayer.kills_log[0]) {
+        var firstKillTime = parseInt(onePlayer.kills_log[0].time);
+        if (Math.abs(firstBloodTime - firstKillTime) < 2) {
+            firstBlood = true;
+        }
+        if (firstBlood) {
+            return roundToTwoDecimal(4);
+        }
+        else {
+            return roundToTwoDecimal(0);
+        }
     }
     else {
         return roundToTwoDecimal(0);
     }
+
 };

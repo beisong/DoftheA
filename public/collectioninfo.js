@@ -23,10 +23,10 @@
 //     radiant_team_id: oneMatch.radiant_team_id,   39
 //     dire_team_id: oneMatch.dire_team_id,         2586976
 //     players: oneMatch.players,                               "players" : [{
-                                                    //          "account_id" : 111620041,
-                                                    //          "player_slot" : 0,
-                                                    //          "hero_id" : 17},
-                                                    //          });
+//          "account_id" : 111620041,
+//          "player_slot" : 0,
+//          "hero_id" : 17},
+//          });
 
 
 //-----------------------------------//
@@ -75,3 +75,14 @@
 //-----------------------------------//
 
 // TeamData.insert({teamid: 2512249, teamname: 'Digital Chaos', leaguename: 'The International 2017'});
+
+
+//CDN FOR LEAGUE IMAGE
+//http://cdn.dota2.com/apps/570/icons/econ/leagues/subscriptions_joindota3.cb68f57c6bb5ef7c4466f68576092acad291a985.png
+
+
+// db.expenses.update({email: 'jaime@renewgpl.com'}, {$set: {email: 'jamie@renewgpl.com'}}, {multi: true})
+// db.fantasydata.find({leagueid:5401})
+db.fantasydata.update({leagueid:5401}, {$set:{groupstage:true, day:1}}, {multi:true});
+db.fantasydata.update({leagueid:5401, groupstage:true}, {$unset: { groupstage: ""}}, {multi:true});
+db.fantasydata.update({leagueid:5401, groupstage:true}, {$set:{stage:'group'}}, {multi:true});
