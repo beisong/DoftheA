@@ -22,6 +22,7 @@ TabularTables.Fantasy = new Tabular.Table({
         {data: "team", title: "Team"},
         {data: "name", title: "Name"},
         {data: "gamewon", title: "Won/Lost"},
+        {data: "length", title: "Duration"},
         {data: "role", title: "Role"},
         {data: "kills", title: "Kills"},
         {data: "deaths", title: "Deaths"},

@@ -282,44 +282,67 @@ Meteor.methods({
     },
     getLeagueMVP: function (role, leagueid, stage, day) {
         var pipeline = [
-            {
-                "$match": {
-                    "role": role
-                }
-            },
-            {
-                $group: {
-                    _id: "$name",
-                    team: {$first: "$team"},
-                    teamid: {$first: "$teamid"},
-                    fantasy_point: {$avg: "$fantasy_point"},
-                }
-            },
-            {
-                $sort: {
-                    fantasy_point: -1
-                }
-            },
-            {
-                $project: {
-                    fantasy_point: {
-                        $divide: [
-                            {
-                                $subtract: [
-                                    {$multiply: ['$fantasy_point', 100]},
-                                    {$mod: [{$multiply: ['$fantasy_point', 100]}, 1]}
+                {
+                    $match: {
+                        "role": role
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$name",
+                        team: {$first: "$team"},
+                        teamid: {$first: "$teamid"},
+                        fantasy_point: {$avg: "$fantasy_point"},
+                        match_played: {$sum: 1},
+                        match_won: {
+                            $sum: {
+                                $cond: [
+                                    {"$eq": ["$gamewon", "Won"]}, 1, 0
                                 ]
-                            },
-                            100]
-                    },
-                    team: 1,
-                    teamid: 1
+                            }
+                        }
+
+                    }
+                },
+                {
+                    $sort: {
+                        fantasy_point: -1
+                    }
                 }
-            },
-            {
-                $limit: 10
-            }
-        ];
+                ,
+                {
+                    $project: {
+                        fantasy_point: {
+                            $divide: [
+                                {
+                                    $subtract: [
+                                        {$multiply: ['$fantasy_point', 100]},
+                                        {$mod: [{$multiply: ['$fantasy_point', 100]}, 1]}
+                                    ]
+                                },
+                                100]
+                        }
+                        ,
+                        team: 1,
+                        teamid: 1,
+                        match_played: 1,
+                        winrate: {
+                            $trunc: {
+                                $multiply: [
+                                    {
+                                        $divide: ['$match_won', '$match_played']
+                                    }, 100]
+                            }
+                        }
+
+                    }
+                }
+                ,
+                {
+                    $limit: 18
+                }
+            ]
+            ;
 
         if (leagueid) {
             if (stage) {
@@ -462,8 +485,8 @@ Meteor.methods({
 
         var matchdata = results.data;
         var playerdata = matchdata.players;
-        fantasydata.day = 2;
-        fantasydata.stage = 'group';
+        fantasydata.day = 6;
+        fantasydata.stage = 'main';
         fantasydata.matchid = matchdata.match_id;
         fantasydata.leagueid = matchdata.league.leagueid;
         fantasydata.leaguename = matchdata.league.name;

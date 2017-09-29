@@ -18,69 +18,11 @@
     <!--TODO    ADD   GAMES PLAYED, % GAMES WON-->
     <div class="row">
         <h2 class="text-center"><strong>MVPs (Highest Average Points)</strong></h2>
-        <div class="col-md-4 col-xs-12">
-            <h3 class="text-center">Core</h3>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Team</th>
-                    <th>Average Points</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{#each league_core_mvp}}
-                    <tr>
-                        <td>{{_id}}</td>
-                        <td><a href="/fantasy/leagueteam/{{thisLeagueid}}/{{teamid}}">{{team}}</a></td>
-                        <td>{{fantasy_point}}</td>
-                    </tr>
-                {{/each}}
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-4 col-xs-12">
-            <h3 class="text-center">Support</h3>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Team</th>
-                    <th>Average Points</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{#each league_support_mvp}}
-                    <tr>
-                        <td>{{_id}}</td>
-                        <td><a href="/fantasy/leagueteam/{{thisLeagueid}}/{{teamid}}">{{team}}</a></td>
-                        <td>{{fantasy_point}}</td>
-                    </tr>
-                {{/each}}
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-4 col-xs-12">
-            <h3 class="text-center">Offlane</h3>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Team</th>
-                    <th>Average Points</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{#each league_offlane_mvp}}
-                    <tr>
-                        <td>{{_id}}</td>
-                        <td><a href="/fantasy/leagueteam/{{thisLeagueid}}/{{teamid}}">{{team}}</a></td>
-                        <td>{{fantasy_point}}</td>
-                    </tr>
-                {{/each}}
-                </tbody>
-            </table>
-        </div>
+
+        {{>MVP_table role="Core"}}
+        {{>MVP_table role="Support"}}
+        {{>MVP_table role="Offlane"}}
+
     </div>
 
     <div>
@@ -88,4 +30,33 @@
         {{> tabular table=TabularTables.Fantasy selector=selector class="table table-bordered table-condensed table-striped"}}
     </div>
 
+</template>
+
+
+<template name="MVP_table">
+    <div class="col-md-4 col-xs-12">
+        <h3 class="text-center">{{role}}</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Team</th>
+                <th>Average</th>
+                <th>Played</th>
+                <th>% Won</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each league_core_mvp this.role}}
+                <tr>
+                    <td>{{_id}}</td>
+                    <td><a href="/fantasy/leagueteam/{{thisLeagueid}}/{{teamid}}">{{team}}</a></td>
+                    <td>{{fantasy_point}}</td>
+                    <td>{{match_played}}</td>
+                    <td>{{winrate}}%</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
 </template>

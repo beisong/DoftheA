@@ -100,7 +100,8 @@ Template.league.events({
     },
 });
 
-
-// http://jsfiddle.net/abhiklpm/ZEDR9/5/
-//https://jsfiddle.net/erkaner/u12te5jb/
-//https://stackoverflow.com/questions/34528868/bind-data-in-aldded-tabular-table-on-dropdown-change-event
+Template.MVP_table.helpers({
+    league_core_mvp: function (role) {
+        return ReactiveMethod.call('getLeagueMVP', role, parseInt(Router.current().params.leagueid), Router.current().params.stage, parseInt(Router.current().params.day));
+    }
+});
