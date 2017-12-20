@@ -1,55 +1,78 @@
 <template name="admin">
     <h2>Admin Page</h2>
-    <div>
-        <h3>Init League Info</h3>
-        <button type="button" id="initAllLeague">Init All League</button>
-    </div>
-    <div>
-        <h3>Init Player Info</h3>
-        <button type="button" id="initPlayerInfo">Init Pro Player info</button>
+    <div class="row">
+        <div class="col-xs-6">
+            <div>
+                <h3>Init League Info</h3>
+                <button type="button" id="initAllLeague">Init All League</button>
+            </div>
+            <div>
+                <h3>Init Player Info</h3>
+                <button type="button" id="initPlayerInfo">Init Pro Player info</button>
+            </div>
+
+            <div>
+                <h3>Init TI7 Teams</h3>
+                <button type="button" id="initTI7Teams">Init TI7 Teams</button>
+            </div>
+
+            <div>
+                <h3>Parse Fantasy Match</h3>
+                <label>Match id:</label>
+                <input type="text" name="parsematchfantasy_input" id="parsematchfantasy_input">
+                <button type="button" id="parsematchfantasy">Parse Match ID</button>
+            </div>
+
+            <div>
+                <h3>Parse Fantasy League</h3>
+                <label>league id:</label>
+                <input type="text" name="parseleaguefantasy_input" id="parseleaguefantasy_input">
+                <button type="button" id="parseleaguefantasy">Parse League ID</button>
+            </div>
+
+
+            <div>
+                <h3>Fetch league Data</h3>
+                <label>league id:</label>
+                <input type="text" name="leaguedata_input" id="leaguedata_input">
+                <button type="button" id="fetchleaguedata">Fetch League Data</button>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div>
+                <h3>Init Heroes</h3>
+                <button type="button" id="initHeroes">Init Heroes</button>
+            </div>
+            <div>
+                <h3>Parse Match BP</h3>
+                <label>Match id:</label>
+                <input type="text" name="parsematchbp_input" id="parsematchbp_input">
+                <button type="button" id="parsematchbp">Parse Match</button>
+            </div>
+
+            <div>
+                <h3>Parse League BP</h3>
+                <label>League id:</label>
+                <input type="text" name="parseleaguebp_input" id="parseleaguebp_input">
+                <button type="button" id="parseleaguebp">Parse Match</button>
+            </div>
+        </div>
     </div>
 
-    <div>
-        <h3>Init TI7 Teams</h3>
-        <button type="button" id="initTI7Teams">Init TI7 Teams</button>
-    </div>
-
-    <div>
-        <h3>Parse Fantasy Match</h3>
-        <label>Match id:</label>
-        <input type="text" name="parsematchfantasy_input" id="parsematchfantasy_input">
-        <button type="button" id="parsematchfantasy">Parse Match ID</button>
-    </div>
-
-    <div>
-        <h3>Parse Fantasy League</h3>
-        <label>league id:</label>
-        <input type="text" name="parseleaguefantasy_input" id="parseleaguefantasy_input">
-        <button type="button" id="parseleaguefantasy">Parse League ID</button>
-    </div>
-
-
-    <div>
-        <h3>Fetch league Data</h3>
-        <label>league id:</label>
-        <input type="text" name="leaguedata_input" id="leaguedata_input">
-        <button type="button" id="fetchleaguedata">Fetch League Data</button>
-    </div>
-
-    <div>
-        <h3>
-            LeagueID :
-            {{oneleaguedata.league_id}}
-        </h3>
-        <ul>
-            {{#each leaguedata}}
-                <li>
-                    {{league_id}}
-                    <!--{{match_id}} | {{start_time}} | {{series_type}}| {{match_seq_num}}| {{lobby_type}}-->
-                    <!--| {{radiant_team_id}}-->
-                    <!--| {{dire_team_id}}-->
-                </li>
-            {{/each}}
-        </ul>
-    </div>
+    <!--<div>-->
+    <!--<h3>-->
+    <!--LeagueID :-->
+    <!--{{oneleaguedata.league_id}}-->
+    <!--</h3>-->
+    <!--<ul>-->
+        <!--{{#each leaguedata}}-->
+    <!--<li>-->
+    <!--{{league_id}}-->
+    <!--&lt;!&ndash;{{match_id}} | {{start_time}} | {{series_type}}| {{match_seq_num}}| {{lobby_type}}&ndash;&gt;-->
+        {{radiant_team_id}}
+        {{dire_team_id}}
+    <!--</li>-->
+        <!--{{/each}}-->
+    <!--</ul>-->
+    <!--</div>-->
 </template>

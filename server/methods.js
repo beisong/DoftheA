@@ -473,8 +473,7 @@ Meteor.methods({
             matchcount++;
             console.log(" ///  " + matchcount + " ///  MatchID : " + oneMatch.match_id);
         });
-    }
-    ,
+    },
     insertMatchFantasy: function (matchid) {       // Match ID to be changed to league id
         this.unblock();
 

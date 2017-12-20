@@ -16,4 +16,8 @@ Meteor.publish('fantasy_data', function () {
 Meteor.publish('team_data', function () {
     return TeamData.find({});
 });
+Meteor.publish('heroes', function () {
+    return Heroes.find({});
+});
+
 
