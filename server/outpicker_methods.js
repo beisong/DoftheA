@@ -49,6 +49,7 @@ Meteor.methods({
                     this_bp_obj.pickorder = bp_arr[i].order;
                     this_bp_obj.ban = [];
                     this_bp_obj.counterpick = [];
+                    this_bp_obj.friends = [];
 
                     //find player id and name
                     for (var q = 0; q < playerlen; q++) {
@@ -86,11 +87,25 @@ Meteor.methods({
                     for (var j = i + 1; j < bp_arr.length; j++) {
                         if (bp_arr[j].team == thisteam) {   // if same team, check ban
                             if (!bp_arr[j].is_pick) {
-                                this_bp_obj.ban.push(bp_arr[j].hero_id);  //bp_arr[j].hero_id    //add to array
+                                // this_bp_obj.ban.push(bp_arr[j].hero_id);  //bp_arr[j].hero_id    //add to array
+                                this_bp_obj.counterpick.push(bp_arr[j].hero_id);  //bp_arr[j].hero_id    //add to array
                             }
-                        } else {                              // if diff team, check pick
+                        } else {                              // if diff team, check pick: add to counter
                             if (bp_arr[j].is_pick) {
                                 this_bp_obj.counterpick.push(bp_arr[j].hero_id);
+                            }
+                            if (!bp_arr[j].is_pick) {         // if diff team, check ban: add friends
+                                this_bp_obj.friends.push(bp_arr[j].hero_id);
+                            }
+                        }
+                    }
+
+                    for (var k = 0; k < bp_arr.length; k++) {
+                        if (bp_arr[k].team == thisteam) {
+                            if (bp_arr[k].hero_id !== this_bp_obj.heroid) {         // Not yourself
+                                if (bp_arr[k].is_pick) {                            // Not Ban
+                                    this_bp_obj.friends.push(bp_arr[k].hero_id);    // Add friends
+                                }
                             }
                         }
                     }
@@ -144,10 +159,47 @@ Meteor.methods({
                 {
                     $sort: {count: -1}
                 },
+                {$limit: 32},
                 {
                     $project: {
                         _id: 0,
                         ban: 1,
+                        count: 1
+                    }
+                }
+            ]
+            ;
+        var res = Counterpicker.aggregate(
+            pipeline
+        );
+        return res;
+    },
+    getFriend: function (heroid) {
+        var pipeline = [
+                {
+                    $match: {heroid: +heroid}
+                },
+                {
+                    $unwind: '$friends'
+                },
+                {
+                    $group: {
+                        _id: {
+                            heroid: '$heroid',
+                            friend: '$friends'
+                        },
+                        friend: {$first: '$friends'},
+                        count: {$sum: 1}
+                    }
+                },
+                {
+                    $sort: {count: -1}
+                },
+                {$limit: 32},
+                {
+                    $project: {
+                        _id: 0,
+                        friend: 1,
                         count: 1
                     }
                 }
@@ -179,6 +231,7 @@ Meteor.methods({
             {
                 $sort: {count: -1}
             },
+            {$limit: 32},
             {
                 $project: {
                     _id: 0,
@@ -191,4 +244,29 @@ Meteor.methods({
             pipeline
         );
     },
+    getPickcount: function (heroid) {
+        var pipeline = [
+            {
+                $match: {heroid: +heroid}
+            },
+            {
+                $group: {
+                    _id: {
+                        heroid: '$heroid',
+                        matchid: '$matchid'
+                    },
+                    count: {$sum: 1}
+                },
+                $group: {
+                    _id: {
+                        heroid: '$heroid',
+                    },
+                    count: {$sum: 1}
+                }
+            },
+        ];
+        return Counterpicker.aggregate(
+            pipeline
+        );
+    }
 });

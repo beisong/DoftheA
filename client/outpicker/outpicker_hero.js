@@ -12,12 +12,36 @@ Template.outpicker_hero.onCreated(function () {
         }
     });
 
+    Meteor.call("getFriend", Router.current().params.heroid, function (error, result) {
+        if (result) {
+            // console.log(result);
+            Session.set('friend', result);
+        } else {
+            console.log("On Create : getFriend : nothing found ")
+        }
+    });
+
     Meteor.call("getCounterpick", Router.current().params.heroid, function (error, result) {
         if (result) {
             // console.log(result);
             Session.set('counterpicks', result);
         } else {
             console.log("On Create : getCounterpick: nothing found ")
+        }
+    });
+
+    Meteor.call("getPickcount", Router.current().params.heroid, function (error, result) {
+        if (result) {
+            if (result[0]) {
+                Session.set('pickcount', result[0].count);
+            }
+            else {
+                Session.set('pickcount', 0);
+            }
+
+
+        } else {
+            console.log("On Create : getPickcount: nothing found ")
         }
     });
 });
@@ -31,11 +55,22 @@ Template.outpicker_hero.helpers({
             return Session.get('ban');
         }
     },
+    friends: function () {
+        if (Session.get('friend')) {
+            console.log(Session.get('friend'));
+            return Session.get('friend');
+        }
+    },
     counterpicks: function () {
         if (Session.get('counterpicks')) {
             return Session.get('counterpicks');
         }
     },
+    pick_count: function () {
+        if (Session.get('pickcount') >= 0) {
+            return Session.get('pickcount');
+        }
+    }
 });
 
 Template.outpicker_hero.events({});
