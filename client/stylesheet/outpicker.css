@@ -1,9 +1,16 @@
 
-.outpick_container, .counter_container {
+.outpick_container {
     display: grid;
     grid-gap: 5px;
     grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
     grid-template-rows: minmax(100px) repeat(auto-fill, 200px) 20%;
+}
+
+.counter_container {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-rows: minmax(150px) repeat(auto-fill, 200px) 20%;
 }
 
 .outpick_container > figure > a > img {
