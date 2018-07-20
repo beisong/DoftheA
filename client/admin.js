@@ -14,32 +14,39 @@ Template.admin.helpers({
 Template.admin.events({
     'click #initAllLeague': function (event) {
         Meteor.call("initLeagueData", function (error, results) {
+            alert(results);
         });
     },
     'click #initPlayerInfo': function (event) {
         Meteor.call("initPlayerData", function (error, results) {
+            alert(results);
         });
     },
     'click #initTI7Teams': function (event) {
-        alert("CLICKED");
         Meteor.call("initTI7Teams", function (error, results) {
+            alert(results);
         });
     },
-
-
+    'click #initTI8Teams': function (event) {
+        Meteor.call("initTI8Teams", function (error, results) {
+            alert(results);
+        });
+    },
     'click #fetchleaguedata': function (event) {
         var league_id = $("#leaguedata_input").val();
         Meteor.call("getLeagueData", league_id, function (error, results) {
+            alert(results + " matches fetched");
         });
     },
     'click #parsematchfantasy': function (event) {
-        var match_id = $("#parsematchfantasy_input").val();        ///////////TO BE CHANGED TO LOOP LEAGUEINFO FOR MATCH ID
+        var match_id = $("#parsematchfantasy_input").val();
         Meteor.call("insertMatchFantasy", match_id, function (error, results) {
         });
     },
     'click #parseleaguefantasy': function (event) {
-        var league_id = $("#parseleaguefantasy_input").val();        ///////////TO BE CHANGED TO LOOP LEAGUEINFO FOR MATCH ID
+        var league_id = $("#parseleaguefantasy_input").val();
         Meteor.call("insertLeagueFantasy", league_id, function (error, results) {
+            alert(results + " matches parsed");
         });
     },
 

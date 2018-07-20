@@ -1,10 +1,26 @@
-/* CSS declarations go here */
-/*.tile {*/
-/*float: left;*/
-/*width: 20%;*/
-/*height: 100%;*/
-/*background-color: red;*/
-/*}*/
+/*Phone*/
+@media only screen and (min-device-width: 320px) and (max-device-width: 767px) {
+    .smallbox {
+        width: 20%;
+        padding-bottom: 20%;
+    }
+}
+
+/*Tablet*/
+@media only screen and (min-device-width: 768px) and (max-device-width: 959px) {
+    .smallbox {
+        width: 12.5%;
+        padding-bottom: 12.5%;
+    }
+}
+
+/*Desktop*/
+@media only screen and (min-device-width: 960px) {
+    .smallbox {
+        width: 9%;
+        padding-bottom: 9%;
+    }
+}
 
 body {
     margin: 0;
@@ -62,11 +78,10 @@ body {
 }
 
 .smallbox {
-
     float: left;
     position: relative;
-    width: 9%;
-    padding-bottom: 9%;
+    /*width: 9%;*/
+    /*padding-bottom: 9%;*/
 }
 
 .smallboxInner {

@@ -1,9 +1,10 @@
 <template name="team">
     <h2><strong>{{teamname}}</strong></h2>
-    <div class="btn-group-vertical">
+    <div class="btn-group">
         {{#each teamtournamentlist}}
             {{#with teamdata this}}
-                <a href="/fantasy/leagueteam/{{leagueid}}/{{teamid}}" class="btn  btn-default">{{leaguename}}</a>
+                <a href="/fantasy/leagueteam/{{leagueid}}/{{teamid}}"
+                   class="btn btn-lg btn-default"><strong>{{leaguename}}</strong></a>
             {{/with}}
         {{/each}}
     </div>

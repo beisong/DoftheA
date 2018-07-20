@@ -1,12 +1,12 @@
 <!--TODO ADDED UNTIL CHANGESHA-->
 <!--https://www.dotabuff.com/procircuit/events-->
-<template name="league">
-    <h2 class="text-center"><strong>{{leaguename}} {{thisStage}} {{thisDay}}</strong></h2>
+<template name="preti8">
+    <h2 class="text-center"><strong>TI8 Qualifier + DPC Statistic</strong></h2>
     <div class="row">
         {{#each leagueteamlist}}
             {{#with leaguedata this}}
                 <div class="smallbox">
-                    <a href="/fantasy/leagueteam/{{leagueid}}/{{teamid}}">
+                    <a href="/fantasy/team/{{teamid}}">
                         <div class="smallboxInner">
                             <img src="/teamlogo/{{teamid}}.png">
                         </div>
@@ -17,13 +17,13 @@
     </div>
 
 
-    <!--TODO    ADD   GAMES PLAYED, % GAMES WON-->
+    <!--&lt;!&ndash;TODO    ADD   GAMES PLAYED, % GAMES WON&ndash;&gt;-->
     <div class="row">
         <h2 class="text-center"><strong>MVPs (Highest Average Points)</strong></h2>
 
-        {{>MVP_table role="Core"}}
-        {{>MVP_table role="Support"}}
-        {{>MVP_table role="Offlane"}}
+        {{>preti8_MVP_table role="Core"}}
+        {{>preti8_MVP_table role="Support"}}
+        {{>preti8_MVP_table role="Offlane"}}
 
     </div>
 
@@ -35,10 +35,10 @@
 </template>
 
 
-<template name="MVP_table">
+<template name="preti8_MVP_table">
     <div class="col-md-4 col-xs-12">
         <h3 class="text-center">{{role}}</h3>
-        <table class="table table-striped">
+        <table class="table table-striped table-condensed">
             <thead>
             <tr>
                 <th>Name</th>
@@ -52,7 +52,7 @@
             {{#each league_core_mvp this.role}}
                 <tr>
                     <td>{{_id}}</td>
-                    <td><a href="/fantasy/leagueteam/5401/{{teamid}}">{{team}}</a></td>
+                    <td><a href="/fantasy/team/{{teamid}}">{{team}}</a></td>
                     <td>{{fantasy_point}}</td>
                     <td>{{match_played}}</td>
                     <td>{{winrate}}%</td>

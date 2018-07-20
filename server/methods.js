@@ -1,6 +1,19 @@
 //TODO SOMETHING IS WRONG HERE -> find paparazi points dont tele
 // http://dofthea.ga/fantasy/leagueteam/5353/2640025
 
+//TI 7 TEAM
+var TI7teams = TeamData.find({leaguename: 'The International 2017'})
+    .map(function (team) {
+        return team.teamid;
+    });
+//TI 8 TEAM
+var TI8teams = TeamData.find({leaguename: 'The International 2018'})
+    .map(function (team) {
+        return team.teamid;
+    });
+var TeamList = TI8teams;
+
+
 Meteor.methods({
     getTournamentList: function () {
         var pipeline = [
@@ -81,6 +94,29 @@ Meteor.methods({
             pipeline
         );
     },
+
+    //  ----------     PRETI8
+    getTI8TeamList: function () {
+        var pipeline = [
+            {
+                "$match": {
+                    "teamid": {"$in": TI8teams}
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$teamid",
+                    "nummatch": {"$sum": 1},
+                    "teamid": {"$first": "$teamid"},
+                    "teamname": {"$first": "$team"}
+                }
+            }
+        ];
+        return FantasyData.aggregate(
+            pipeline
+        );
+    },
+    //  ----------     PRETI8
 
     getTournamentList_team: function (team_id) {
         var pipeline = [
@@ -378,19 +414,104 @@ Meteor.methods({
         );
 
     },
+    getpreti8MVP: function (role) {
+        var pipeline = [
+            {
+                $match: {
+                    "role": role,
+                    "teamid": {"$in": TI8teams},
+                    "starttime": {"$gt": new Date("2017-09-01T00:00:00.000Z")}
+
+                    //time later than last year
+                }
+            },
+            {
+                $group: {
+                    _id: "$name",
+                    team: {$first: "$team"},
+                    teamid: {$first: "$teamid"},
+                    fantasy_point: {$avg: "$fantasy_point"},
+                    match_played: {$sum: 1},
+                    match_won: {
+                        $sum: {
+                            $cond: [
+                                {"$eq": ["$gamewon", "Won"]}, 1, 0
+                            ]
+                        }
+                    }
+
+                }
+            },
+            {
+                $sort: {
+                    fantasy_point: -1
+                }
+            }
+            ,
+            {
+                $project: {
+                    fantasy_point: {
+                        $divide: [
+                            {
+                                $subtract: [
+                                    {$multiply: ['$fantasy_point', 100]},
+                                    {$mod: [{$multiply: ['$fantasy_point', 100]}, 1]}
+                                ]
+                            },
+                            100]
+                    }
+                    ,
+                    team: 1,
+                    teamid: 1,
+                    match_played: 1,
+                    winrate: {
+                        $trunc: {
+                            $multiply: [
+                                {
+                                    $divide: ['$match_won', '$match_played']
+                                }, 100]
+                        }
+                    }
+
+                }
+            }
+            ,
+            {$limit: 18}
+        ];
+
+        return FantasyData.aggregate(
+            pipeline
+        );
+
+    },
     initLeagueData: function () {
         this.unblock();
         var result = Meteor.http.call("GET", "https://api.opendota.com/api/leagues");
         var allleaguedata = result.data;
+        console.log(allleaguedata);
         allleaguedata.forEach(function (oneLeague) {
-            LeagueInfo.insert({
-                leagueid: oneLeague.leagueid,
-                name: oneLeague.name,
-                tier: oneLeague.tier,
-                banner: oneLeague.banner,
-                ticket: oneLeague.ticket,
-            });
+            LeagueInfo.update(
+                {leagueid: oneLeague.leagueid},
+                {
+                    $setOnInsert: {
+                        name: oneLeague.name,
+                        tier: oneLeague.tier,
+                        banner: oneLeague.banner,
+                        ticket: oneLeague.ticket,
+                    }
+                },
+                {upsert: true}
+            );
+
+            // LeagueInfo.insert({
+            //     leagueid: oneLeague.leagueid,
+            //     name: oneLeague.name,
+            //     tier: oneLeague.tier,
+            //     banner: oneLeague.banner,
+            //     ticket: oneLeague.ticket,
+            // });
         });
+        return 'initLeagueData done';
     }
     ,
     initPlayerData: function () {
@@ -400,8 +521,8 @@ Meteor.methods({
         allPlayerData.forEach(function (onePlayer) {
             ProPlayerData.insert(onePlayer);
         });
-    }
-    ,
+        return 'initPlayerData done';
+    },
     initTI7Teams: function () {
         this.unblock();
         TeamData.insert({teamid: 2586976, teamname: 'OG Dota2', leaguename: 'The International 2017'});
@@ -424,9 +545,31 @@ Meteor.methods({
         TeamData.insert({teamid: 1333179, teamname: 'Cloud9', leaguename: 'The International 2017'});
         TeamData.insert({teamid: 4593831, teamname: 'PlanetDog', leaguename: 'The International 2017'});
         TeamData.insert({teamid: 3214108, teamname: 'Team NP', leaguename: 'The International 2017'});
+        return 'initTI7Teams done';
+    },
+    initTI8Teams: function () {
+        this.unblock();
+        TeamData.insert({teamid: 2586976, teamname: 'OG', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 39, teamname: 'Evil Geniuses', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 5, teamname: 'Invictus Gaming', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 15, teamname: 'LGD Gaming', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 1883502, teamname: 'Virtus Pro', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 2163, teamname: 'Team Liquid', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 1375614, teamname: 'Newbee', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 1838315, teamname: 'Team Secret', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 2108395, teamname: 'TNC', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 350190, teamname: 'Fnatic', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 67, teamname: 'Pain Gaming', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 543897, teamname: 'Mineski', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 726228, teamname: 'Vici Gaming', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 5021898, teamname: 'Team Serenity', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 5026801, teamname: 'Optic Gaming', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 5027210, teamname: 'VGJ Thunder', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 5228654, teamname: 'VGJ Storm', leaguename: 'The International 2018'});
+        TeamData.insert({teamid: 5229127, teamname: 'Winstrike', leaguename: 'The International 2018'});
+        return 'initTI8Teams done';
 
-    }
-    ,
+    },
     getLeagueData: function (leagueid) {
         this.unblock();
         console.log("LEAGUE ID IS :" + leagueid);
@@ -436,15 +579,13 @@ Meteor.methods({
         var leagueinfo = LeagueInfo.findOne({leagueid: parseInt(leagueid)});
         var leaguename = leagueinfo.name;
 
-        var TI7teams = TeamData.find({leaguename: 'The International 2017'})
-            .map(function (team) {
-                return team.teamid;
-            });
+        var count = 0;
 
         leaguematches.forEach(function (oneMatch) {
 //          Compare radient dire team belongs to ti7 teams before adding to db
-                if (TI7teams.includes(oneMatch.radiant_team_id) || TI7teams.includes(oneMatch.dire_team_id)) {
-                    console.log("Inserting match_id: " + oneMatch.match_id);
+                if (TeamList.includes(oneMatch.radiant_team_id) || TeamList.includes(oneMatch.dire_team_id)) {
+                    count++;
+                    console.log("/" + count + "/ Inserting match_id: " + oneMatch.match_id);
                     LeagueData.insert({
                         league_id: leagueid,
                         league_name: leaguename,
@@ -461,18 +602,29 @@ Meteor.methods({
                 }
             }
         );
-    }
-    ,
+        return count;
+    },
     insertLeagueFantasy: function (leagueid) {
         this.unblock();
+        var t0 = Date.now();
+
         var matchcount = 0;
         var leagueMatchesResult = LeagueData.find({league_id: leagueid});
         leagueMatchesResult.forEach(function (oneMatch) {
             Meteor.call("insertMatchFantasy", oneMatch.match_id, function (error, results) {
+                var t1 = Date.now();
+                var executionms = t1 - t0;
+                
+                if (executionms < 1000) {    // make sure each api call at least 1 sec ; 60 call / min
+                    var sleeptime = 1000 - executionms;
+                    sleep(sleeptime);
+                }
+                t0 = Date.now();
             });
             matchcount++;
             console.log(" ///  " + matchcount + " ///  MatchID : " + oneMatch.match_id);
         });
+        return matchcount;
     },
     insertMatchFantasy: function (matchid) {       // Match ID to be changed to league id
         this.unblock();
@@ -484,8 +636,8 @@ Meteor.methods({
 
         var matchdata = results.data;
         var playerdata = matchdata.players;
-        fantasydata.day = 6;
-        fantasydata.stage = 'main';
+        // fantasydata.day = 6;
+        // fantasydata.stage = 'main';
         fantasydata.matchid = matchdata.match_id;
         fantasydata.leagueid = matchdata.league.leagueid;
         fantasydata.leaguename = matchdata.league.name;
@@ -496,11 +648,6 @@ Meteor.methods({
         matchstarttime.setUTCSeconds(matchdata.start_time);
         fantasydata.starttime = matchstarttime;
 
-        //TI 7 TEAM
-        var TI7teams = TeamData.find({leaguename: 'The International 2017'})
-            .map(function (team) {
-                return team.teamid;
-            });
 
         playerdata.forEach(function (onePlayer) {
                 //Get role for player
@@ -519,7 +666,7 @@ Meteor.methods({
                     fantasydata.teamid = parseInt(matchdata.dire_team.team_id);
                 }
 
-                if (TI7teams.includes(fantasydata.teamid) || TI7teams.includes(fantasydata.teamid)) {
+                if (TeamList.includes(fantasydata.teamid) || TeamList.includes(fantasydata.teamid)) {
                     if (ValidFantasy(onePlayer, matchdata) && playerresult) {
 
                         // switch role;
@@ -612,7 +759,6 @@ Meteor.methods({
                     else {
                         console.log("Some Fantasy score missing");
                     }
-
                 }
                 else {
                     // console.log("Team not in TI7");
@@ -723,5 +869,14 @@ getFirstBlood = function (onePlayer, matchdata) {
     else {
         return roundToTwoDecimal(0);
     }
-
 };
+
+
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
+    }
+}

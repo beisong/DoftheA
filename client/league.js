@@ -1,12 +1,13 @@
+import dataTableResponsive from 'datatables.net-responsive';
+
 Template.league.onRendered(function () {
     // console.log(Router.current().params.matchid);
+    // $('.table-striped').DataTable({
+    //     responsive: true
+    // });
 });
 
 Template.league.helpers({
-    leaguename: function () {
-        var leagueinfo = LeagueInfo.findOne({leagueid: parseInt(Router.current().params.leagueid)});
-        return leagueinfo.name;
-    },
     leaguename: function () {
         var leagueinfo = LeagueInfo.findOne({leagueid: parseInt(Router.current().params.leagueid)});
         return leagueinfo.name;
