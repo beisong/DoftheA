@@ -7,10 +7,14 @@ var TI7teams = TeamData.find({leaguename: 'The International 2017'})
         return team.teamid;
     });
 //TI 8 TEAM
-var TI8teams = TeamData.find({leaguename: 'The International 2018'})
-    .map(function (team) {
-        return team.teamid;
-    });
+// var TI8teams = TeamData.find({leaguename: 'The International 2018'})
+//     .map(function (team) {
+//         return team.teamid;
+//     });
+
+var TI8teams =
+    [2586976, 39, 5, 15, 1883502, 2163, 1375614, 1838315, 2108395, 350190, 67, 543897, 726228, 5021898, 5026801, 5027210, 5228654, 5229127];
+
 var TeamList = TI8teams;
 
 
@@ -573,7 +577,11 @@ Meteor.methods({
     getLeagueData: function (leagueid) {
         this.unblock();
         console.log("LEAGUE ID IS :" + leagueid);
-        var result = Meteor.http.call("GET", "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=" + leagueid + "&key=" + Meteor.settings.steamKey);
+        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=" + leagueid + "&key=" + Meteor.settings.steamKey
+
+        var result = Meteor.http.call("GET", apistring);
+        // console.log(result.data);
+        // console.log("apistring : " + apistring);
         var leaguedata = result.data;
         var leaguematches = leaguedata.result.matches;
         var leagueinfo = LeagueInfo.findOne({leagueid: parseInt(leagueid)});
@@ -607,22 +615,23 @@ Meteor.methods({
     insertLeagueFantasy: function (leagueid) {
         this.unblock();
         var t0 = Date.now();
-
+        var totalexcutime;
         var matchcount = 0;
         var leagueMatchesResult = LeagueData.find({league_id: leagueid});
         leagueMatchesResult.forEach(function (oneMatch) {
             Meteor.call("insertMatchFantasy", oneMatch.match_id, function (error, results) {
                 var t1 = Date.now();
                 var executionms = t1 - t0;
-                
+
                 if (executionms < 1000) {    // make sure each api call at least 1 sec ; 60 call / min
                     var sleeptime = 1000 - executionms;
                     sleep(sleeptime);
                 }
+                totalexcutime = Date.now() - t0;
                 t0 = Date.now();
             });
             matchcount++;
-            console.log(" ///  " + matchcount + " ///  MatchID : " + oneMatch.match_id);
+            console.log(" ///  " + matchcount + " ///  MatchID : " + oneMatch.match_id + " in " + totalexcutime + "ms");
         });
         return matchcount;
     },
@@ -657,16 +666,24 @@ Meteor.methods({
 
                 fantasydata.name = onePlayer.name;
                 fantasydata.accountid = onePlayer.account_id;
-                if (onePlayer.isRadiant) {
+                // console.log(onePlayer.name);
+                if (matchdata.hasOwnProperty('radiant_team') && onePlayer.isRadiant) {
+                    // console.log("RAD TEAM");
                     fantasydata.team = matchdata.radiant_team.name;
                     fantasydata.teamid = parseInt(matchdata.radiant_team.team_id);
                 }
-                else {
+                else if (matchdata.hasOwnProperty('dire_team') && !onePlayer.isRadiant) {
+                    // console.log("DIRE TEAM");
                     fantasydata.team = matchdata.dire_team.name;
                     fantasydata.teamid = parseInt(matchdata.dire_team.team_id);
                 }
+                else {
+                    // console.log("returning");
+                    return;
+                }
 
                 if (TeamList.includes(fantasydata.teamid) || TeamList.includes(fantasydata.teamid)) {
+                    // console.log(fantasydata.team + ":" + fantasydata.teamid);
                     if (ValidFantasy(onePlayer, matchdata) && playerresult) {
 
                         // switch role;
@@ -766,8 +783,7 @@ Meteor.methods({
             }
         );
         console.log("MATCH ID IS ::" + matchid + "  Players :" + playercount);
-    }
-    ,
+    },
 });
 
 roundToOneDecimal = function (input) {
