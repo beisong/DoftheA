@@ -105,7 +105,8 @@
 }
 
 .navbar-brand {
-    font-size: 1.5vw;
+    font-family: 'Audiowide';
+    font-size: 1.8vw;
 }
 
 .navbar-nav {

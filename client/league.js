@@ -104,5 +104,8 @@ Template.league.events({
 Template.MVP_table.helpers({
     league_core_mvp: function (role) {
         return ReactiveMethod.call('getLeagueMVP', role, parseInt(Router.current().params.leagueid), Router.current().params.stage, parseInt(Router.current().params.day));
+    },
+    thisLeagueID: function () {
+        return Router.current().params.leagueid;
     }
 });
