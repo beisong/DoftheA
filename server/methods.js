@@ -1,5 +1,5 @@
-//TODO SOMETHING IS WRONG HERE -> find paparazi points dont tele
-// http://dofthea.ga/fantasy/leagueteam/5353/2640025
+// TODO Fix Wrong Roles
+
 
 //TI 7 TEAM
 var TI7teams = TeamData.find({leaguename: 'The International 2017'})
@@ -13,7 +13,7 @@ var TI7teams = TeamData.find({leaguename: 'The International 2017'})
 //     });
 
 var TI8teams =
-    [2586976, 39, 5, 15, 1883502, 2163, 1375614, 1838315, 2108395, 350190, 67, 543897, 726228, 5021898, 5026801, 5027210, 5228654, 5229127];
+    [2586976, 39, 5, 15, 1883502, 2163, 1375614, 1838315, 2108395, 350190, 67, 543897, 726228, 5066616, 5026801, 5027210, 5228654, 5229127];
 
 var TeamList = TI8teams;
 
@@ -27,6 +27,29 @@ Meteor.methods({
                     "nummatch": {"$sum": 1},
                     "leagueid": {"$first": "$leagueid"},
                     "leaguename": {"$first": "$leaguename"}
+                }
+            }
+        ];
+        
+        return FantasyData.aggregate(
+            pipeline
+        );
+        // return FantasyData.find().fetch();
+
+    }, getDPCList: function () {
+        var pipeline = [
+            {'$match': {'leagueid': {'$nin': [9870, 5401]}}},
+            {
+                "$group": {
+                    "_id": "$leagueid",
+                    "nummatch": {"$sum": 1},
+                    "leagueid": {"$first": "$leagueid"},
+                    "leaguename": {"$first": "$leaguename"}
+                }
+            },
+            {
+                "$sort": {
+                    "leagueid": -1
                 }
             }
         ];
@@ -579,6 +602,7 @@ Meteor.methods({
         console.log("LEAGUE ID IS :" + leagueid);
         var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=" + leagueid + "&key=" + Meteor.settings.steamKey
 
+        console.log(apistring);
         var result = Meteor.http.call("GET", apistring);
         // console.log(result.data);
         // console.log("apistring : " + apistring);
@@ -888,7 +912,7 @@ getFirstBlood = function (onePlayer, matchdata) {
 };
 
 
-function sleep(milliseconds) {
+sleep = function (milliseconds) {
     var start = new Date().getTime();
     for (var i = 0; i < 1e7; i++) {
         if ((new Date().getTime() - start) > milliseconds) {

@@ -11,7 +11,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="#" class="navbar-brand"><strong>DoftheA</strong></a>
+            <a href="/fantasy/preti8" class="navbar-brand"><strong>DoftheA</strong></a>
         </div>
         <!-- Collection of nav links and other content for toggling -->
         <div id="navbarCollapse" class="collapse navbar-collapse">
@@ -53,11 +53,21 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="#">Outpicker</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" data-toggle="dropdown">DPC<span
+                            class="caret"></span></a>
+
+                    <ul class="dropdown-menu">
+                        {{#each leaguelist}}
+                            <li><a href="/fantasy/league/{{leagueid}}">{{leaguename}}</a></li>
+                        {{/each}}
+                    </ul>
+                </li>
+                <li><a href="/outpicker">Outpicker</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Login</a></li>
-            </ul>
+            <!--<ul class="nav navbar-nav navbar-right">-->
+            <!--<li><a href="#">Login</a></li>-->
+            <!--</ul>-->
         </div>
     </nav>
 

@@ -126,13 +126,27 @@ Meteor.methods({
             var leaguematches = leaguedata.result.matches;
 
             console.log('Inserting league : ' + league_arr[i] + ', num matches : ' + leaguematches.length);
+            var matchcount = 0;
+            var t0 = Date.now();
+            var totalexcutime;
             leaguematches.forEach(function (oneMatch) {
                 Meteor.call("insertMatchBP", oneMatch.match_id, function (error, results) {
+                    var t1 = Date.now();
+                    var executionms = t1 - t0;
+
+                    if (executionms < 1000) {    // make sure each api call at least 1 sec ; 60 call / min
+                        var sleeptime = 1000 - executionms;
+                        sleep(sleeptime);
+                    }
+                    totalexcutime = Date.now() - t0;
+                    t0 = Date.now();
                     if (error) {
                         console.log(oneMatch.match_id);
                         console.log(error);
                     }
                 });
+                matchcount++;
+                console.log(" Outpicker ///  " + matchcount + " ///  MatchID : " + oneMatch.match_id + " in " + totalexcutime + "ms");
             });
             console.log('Finished');
         }

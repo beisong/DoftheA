@@ -6,6 +6,6 @@ Template.navbar.helpers({
         return ReactiveMethod.call('getTeamList');
     },
     leaguelist: function () {
-        return ReactiveMethod.call('getTournamentList');
+        return ReactiveMethod.call('getDPCList');
     },
 });
