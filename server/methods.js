@@ -1,6 +1,18 @@
-// TODO Fix Wrong Roles
+//WED, August 15, 2018 6:00:00 PM GMT+08:00                 1534327200
+//ThUR, August 16, 2018 6:00:00 PM GMT+08:00                1534413600
+//FRI, August 17, 2018 6:00:00 PM GMT+08:00                 1534500000
+//SAT, August 18, 2018 6:00:00 PM GMT+08:00                 1534586400
+//SUN, August 19, 2018 6:00:00 PM GMT+08:00                 1534672800
+//MON, August 20, 2018 6:00:00 PM GMT+08:00                 1534759200
+//TUE, August 21, 2018 6:00:00 PM GMT+08:00                 1534845600
+//WED, August 21, 2018 6:00:00 PM GMT+08:00                 1534932000
+//THUR, August 21, 2018 6:00:00 PM GMT+08:00                1535018400
+//FRI, August 21, 2018 6:00:00 PM GMT+08:00                 1535104800
+//SAT, August 21, 2018 6:00:00 PM GMT+08:00                 1535191200
+//SUN, August 21, 2018 6:00:00 PM GMT+08:00                 1535277600
 
 
+//FRI, August 17, 2018 6:00:00 PM GMT+08:00                 1534525200
 //TI 7 TEAM
 var TI7teams = TeamData.find({leaguename: 'The International 2017'})
     .map(function (team) {
@@ -30,7 +42,7 @@ Meteor.methods({
                 }
             }
         ];
-        
+
         return FantasyData.aggregate(
             pipeline
         );
@@ -436,6 +448,7 @@ Meteor.methods({
             }
         }
 
+        console.log(pipeline);
         return FantasyData.aggregate(
             pipeline
         );
@@ -658,8 +671,99 @@ Meteor.methods({
             console.log(" ///  " + matchcount + " ///  MatchID : " + oneMatch.match_id + " in " + totalexcutime + "ms");
         });
         return matchcount;
+    }, insertTI8Fantasy: function (day) {
+        this.unblock();
+
+//MON, August 20, 2018 6:00:00 PM GMT+08:00                 1534759200
+//TUE, August 21, 2018 6:00:00 PM GMT+08:00                 1534845600
+//WED, August 21, 2018 6:00:00 PM GMT+08:00                 1534932000
+//THUR, August 21, 2018 6:00:00 PM GMT+08:00                1535018400
+//FRI, August 21, 2018 6:00:00 PM GMT+08:00                 1535104800
+//SAT, August 21, 2018 6:00:00 PM GMT+08:00                 1535191200
+//SUN, August 21, 2018 6:00:00 PM GMT+08:00                 1535277600
+
+
+        var startime, endtime;
+        console.log(day);
+        switch (day) {
+            case 1:
+                startime = 1534327200;
+                endtime = 1534413600;
+                break;
+            case 2:
+                startime = 1534413600;
+                endtime = 1534500000;
+                break;
+            case 3:
+                startime = 1534500000;
+                endtime = 1534586400;
+                // endtime = 1534525200;
+                break;
+            case 4:
+                startime = 1534586400;
+                endtime = 1534672800;
+                break;
+            case 5:
+                startime = 1534759200;
+                endtime = 1534845600;
+                break;
+                break;
+            case 6:
+                startime = 1534845600;
+                endtime = 1534932000;
+                break;
+                break;
+            case 7:
+                startime = 1534932000;
+                endtime = 1535018400;
+                break;
+                break;
+            case 8:
+                startime = 1535018400;
+                endtime = 1535104800;
+                break;
+                break;
+            case 9:
+                startime = 1535104800;
+                endtime = 1535191200;
+                break;
+            case 10:
+                startime = 1535191200;
+                endtime = 1535277600;
+                break;
+            default:
+        }
+
+        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=9870&key=" + Meteor.settings.steamKey
+        console.log(apistring);
+        var result = Meteor.http.call("GET", apistring);
+        // console.log(result.data);
+        var leaguedata = result.data;
+        var leaguematches = leaguedata.result.matches;
+        var matchcount = 0;
+        leaguematches.forEach(function (oneMatch) {
+            if (oneMatch.start_time > startime && endtime > oneMatch.start_time) {
+                var t0 = Date.now();
+                var totalexcutime = 0;
+                Meteor.call("insertMatchFantasy", oneMatch.match_id, day, function (error, results) {
+                    var t1 = Date.now();
+                    var executionms = t1 - t0;
+                    if (executionms < 1000) {    // make sure each api call at least 1 sec ; 60 call / min
+                        var sleeptime = 1000 - executionms;
+                        sleep(sleeptime);
+                    }
+                    totalexcutime = Date.now() - t0;
+                    t0 = Date.now();
+                    console.log(" ///  " + matchcount + " ///  MatchID : " + oneMatch.match_id + " in " + totalexcutime + "ms");
+                });
+                matchcount++;
+
+            }
+            return matchcount;
+
+        });
     },
-    insertMatchFantasy: function (matchid) {       // Match ID to be changed to league id
+    insertMatchFantasy: function (matchid, day) {       // Match ID to be changed to league id
         this.unblock();
 
         var playercount = 0;
@@ -669,8 +773,16 @@ Meteor.methods({
 
         var matchdata = results.data;
         var playerdata = matchdata.players;
-        // fantasydata.day = 6;
-        // fantasydata.stage = 'main';
+        if (day) {
+            if (day <= 4) {
+                fantasydata.day = day;
+                fantasydata.stage = 'group';
+            } else {
+                fantasydata.day = day - 4;
+                fantasydata.stage = 'main';
+            }
+        }
+
         fantasydata.matchid = matchdata.match_id;
         fantasydata.leagueid = matchdata.league.leagueid;
         fantasydata.leaguename = matchdata.league.name;
@@ -749,7 +861,8 @@ Meteor.methods({
                             fantasydata.gamewon = 'Lost';
                         }
 
-                        fantasydata.teamfight = getTeamFight(onePlayer, matchdata);
+                        // fantasydata.teamfight = getTeamFight(onePlayer, matchdata);
+                        fantasydata.teamfight = roundToTwoDecimal(3 * onePlayer.teamfight_participation);
                         fantasydata.firstblood = getFirstBlood(onePlayer, matchdata);
 
                         fantasydata.kills = roundToTwoDecimal(0.3 * onePlayer.kills);
@@ -791,10 +904,49 @@ Meteor.methods({
                         if (onePlayer.kills_log == null || matchdata.first_blood_time == null) {
                             fantasydata.firstblood = 'NA';
                         }
-
-                        FantasyData.insert(
-                            fantasydata
+                        //
+                        // FantasyData.insert(
+                        //     fantasydata
+                        // );
+                        FantasyData.update(
+                            {
+                                leagueid: matchdata.league.leagueid,
+                                matchid: matchdata.match_id,
+                                accountid: fantasydata.accountid,
+                            },
+                            {
+                                $setOnInsert: {
+                                    day: fantasydata.day,
+                                    stage: fantasydata.stage,
+                                    matchid: fantasydata.matchid,
+                                    leagueid: fantasydata.leagueid,
+                                    leaguename: fantasydata.leaguename,
+                                    length: fantasydata.length,
+                                    starttime: fantasydata.starttime,
+                                    name: fantasydata.name,
+                                    accountid: fantasydata.accountid,
+                                    team: fantasydata.team,
+                                    teamid: fantasydata.teamid,
+                                    role: fantasydata.role,
+                                    gamewon: fantasydata.gamewon,
+                                    teamfight: fantasydata.teamfight,
+                                    firstblood: fantasydata.firstblood,
+                                    kills: fantasydata.kills,
+                                    deaths: fantasydata.deaths,
+                                    cs: fantasydata.cs,
+                                    gpm: fantasydata.gpm,
+                                    towerkill: fantasydata.towerkill,
+                                    roshankill: fantasydata.roshankill,
+                                    wardsplaced: fantasydata.wardsplaced,
+                                    campsstacked: fantasydata.campsstacked,
+                                    runesgrabbed: fantasydata.runesgrabbed,
+                                    stuns: fantasydata.stuns,
+                                    fantasy_point: fantasydata.fantasy_point,
+                                }
+                            },
+                            {upsert: true}
                         );
+
                         playercount++
                     }
                     else {
@@ -892,23 +1044,31 @@ getTeamFight = function (onePlayer, matchdata) {
 
 getFirstBlood = function (onePlayer, matchdata) {
     var firstBlood = false;
-
-    var firstBloodTime = parseInt(matchdata.first_blood_time);
-    if (onePlayer.kills_log[0]) {
-        var firstKillTime = parseInt(onePlayer.kills_log[0].time);
-        if (Math.abs(firstBloodTime - firstKillTime) < 2) {
-            firstBlood = true;
-        }
-        if (firstBlood) {
-            return roundToTwoDecimal(4);
-        }
-        else {
-            return roundToTwoDecimal(0);
-        }
+    if (onePlayer.firstblood_claimed > 0) {
+        firstBlood = true;
+    }
+    if (firstBlood) {
+        return roundToTwoDecimal(4);
     }
     else {
         return roundToTwoDecimal(0);
     }
+    // var firstBloodTime = parseInt(matchdata.first_blood_time);
+    // if (onePlayer.kills_log[0]) {
+    //     var firstKillTime = parseInt(onePlayer.kills_log[0].time);
+    //     if (Math.abs(firstBloodTime - firstKillTime) < 2) {
+    //         firstBlood = true;
+    //     }
+    //     if (firstBlood) {
+    //         return roundToTwoDecimal(4);
+    //     }
+    //     else {
+    //         return roundToTwoDecimal(0);
+    //     }
+    // }
+    // else {
+    //     return roundToTwoDecimal(0);
+    // }
 };
 
 

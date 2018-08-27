@@ -1,1 +1,1 @@
-mup logs -f
+mup logs --tail=50

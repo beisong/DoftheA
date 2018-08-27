@@ -1,5 +1,8 @@
 // TODO Fix Arteezy
-
+Template.admin.onCreated(function () {
+    // TODO : poll_for_update not done
+    // var success = setInterval(poll_for_update, 180000);
+});
 
 Template.admin.helpers({
     oneleaguedata: function () {
@@ -49,6 +52,12 @@ Template.admin.events({
             alert(results + " matches parsed");
         });
     },
+    'click #fetch_ti8': function (event) {
+        var selectValue = parseInt($("#fetch_ti8_day").val());
+        console.log(selectValue);
+        Meteor.call("insertTI8Fantasy", selectValue, function (error, results) {
+        });
+    },
 
 
     /////BP
@@ -73,3 +82,10 @@ Template.admin.events({
     },
 
 });
+
+
+poll_for_update = function () {
+    Meteor.call("insertTI8Fantasy", 3, function (error, results) {
+        console.log("Match parsed:" + results);
+    });
+};

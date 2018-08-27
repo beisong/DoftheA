@@ -1,0 +1,9 @@
+Meteor db host is at 127.0.0.1 with a port of 4001. Exit the mongo shell and use mongodump from your terminal.
+
+mongodump -h 127.0.0.1 --port 4001 -d meteor
+
+Dumps will be located under the dumps folder in the folder you executed the above command.
+
+You can import your db back to meteor with
+
+mongorestore -h 127.0.0.1 --port 4001 -d meteor dump/meteor
