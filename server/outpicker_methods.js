@@ -30,6 +30,7 @@ Meteor.methods({
                 }
             }
         }
+        console.log("BP Init");
     },
     insertMatchBP: function (matchid) {
         this.unblock();
