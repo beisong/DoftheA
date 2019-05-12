@@ -68,6 +68,15 @@ Template.admin.events({
             }
         });
     },
+
+    /////BP
+    'click #initBP': function (event) {
+        Meteor.call("initBP", function (error, results) {
+            if (error) {
+                console.log(error);
+            }
+        });
+    },
     'click #parsematchbp': function (event) {
         var match_id = $("#parsematchbp_input").val();        ///////////TO BE CHANGED TO LOOP LEAGUEINFO FOR MATCH ID
         console.log(match_id);
@@ -78,6 +87,21 @@ Template.admin.events({
     'click #parseleaguebp': function (event) {
         var league_id = $("#parseleaguebp_input").val();        ///////////TO BE CHANGED TO LOOP LEAGUEINFO FOR MATCH ID
         Meteor.call("insertLeagueBP", league_id, function (error, results) {
+        });
+    },
+
+    'click #parsematchbp2': function (event) {
+        var match_id = $("#parsematchbp2_input").val();        ///////////TO BE CHANGED TO LOOP LEAGUEINFO FOR MATCH ID
+        console.log(match_id);
+        Meteor.call("insertMatchBP2", match_id, function (error, results) {
+        });
+    },
+
+
+    'click #parseleaguebp2': function (event) {
+        var league_id = $("#parseleaguebp2_input").val();        ///////////TO BE CHANGED TO LOOP LEAGUEINFO FOR MATCH ID
+
+        Meteor.call("insertLeagueBP2", league_id, function (error, results) {
         });
     },
 
