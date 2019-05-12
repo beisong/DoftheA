@@ -5,9 +5,9 @@ Template.outpicker_hero.onCreated(function () {
 
     Meteor.call("getBan", Router.current().params.heroid, function (error, result) {
         if (result) {
-            // console.log(result);
             Session.set('ban', result);
-        } else {
+        }
+        else {
             console.log("On Create : getBan : nothing found ")
         }
     });
@@ -16,16 +16,18 @@ Template.outpicker_hero.onCreated(function () {
         if (result) {
             // console.log(result);
             Session.set('friend', result);
-        } else {
+        }
+        else {
             console.log("On Create : getFriend : nothing found ")
         }
     });
 
     Meteor.call("getCounterpick", Router.current().params.heroid, function (error, result) {
         if (result) {
-            // console.log(result);
+            console.log(result);
             Session.set('counterpicks', result);
-        } else {
+        }
+        else {
             console.log("On Create : getCounterpick: nothing found ")
         }
     });
@@ -40,7 +42,8 @@ Template.outpicker_hero.onCreated(function () {
             }
 
 
-        } else {
+        }
+        else {
             console.log("On Create : getPickcount: nothing found ")
         }
     });
