@@ -228,8 +228,12 @@ Meteor.methods({
                     totalexcutime = Date.now() - t0;
                     t0 = Date.now();
                     if (error) {
-                        console.log(oneMatch.match_id);
-                        console.log(error);
+                        console.log("Error Fetching :" + oneMatch.match_id);
+                        console.log(error.response.statusCode);
+                        if (error.response.statusCode === 429) {
+                            console.log("Error 429 rate limit exceeded : Sleeping 20s");
+                            sleep(20000);
+                        }
                     }
                 });
                 matchcount++;
