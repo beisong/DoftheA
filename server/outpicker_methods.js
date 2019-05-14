@@ -1,6 +1,10 @@
 /**
  * Created by weisong on 16/12/17.
  */
+
+
+
+
 Meteor.methods({
     initHeroes: function () {
         var result = Meteor.http.call("GET",
@@ -24,7 +28,7 @@ Meteor.methods({
         for (let i = 0; i < heroes_count; i++) {
             for (let j = 0; j < heroes_count; j++) {
                 if (i !== j) {
-                    BP.insert(
+                    BanPick.insert(
                         {"hero": result[i].id, "counter": result[j].id, count: 0}
                     );
                 }
@@ -146,7 +150,7 @@ Meteor.methods({
                     for (var j = i + 1; j < bp_arr.length; j++) {
                         if (bp_arr[j].team == thisteam) {   // if same team, check ban
                             if (!bp_arr[j].is_pick) {
-                                BP.update(
+                                BanPick.update(
                                     {hero: bp_arr[i].hero_id, counter: bp_arr[j].hero_id},
                                     {'$inc': {"count": 1}}
                                 );
@@ -154,7 +158,7 @@ Meteor.methods({
                         }
                         else {                              // if diff team, check pick: add to counter
                             if (bp_arr[j].is_pick) {
-                                BP.update(
+                                BanPick.update(
                                     {hero: bp_arr[i].hero_id, counter: bp_arr[j].hero_id},
                                     {'$inc': {"count": 1}}
                                 );
@@ -357,7 +361,7 @@ Meteor.methods({
         ];
 
 
-        return BP.aggregate(
+        return BanPick.aggregate(
             pipeline2
         );
     },
@@ -385,5 +389,21 @@ Meteor.methods({
         return Counterpicker.aggregate(
             pipeline
         );
+    },
+    getPickedRate: function () {
+        var pipeline = [
+            {
+                $group: {
+                    _id: {
+                        counter: '$counter',
+                    },
+                    count: {$sum: '$count'}
+                },
+            },
+        ];
+        return BanPick.aggregate(
+            pipeline
+        );
     }
 });
+

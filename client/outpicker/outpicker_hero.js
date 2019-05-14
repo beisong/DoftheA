@@ -24,8 +24,18 @@ Template.outpicker_hero.onCreated(function () {
 
     Meteor.call("getCounterpick", Router.current().params.heroid, function (error, result) {
         if (result) {
-            console.log(result);
-            Session.set('counterpicks', result);
+            let newarr = [];
+            result.forEach(function (oneCP) {
+                // console.log(oneCP);
+                // console.log(localStorage.getItem('pickRate_' + oneCP.counter));
+                oneCP.normCount = (parseFloat(oneCP.count) * 100 / localStorage.getItem('pickRate_' + oneCP.counter)).toFixed(2);
+                oneCP.pickRate = localStorage.getItem('pickRate_' + oneCP.counter);
+
+                newarr.push(oneCP)
+            });
+            newarr = newarr.sort(compareNormVal);
+            console.log(newarr);
+            Session.set('counterpicks', newarr);
         }
         else {
             console.log("On Create : getCounterpick: nothing found ")
@@ -78,3 +88,12 @@ Template.outpicker_hero.helpers({
 
 Template.outpicker_hero.events({});
 
+function compareNormVal(a, b) {
+    if (a.normCount < b.normCount) {
+        return 1;
+    }
+    if (a.normCount > b.normCount) {
+        return -1;
+    }
+    return 0;
+}

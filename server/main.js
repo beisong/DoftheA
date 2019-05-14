@@ -10,7 +10,7 @@ Meteor.startup(() => {
         });
     }
 
-    if (BP.find().count() === 0) {
+    if (BanPick.find().count() === 0) {
         Meteor.call("initBP", function (error, results) {
             if (error) {
                 console.log(error);
