@@ -2,8 +2,10 @@
  * Created by weisong on 16/12/17.
  */
 
+const http = require('http');
+const fs = require('fs');
 
-
+const curDIR = process.env.PWD;
 
 Meteor.methods({
     initHeroes: function () {
@@ -15,6 +17,11 @@ Meteor.methods({
 
             var cdn_name = heroesdata[i].name.substring(14);
             heroesdata[i].cdn_name = cdn_name;
+
+            download("http://cdn.dota2.com/apps/dota2/images/heroes/" + cdn_name + "_hphover.png", curDIR + "/public/heroesimage/" + cdn_name + ".jpg", cdn_name, function () {
+                // download("http://cdn.dota2.com/apps/dota2/images/heroes/" + cdn_name + "_full.png", curDIR + "/public/heroesimage/" + cdn_name + ".jpg", cdn_name, function () {
+            });
+
             Heroes.insert(
                 heroesdata[i]
             );
@@ -407,3 +414,17 @@ Meteor.methods({
     }
 });
 
+
+download = function (url, dest, cdn_name, cb) {
+    var file = fs.createWriteStream(dest);
+    var request = http.get(url, function (response) {
+        response.pipe(file);
+        file.on('finish', function () {
+            console.log("Downloaded :: " + cdn_name);
+            file.close(cb);  // close() is async, call cb after close completes.
+        });
+    }).on('error', function (err) { // Handle errors
+        fs.unlink(dest); // Delete the file async. (But we don't check the result)
+        if (cb) cb(err.message);
+    });
+};
