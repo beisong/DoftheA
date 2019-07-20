@@ -536,11 +536,13 @@ Meteor.methods({
         );
 
     },UpdateDPC19MVP: function () {
+        MvpData.rawCollection().drop();
         aggregateMVP  ('Core');
         aggregateMVP  ('Support');
         aggregateMVP  ('Mid');
     }
     ,UpdateTeamsAVG: function () {
+        TeamAVGData.rawCollection().drop();
         TeamList.forEach(function(oneTeam){
             aggregateTeam (oneTeam);
         })

@@ -6,7 +6,7 @@
                     <img src="http://cdn.dota2.com/apps/dota2/images/heroes/{{getHeroesName heroname}}_lg.png"
                          alt="{{getHeroesName heroname}}">
                     <figcaption>{{getHeroesName heroname}}</figcaption>
-                    <h3>Stats from {{pick_count}} pro games</h3>
+<!--                    <h3>Stats from {{pick_count}} pro games</h3>-->
                 </figure>
             </h2>
             <div class="col-xs-12">
@@ -16,7 +16,7 @@
                         <figure>
                             <img src="http://cdn.dota2.com/apps/dota2/images/heroes/{{getHeroesName counter}}_lg.png"
                                  alt="{{getHeroesName counterpick}}">
-                            <figcaption>Count:{{count}} / {{getPickRate counter}}</figcaption>
+                            <figcaption>{{normCount}}</figcaption>
                         </figure>
                     {{/each}}
                 </div>

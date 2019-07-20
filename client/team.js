@@ -5,7 +5,10 @@ Template.team.onRendered(function () {
 Template.team.helpers({
     teamname: function () {
         var teaminfo = TeamData.findOne({teamid: parseInt(Router.current().params.teamid)});
-        return teaminfo.teamname
+        if(teaminfo){
+            return teaminfo.teamname;
+        }
+        return '';
     },
     teamtournamentlist: function () {
         return ReactiveMethod.call('getTournamentList_team', parseInt(Router.current().params.teamid));
@@ -25,7 +28,13 @@ Template.team.helpers({
         return selector;
     },
     team_ave: function () {
-        return ReactiveMethod.call('getLeagueTeamaverage', false, parseInt(Router.current().params.teamid));
+
+
+        var result =TeamAVGData.find({teamid:parseInt(Router.current().params.teamid)}).fetch();
+        console.log(result);
+        return result
+
+        // return ReactiveMethod.call('getLeagueTeamaverage', false, parseInt(Router.current().params.teamid));
     },
 
 });

@@ -80,6 +80,8 @@ Template.dpc19.events({
 
 Template.dpc19_MVP_table.helpers({
     league_core_mvp: function (role) {
-        return MvpData.find({role:role}).fetch();
+        var result =MvpData.find({role:role},{sort: {rank: 1}}).fetch();
+        console.log(result);
+        return result
     }
 });

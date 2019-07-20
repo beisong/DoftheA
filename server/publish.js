@@ -22,5 +22,8 @@ Meteor.publish('heroes', function () {
 Meteor.publish('mvp_data', function () {
     return MvpData.find({});
 });
+Meteor.publish('team_avg_data', function () {
+    return TeamAVGData.find({});
+});
 
 
