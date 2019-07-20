@@ -25,13 +25,8 @@ Template.admin.events({
             alert(results);
         });
     },
-    'click #initTI7Teams': function (event) {
-        Meteor.call("initTI7Teams", function (error, results) {
-            alert(results);
-        });
-    },
-    'click #initTI8Teams': function (event) {
-        Meteor.call("initTI8Teams", function (error, results) {
+    'click #initTI9Teams': function (event) {
+        Meteor.call("initTI9Teams", function (error, results) {
             alert(results);
         });
     },
@@ -75,6 +70,14 @@ Template.admin.events({
             if (error) {
                 console.log(error);
             }
+        });
+    },
+    'click #testbut': function (event) {
+        Meteor.call("getTI9Teams", function (error, results) {
+            if (error) {
+                console.log(error);
+            }
+            console.log(results);
         });
     },
     'click #parsematchbp': function (event) {

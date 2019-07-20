@@ -1,2 +1,4 @@
 node_modules/
 /ssh.sh
+.idea/
+settings.json

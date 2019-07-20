@@ -1,3 +1,6 @@
+import { HTTP } from "meteor/http";
+
+
 //WED, August 15, 2018 6:00:00 PM GMT+08:00                 1534327200
 //ThUR, August 16, 2018 6:00:00 PM GMT+08:00                1534413600
 //FRI, August 17, 2018 6:00:00 PM GMT+08:00                 1534500000
@@ -13,22 +16,29 @@
 
 
 //FRI, August 17, 2018 6:00:00 PM GMT+08:00                 1534525200
+
 //TI 7 TEAM
 var TI7teams = TeamData.find({leaguename: 'The International 2017'})
     .map(function (team) {
         return team.teamid;
     });
 //TI 8 TEAM
-// var TI8teams = TeamData.find({leaguename: 'The International 2018'})
-//     .map(function (team) {
-//         return team.teamid;
-//     });
+var TI8teams = TeamData.find({leaguename: 'The International 2018'})
+    .map(function (team) {
+        return team.teamid;
+    });
 
-var TI8teams =
-    [2586976, 39, 5, 15, 1883502, 2163, 1375614, 1838315, 2108395, 350190, 67, 543897, 726228, 5066616, 5026801, 5027210, 5228654, 5229127];
+// var TI8teams =
+//     [2586976, 39, 5, 15, 1883502, 2163, 1375614, 1838315, 2108395, 350190, 67, 543897, 726228, 5066616, 5026801, 5027210, 5228654, 5229127];
 
-var TeamList = TI8teams;
 
+// TI 9 TEAM
+var TI9teams = TeamData.find({leaguename: 'The International 2019'})
+    .map(function (team) {
+        return team.teamid;
+    });
+
+var TeamList = TI9teams;
 
 Meteor.methods({
     getTournamentList: function () {
@@ -73,27 +83,6 @@ Meteor.methods({
 
     },
     getTeamList: function () {
-//-----------------------------------//
-//          OLD METHOD THAT QUERY FANTASY DATA FOR AGGREGATED UNIQUE TEAM NAME
-//-----------------------------------//
-
-        // var pipeline = [
-        //     {
-        //         "$group": {
-        //             "_id": "$teamid",
-        //             "nummatch": {"$sum": 1},
-        //             "teamid": {"$first": "$teamid"},
-        //             "teamname": {"$first": "$team"}
-        //         }
-        //     }
-        // ];
-        // return FantasyData.aggregate(
-        //     pipeline
-        // );
-
-//-----------------------------------//
-//     NEW METHOD query from TeamData
-//-----------------------------------//
         return TeamData.find({}).fetch();
     },
     getLeagueTeamList: function (leagueid, stage, day) {
@@ -140,6 +129,29 @@ Meteor.methods({
             {
                 "$match": {
                     "teamid": {"$in": TI8teams}
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$teamid",
+                    "nummatch": {"$sum": 1},
+                    "teamid": {"$first": "$teamid"},
+                    "teamname": {"$first": "$team"}
+                }
+            }
+        ];
+        return FantasyData.aggregate(
+            pipeline
+        );
+    },
+    //  ----------     PRETI8
+
+    //  ----------     DPC19
+    getTI9TeamList: function () {
+        var pipeline = [
+            {
+                "$match": {
+                    "teamid": {"$in": TI9teams}
                 }
             },
             {
@@ -526,7 +538,7 @@ Meteor.methods({
     },
     initLeagueData: function () {
         this.unblock();
-        var result = Meteor.http.call("GET", "https://api.opendota.com/api/leagues");
+        var result = HTTP.call("GET", "https://api.opendota.com/api/leagues");
         var allleaguedata = result.data;
         console.log(allleaguedata);
         allleaguedata.forEach(function (oneLeague) {
@@ -556,7 +568,7 @@ Meteor.methods({
     ,
     initPlayerData: function () {
         this.unblock();
-        var result = Meteor.http.call("GET", "https://api.opendota.com/api/proPlayers");
+        var result = HTTP.call("GET", "https://api.opendota.com/api/proPlayers");
         var allPlayerData = result.data;
         allPlayerData.forEach(function (onePlayer) {
             ProPlayerData.insert(onePlayer);
@@ -610,13 +622,36 @@ Meteor.methods({
         return 'initTI8Teams done';
 
     },
+    initTI9Teams: function () {
+        this.unblock();
+        TeamData.insert({teamid: 1838315, teamname: 'Team Secret', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 1883502, teamname: 'Virtus Pro', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 726228, teamname: 'Vici Gaming', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 39, teamname: 'Evil Geniuses', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 2163, teamname: 'Team Liquid', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 15, teamname: 'PSG.LGD', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 350190, teamname: 'Fnatic', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 6214973, teamname: 'NIP', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 2108395, teamname: 'TNC', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 2586976, teamname: 'OG', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 111474, teamname: 'Alliance', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 2626685, teamname: 'Keen Gaming', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 6214538, teamname: 'Forward Gaming', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 2672298, teamname: 'Infamous', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 6666989, teamname: 'Chaos', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 36, teamname: 'Navi', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 6209804, teamname: 'Royal Never Give Up', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 543897, teamname: 'Mineski', leaguename: 'The International 2019'});
+        return 'initTI8Teams done';
+
+    },
     getLeagueData: function (leagueid) {
         this.unblock();
         console.log("LEAGUE ID IS :" + leagueid);
         var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=" + leagueid + "&key=" + Meteor.settings.steamKey
 
         console.log(apistring);
-        var result = Meteor.http.call("GET", apistring);
+        var result = HTTP.call("GET", apistring);
         // console.log(result.data);
         // console.log("apistring : " + apistring);
         var leaguedata = result.data;
@@ -736,7 +771,7 @@ Meteor.methods({
 
         var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=9870&key=" + Meteor.settings.steamKey
         console.log(apistring);
-        var result = Meteor.http.call("GET", apistring);
+        var result = HTTP.call("GET", apistring);
         // console.log(result.data);
         var leaguedata = result.data;
         var leaguematches = leaguedata.result.matches;
@@ -767,21 +802,21 @@ Meteor.methods({
         this.unblock();
 
         var playercount = 0;
-        var results = Meteor.http.call("GET", "https://api.opendota.com/api/matches/" + matchid);
+        var results = HTTP.call("GET", "https://api.opendota.com/api/matches/" + matchid);
 
         var fantasydata = {};
 
         var matchdata = results.data;
         var playerdata = matchdata.players;
-        if (day) {
-            if (day <= 4) {
-                fantasydata.day = day;
-                fantasydata.stage = 'group';
-            } else {
-                fantasydata.day = day - 4;
-                fantasydata.stage = 'main';
-            }
-        }
+        // if (day) {
+        //     if (day <= 4) {
+        //         fantasydata.day = day;
+        //         fantasydata.stage = 'group';
+        //     } else {
+        //         fantasydata.day = day - 4;
+        //         fantasydata.stage = 'main';
+        //     }
+        // }
 
         fantasydata.matchid = matchdata.match_id;
         fantasydata.leagueid = matchdata.league.leagueid;
@@ -837,6 +872,9 @@ Meteor.methods({
                                         break;
                                     case 3:
                                         fantasydata.role = 'Offlane';
+                                        break;
+                                    case 4:
+                                        fantasydata.role = 'Mid';
                                         break;
                                     default:
                                         fantasydata.role = 'NA';

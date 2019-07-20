@@ -16,90 +16,86 @@
         <!-- Collection of nav links and other content for toggling -->
         <div id="navbarCollapse" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <!--<li><a href="/">TI8 Fantasy</a></li>-->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" href="/fantasy/league/9870" data-toggle="dropdown">TI8 Fantasy<span
-                            class="caret"></span></a>
+<!--                &lt;!&ndash;<li><a href="/">TI8 Fantasy</a></li>&ndash;&gt;-->
+<!--                <li class="nav-item dropdown">-->
+<!--                    <a class="nav-link" href="/fantasy/league/9870" data-toggle="dropdown">TI8 Fantasy<span-->
+<!--                            class="caret"></span></a>-->
 
-                    <ul class="dropdown-menu">
-                        <li><a href="/fantasy/league/9870">All Matches</a></li>
-                        <li class="dropdown dropdown-submenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Group Stages</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/fantasy/league/9870/group/1">Day1</a></li>
-                                <li><a href="/fantasy/league/9870/group/2">Day2</a></li>
-                                <li><a href="/fantasy/league/9870/group/3">Day3</a></li>
-                                <li><a href="/fantasy/league/9870/group/4">Day4</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-submenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Main Event</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/fantasy/league/9870/main/1">Day1</a></li>
-                                <li><a href="/fantasy/league/9870/main/2">Day2</a></li>
-                                <li><a href="/fantasy/league/9870/main/3">Day3</a></li>
-                                <li><a href="/fantasy/league/9870/main/4">Day4</a></li>
-                                <li><a href="/fantasy/league/9870/main/5">Day5</a></li>
-                                <li><a href="/fantasy/league/9870/main/6">Day6</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-submenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Teams</a>
-                            <ul class="dropdown-menu">
-                                {{#each ti8teamlist}}
-                                    <li><a href="/fantasy/leagueteam/9870/{{teamid}}">{{teamname}}</a></li>
-                                {{/each}}
-                            </ul>
-                        </li>
-                        <li><a href="/fantasy/preti8">Pre TI8</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link" href="/fantasy/league/5401" data-toggle="dropdown">TI7 Fantasy<span
-                            class="caret"></span></a>
+<!--                    <ul class="dropdown-menu">-->
+<!--                        <li><a href="/fantasy/league/9870">All Matches</a></li>-->
+<!--                        <li class="dropdown dropdown-submenu">-->
+<!--                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Group Stages</a>-->
+<!--                            <ul class="dropdown-menu">-->
+<!--                                <li><a href="/fantasy/league/9870/group/1">Day1</a></li>-->
+<!--                                <li><a href="/fantasy/league/9870/group/2">Day2</a></li>-->
+<!--                                <li><a href="/fantasy/league/9870/group/3">Day3</a></li>-->
+<!--                                <li><a href="/fantasy/league/9870/group/4">Day4</a></li>-->
+<!--                            </ul>-->
+<!--                        </li>-->
+<!--                        <li class="dropdown dropdown-submenu">-->
+<!--                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Main Event</a>-->
+<!--                            <ul class="dropdown-menu">-->
+<!--                                <li><a href="/fantasy/league/9870/main/1">Day1</a></li>-->
+<!--                                <li><a href="/fantasy/league/9870/main/2">Day2</a></li>-->
+<!--                                <li><a href="/fantasy/league/9870/main/3">Day3</a></li>-->
+<!--                                <li><a href="/fantasy/league/9870/main/4">Day4</a></li>-->
+<!--                                <li><a href="/fantasy/league/9870/main/5">Day5</a></li>-->
+<!--                                <li><a href="/fantasy/league/9870/main/6">Day6</a></li>-->
+<!--                            </ul>-->
+<!--                        </li>-->
+<!--                        <li class="dropdown dropdown-submenu">-->
+<!--                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Teams</a>-->
+<!--                            <ul class="dropdown-menu">-->
+<!--                                {{#each ti8teamlist}}-->
+<!--                                    <li><a href="/fantasy/leagueteam/9870/{{teamid}}">{{teamname}}</a></li>-->
+<!--                                {{/each}}-->
+<!--                            </ul>-->
+<!--                        </li>-->
+<!--                        <li><a href="/fantasy/preti8">Pre TI8</a></li>-->
+<!--                    </ul>-->
+<!--                </li>-->
+<!--                <li class="nav-item dropdown">-->
+<!--                    <a class="nav-link" href="/fantasy/league/5401" data-toggle="dropdown">TI7 Fantasy<span-->
+<!--                            class="caret"></span></a>-->
 
-                    <ul class="dropdown-menu">
-                        <li><a href="/fantasy/league/5401">All Matches</a></li>
-                        <li class="dropdown dropdown-submenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Group Stages</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/fantasy/league/5401/group/1">Day1</a></li>
-                                <li><a href="/fantasy/league/5401/group/2">Day2</a></li>
-                                <li><a href="/fantasy/league/5401/group/3">Day3</a></li>
-                                <li><a href="/fantasy/league/5401/group/4">Day4</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-submenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Main Event</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/fantasy/league/5401/main/1">Day1</a></li>
-                                <li><a href="/fantasy/league/5401/main/2">Day2</a></li>
-                                <li><a href="/fantasy/league/5401/main/3">Day3</a></li>
-                                <li><a href="/fantasy/league/5401/main/4">Day4</a></li>
-                                <li><a href="/fantasy/league/5401/main/5">Day5</a></li>
-                                <li><a href="/fantasy/league/5401/main/6">Day6</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-submenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Teams</a>
-                            <ul class="dropdown-menu">
-                                {{#each teamlist}}
-                                    <li><a href="/fantasy/leagueteam/5401/{{teamid}}">{{teamname}}</a></li>
-                                {{/each}}
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link" href="#" data-toggle="dropdown">DPC<span
-                            class="caret"></span></a>
+<!--                    <ul class="dropdown-menu">-->
+<!--                        <li><a href="/fantasy/league/5401">All Matches</a></li>-->
+<!--                        <li class="dropdown dropdown-submenu">-->
+<!--                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Group Stages</a>-->
+<!--                            <ul class="dropdown-menu">-->
+<!--                                <li><a href="/fantasy/league/5401/group/1">Day1</a></li>-->
+<!--                                <li><a href="/fantasy/league/5401/group/2">Day2</a></li>-->
+<!--                                <li><a href="/fantasy/league/5401/group/3">Day3</a></li>-->
+<!--                                <li><a href="/fantasy/league/5401/group/4">Day4</a></li>-->
+<!--                            </ul>-->
+<!--                        </li>-->
+<!--                        <li class="dropdown dropdown-submenu">-->
+<!--                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Main Event</a>-->
+<!--                            <ul class="dropdown-menu">-->
+<!--                                <li><a href="/fantasy/league/5401/main/1">Day1</a></li>-->
+<!--                                <li><a href="/fantasy/league/5401/main/2">Day2</a></li>-->
+<!--                                <li><a href="/fantasy/league/5401/main/3">Day3</a></li>-->
+<!--                                <li><a href="/fantasy/league/5401/main/4">Day4</a></li>-->
+<!--                                <li><a href="/fantasy/league/5401/main/5">Day5</a></li>-->
+<!--                                <li><a href="/fantasy/league/5401/main/6">Day6</a></li>-->
+<!--                            </ul>-->
+<!--                        </li>-->
+<!--                        <li class="dropdown dropdown-submenu">-->
+<!--                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Teams</a>-->
+<!--                            <ul class="dropdown-menu">-->
+<!--                                {{#each teamlist}}-->
+<!--                                    <li><a href="/fantasy/leagueteam/5401/{{teamid}}">{{teamname}}</a></li>-->
+<!--                                {{/each}}-->
+<!--                            </ul>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </li>-->
 
-                    <ul class="dropdown-menu">
-                        {{#each leaguelist}}
-                            <li><a href="/fantasy/league/{{leagueid}}">{{leaguename}}</a></li>
-                        {{/each}}
-                    </ul>
-                </li>
+
+
+                
+<!--                <li><a href="/">The International 9</a></li>-->
+                <li><a href="/fantasy/dpc19">DPC19</a></li>
                 <li><a href="/outpicker">Outpicker</a></li>
             </ul>
             <!--<ul class="nav navbar-nav navbar-right">-->

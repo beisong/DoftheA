@@ -9,7 +9,7 @@ const curDIR = process.env.PWD;
 
 Meteor.methods({
     initHeroes: function () {
-        var result = Meteor.http.call("GET",
+        var result = HTTP.call("GET",
             "https://api.opendota.com/api/heroes");
 
         heroesdata = result.data;
@@ -18,8 +18,8 @@ Meteor.methods({
             var cdn_name = heroesdata[i].name.substring(14);
             heroesdata[i].cdn_name = cdn_name;
 
-            download("http://cdn.dota2.com/apps/dota2/images/heroes/" + cdn_name + "_full.png", curDIR + "/public/heroesimage/" + cdn_name + ".jpg", cdn_name, function () {
-            });
+            // download("http://cdn.dota2.com/apps/dota2/images/heroes/" + cdn_name + "_full.png", curDIR + "/public/heroesimage/" + cdn_name + ".jpg", cdn_name, function () {
+            // });
 
             Heroes.insert(
                 heroesdata[i]
@@ -46,7 +46,7 @@ Meteor.methods({
         this.unblock();
 
         // console.log("https://api.opendota.com/api/matches/" + matchid);
-        var results = Meteor.http.call("GET", "https://api.opendota.com/api/matches/" + matchid);
+        var results = HTTP.call("GET", "https://api.opendota.com/api/matches/" + matchid);
         var matchdata = results.data;
         var playerdata = matchdata.players;
         var playerlen = matchdata.players.length;
@@ -145,7 +145,7 @@ Meteor.methods({
     insertMatchBP2: function (matchid) {
         this.unblock();
 
-        var results = Meteor.http.call("GET", "https://api.opendota.com/api/matches/" + matchid);
+        var results = HTTP.call("GET", "https://api.opendota.com/api/matches/" + matchid);
         var matchdata = results.data;
 
         if (matchdata.picks_bans) {          // Some matches picks_ban is null
@@ -181,7 +181,7 @@ Meteor.methods({
         console.log(leaguestring);
         var league_arr = leaguestring.split(",");
         for (var i = 0; i < league_arr.length; i++) {
-            var result = Meteor.http.call("GET", "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=" + league_arr[i] + "&key=" + Meteor.settings.steamKey);
+            var result = HTTP.call("GET", "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=" + league_arr[i] + "&key=" + Meteor.settings.steamKey);
             var leaguedata = result.data;
             var leaguematches = leaguedata.result.matches;
 
@@ -218,7 +218,7 @@ Meteor.methods({
         for (var i = 0; i < league_arr.length; i++) {
             let callstring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=" + league_arr[i] + "&key=" + Meteor.settings.steamKey;
             console.log(callstring);
-            var result = Meteor.http.call("GET", "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=" + league_arr[i] + "&key=" + Meteor.settings.steamKey);
+            var result = HTTP.call("GET", "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=" + league_arr[i] + "&key=" + Meteor.settings.steamKey);
             var leaguedata = result.data;
             var leaguematches = leaguedata.result.matches;
 
