@@ -30,6 +30,16 @@ Template.admin.events({
             alert(results);
         });
     },
+    'click #updateDPCmvp': function (event) {
+        Meteor.call("UpdateDPC19MVP", function (error, results) {
+            // console.log(results);
+        });
+    },
+    'click #updateTeams': function (event) {
+        Meteor.call("UpdateTeamsAVG", function (error, results) {
+            // console.log(results);
+        });
+    },
     'click #fetchleaguedata': function (event) {
         var league_id = $("#leaguedata_input").val();
         Meteor.call("getLeagueData", league_id, function (error, results) {

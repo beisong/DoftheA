@@ -80,11 +80,6 @@ Template.dpc19.events({
 
 Template.dpc19_MVP_table.helpers({
     league_core_mvp: function (role) {
-        return ReactiveMethod.call(
-            'getpreti8MVP',
-            role,
-            parseInt(Router.current().params.leagueid),
-            Router.current().params.stage,
-            parseInt(Router.current().params.day));
+        return MvpData.find({role:role}).fetch();
     }
 });

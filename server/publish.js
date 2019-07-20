@@ -19,5 +19,8 @@ Meteor.publish('team_data', function () {
 Meteor.publish('heroes', function () {
     return Heroes.find({});
 });
+Meteor.publish('mvp_data', function () {
+    return MvpData.find({});
+});
 
 

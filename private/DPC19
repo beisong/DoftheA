@@ -1,0 +1,50 @@
+10326 Dreamleague 10 minor
+10296 KL Major
+10452 Bucharest Minor
+10482 ChongQing Major
+10733 Star ladder minor 1
+10681 Dreamleague 11 Major
+10869 Dotapit minor
+10810 MDL Disney major
+10979 Starladder 2 minor
+10826 Epicenter major
+
+10749 TI9
+
+
+Players removed
+ArsZeeqq
+Agressif
+Aventador
+rmN-
+Xm
+
+meteor:PRIMARY> db.fantasydata.remove({name:'MinD_ContRoL', teamid:6214973})
+meteor:PRIMARY> db.fantasydata.remove({name:'ninjaboogie', teamid:2108395})
+ryOyr
+Sockshka
+busen
+iLTW
+Madara
+Kitrak
+Universe
+Resolut1on
+SVG
+Black^
+Srf
+Stay
+Sep
+343
+Mad
+ragingpotato
+AhJit
+Mushi-
+Febby♥金佳暎\
+JT-
+db.fantasydata.remove({name:'pieliedie', teamid:543897})
+Timado
+Wu
+mason
+Robo-Z
+EternaLEnVy
+
