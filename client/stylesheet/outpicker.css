@@ -19,9 +19,8 @@
     object-fit: cover;
 }
 
-.counter_container > figure > img {
+.counter_container > figure  > img {
     width: 100%;
-    /*height: 100%;*/
     object-fit: cover;
 }
 
