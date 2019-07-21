@@ -9,53 +9,6 @@
         {{/each}}
     </div>
 
-
-    <!--<div class="panel-group" id="accordion">-->
-    <!--<div class="panel panel-default">-->
-    <!--<div class="panel-heading">-->
-    <!--<h4 class="panel-title">-->
-    <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Day 1</a>-->
-    <!--</h4>-->
-    <!--</div>-->
-    <!--<div id="collapse1" class="panel-collapse collapse in">-->
-    <!--<div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,-->
-    <!--sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,-->
-    <!--quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="panel panel-default">-->
-    <!--<div class="panel-heading">-->
-    <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapse2">-->
-    <!--<h4 class="panel-title">-->
-    <!--</h4>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div id="collapse2" class="panel-collapse collapse">-->
-    <!--<div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,-->
-    <!--sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,-->
-    <!--quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="panel panel-default">-->
-    <!--<div class="panel-heading">-->
-    <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapse3">-->
-    <!--<h4 class="panel-title">-->
-    <!--Day 3-->
-    <!--</h4>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div id="collapse3" class="panel-collapse collapse">-->
-    <!--<div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,-->
-    <!--sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,-->
-    <!--quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-
-
     <h3>Average across all Recent Tournaments</h3>
     <table class="table table-striped averagetable">
         <thead>
@@ -82,18 +35,18 @@
             <tr>
                 <td>{{_id}}</td>
                 <td>{{role}}</td>
-                <td>{{kills}}</td>
-                <td>{{deaths}}</td>
-                <td>{{cs}}</td>
-                <td>{{gpm}}</td>
-                <td>{{towerkill}}</td>
-                <td>{{roshankill}}</td>
-                <td>{{teamfight}}</td>
-                <td>{{wardsplaced}}</td>
-                <td>{{campsstacked}}</td>
-                <td>{{runesgrabbed}}</td>
-                <td>{{firstblood}}</td>
-                <td>{{stuns}}</td>
+                <td class="{{highlightCell kills}}">{{kills}}</td>
+                <td class="{{highlightCell deaths}}">{{deaths}}</td>
+                <td class="{{highlightCell cs}}">{{cs}}</td>
+                <td class="{{highlightCell gpm}}">{{gpm}}</td>
+                <td class="{{highlightCell towerkill}}">{{towerkill}}</td>
+                <td class="{{highlightCell roshankill}}">{{roshankill}}</td>
+                <td class="{{highlightCell teamfight}}">{{teamfight}}</td>
+                <td class="{{highlightCell wardsplaced}}">{{wardsplaced}}</td>
+                <td class="{{highlightCell campsstacked}}">{{campsstacked}}</td>
+                <td class="{{highlightCell runesgrabbed}}">{{runesgrabbed}}</td>
+                <td class="{{highlightCell firstblood}}">{{firstblood}}</td>
+                <td class="{{highlightCell stuns}}">{{stuns}}</td>
                 <td>{{fantasy_point}}</td>
             </tr>
         {{/each}}

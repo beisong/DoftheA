@@ -3,38 +3,36 @@
 
 Template.outpicker_hero.onCreated(function () {
 
-    Meteor.call("getBan", Router.current().params.heroid, function (error, result) {
-        if (result) {
-            Session.set('ban', result);
-        }
-        else {
-            console.log("On Create : getBan : nothing found ")
-        }
-    });
-
-    Meteor.call("getFriend", Router.current().params.heroid, function (error, result) {
-        if (result) {
-            // console.log(result);
-            Session.set('friend', result);
-        }
-        else {
-            console.log("On Create : getFriend : nothing found ")
-        }
-    });
+    // Meteor.call("getBan", Router.current().params.heroid, function (error, result) {
+    //     if (result) {
+    //         Session.set('ban', result);
+    //     }
+    //     else {
+    //         console.log("On Create : getBan : nothing found ")
+    //     }
+    // });
+    //
+    // Meteor.call("getFriend", Router.current().params.heroid, function (error, result) {
+    //     if (result) {
+    //         // console.log(result);
+    //         Session.set('friend', result);
+    //     }
+    //     else {
+    //         console.log("On Create : getFriend : nothing found ")
+    //     }
+    // });
 
     Meteor.call("getCounterpick", Router.current().params.heroid, function (error, result) {
         if (result) {
             let newarr = [];
             result.forEach(function (oneCP) {
-                // console.log(oneCP);
-                // console.log(localStorage.getItem('pickRate_' + oneCP.counter));
                 oneCP.normCount = (parseFloat(oneCP.count) * 100 / localStorage.getItem('pickRate_' + oneCP.counter)).toFixed(2);
                 oneCP.pickRate = localStorage.getItem('pickRate_' + oneCP.counter);
 
                 newarr.push(oneCP)
             });
             newarr = newarr.sort(compareNormVal);
-            console.log(newarr);
+            Session.set("Cur_outpicker_highest",newarr[0].normCount);
             Session.set('counterpicks', newarr);
         }
         else {
@@ -89,11 +87,24 @@ Template.outpicker_hero.helpers({
 Template.outpicker_hero.events({});
 
 function compareNormVal(a, b) {
-    if (a.normCount < b.normCount) {
+    if (parseFloat(a.normCount )< parseFloat(b.normCount)) {
         return 1;
     }
-    if (a.normCount > b.normCount) {
+    if (parseFloat(a.normCount )> parseFloat(b.normCount)) {
         return -1;
     }
     return 0;
 }
+
+
+Template.registerHelper('highlightNorm', function(val) {
+    var Cur_outpicker_highest = parseFloat(Session.get("Cur_outpicker_highest"));
+
+    if(val > Cur_outpicker_highest/2){
+        return "fontGreen"
+    }
+    if(val > Cur_outpicker_highest/4){
+        return "fontOrange"
+    }
+    return "fontBlue"
+});

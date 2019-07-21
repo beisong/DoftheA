@@ -28,12 +28,11 @@ Template.team.helpers({
         return selector;
     },
     team_ave: function () {
-
-
+        //New table TeamAVGData
         var result =TeamAVGData.find({teamid:parseInt(Router.current().params.teamid)}).fetch();
-        console.log(result);
         return result
 
+        // Old Aggregate call to Fantasy Table
         // return ReactiveMethod.call('getLeagueTeamaverage', false, parseInt(Router.current().params.teamid));
     },
 
@@ -42,4 +41,15 @@ Template.team.helpers({
 
 Template.team.events({});
 
-
+Template.registerHelper('highlightCell', function(val) {
+    if(val > 3){
+        return "fontRed"
+    }
+    if(val > 2){
+        return "fontGreen"
+    }
+    if(val > 1){
+        return "fontBlue"
+    }
+    return "";
+});

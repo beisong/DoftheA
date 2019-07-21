@@ -118,6 +118,35 @@ body {
     transition: all 0.3s ease-out;
 }
 
+
+.fontRed{
+    font-weight: 900;
+    color: #FF3D13;
+}
+
+.fontGreen{
+    font-weight: 800;
+    color: #00cc00;
+}
+
+.fontBlue{
+    font-weight: 700;
+    color: #005BB4;
+}
+.fontOrange{
+    font-weight: 800;
+    color: #ff9900;
+}
+.fontYellow{
+    font-weight: 800;
+    color: yellow;
+}
+
+figcaption{
+    padding-top: 0.5vh;
+    text-align: center;
+}
+
 body.no-touch .boxInner:hover .titleBox, body.touch .boxInner.touchFocus .titleBox {
     margin-bottom: 0;
 }
