@@ -649,7 +649,7 @@ Meteor.methods({
         TeamData.insert({teamid: 2626685, teamname: 'Keen Gaming', leaguename: 'The International 2019'});
         TeamData.insert({teamid: 6214538, teamname: 'Forward Gaming', leaguename: 'The International 2019'});
         TeamData.insert({teamid: 2672298, teamname: 'Infamous', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 6666989, teamname: 'Chaos', leaguename: 'The International 2019'});
+        TeamData.insert({teamid: 7203342, teamname: 'Chaos', leaguename: 'The International 2019'});
         TeamData.insert({teamid: 36, teamname: 'Navi', leaguename: 'The International 2019'});
         TeamData.insert({teamid: 6209804, teamname: 'Royal Never Give Up', leaguename: 'The International 2019'});
         TeamData.insert({teamid: 543897, teamname: 'Mineski', leaguename: 'The International 2019'});
