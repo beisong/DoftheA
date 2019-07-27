@@ -353,6 +353,11 @@ Meteor.methods({
                     },
                     role: 1
                 }
+            },
+            {$sort:
+                {
+                    fantasy_point:-1
+                }
             }
         ];
 

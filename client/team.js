@@ -29,7 +29,7 @@ Template.team.helpers({
     },
     team_ave: function () {
         //New table TeamAVGData
-        var result =TeamAVGData.find({teamid:parseInt(Router.current().params.teamid)}).fetch();
+        var result =TeamAVGData.find({teamid:parseInt(Router.current().params.teamid)},{sort:{fantasy_point:-1}}).fetch();
         return result
 
         // Old Aggregate call to Fantasy Table
