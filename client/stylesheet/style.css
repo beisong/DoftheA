@@ -209,5 +209,5 @@ table thead {
     font-family: 'Audiowide';
     font-style: normal;
     font-weight: 400;
-    src: local('Audiowide'), local('Audiowide-Regular'), url(http://themes.googleusercontent.com/static/fonts/audiowide/v1/8XtYtNKEyyZh481XVWfVOqCWcynf_cDxXwCLxiixG1c.ttf) format('truetype');
+    src: local('Audiowide'), local('Audiowide-Regular'), url(https://themes.googleusercontent.com/static/fonts/audiowide/v1/8XtYtNKEyyZh481XVWfVOqCWcynf_cDxXwCLxiixG1c.ttf) format('truetype');
 }
