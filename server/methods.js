@@ -40,6 +40,7 @@ var TI9teams = TeamData.find({leaguename: 'The International 2019'})
 
 var TeamList = TI9teams;
 
+
 Meteor.methods({
     getTournamentList: function () {
         var pipeline = [
@@ -821,7 +822,8 @@ Meteor.methods({
             return matchcount;
 
         });
-    },insertTI9Fantasy: function (day) {
+    },
+    insertTI9Fantasy: function (day) {
         this.unblock();
 //TI9 Group
 //THUR, August 15, 2018 0:00:00 PM GMT+08:00                 1565827200
@@ -917,6 +919,53 @@ Meteor.methods({
             }
             return matchcount;
 
+        });
+    },
+    autoInsertTI9Fantasy: function () {
+        this.unblock();
+        var latestMatchInDB = TI9MvpData.find({latestmatch:true}).fetch()[0].data;
+        console.log(latestMatchInDB);
+
+        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=10749&key=" + Meteor.settings.steamKey
+        var result = HTTP.call("GET", apistring);
+        var leaguedata = result.data;
+        var leaguematches = leaguedata.result.matches;
+        var matchcount = 0;
+        var ti9start = 1565827200;
+        var ti9end = 1566777600;
+
+        leaguematches.forEach(function (oneMatch) {
+            if(oneMatch.start_time < ti9start || ti9end < oneMatch.start_time){
+                return;
+            }
+            if (oneMatch.start_time > (latestMatchInDB -5400)) { // if within 90 min of latestMatchInDB parse
+                latestMatchInDB = oneMatch.start_time;
+                TI9MvpData.update(
+                    {latestmatch:true},
+                    {$set:
+                        {data:oneMatch.start_time}
+                    },
+                    {upsert: true}
+                    );
+
+                var day = getDay(oneMatch.start_time);
+
+                var t0 = Date.now();
+                var totalexcutime = 0;
+                Meteor.call("insertMatchFantasy", oneMatch.match_id, day, function (error, results) {
+                    var t1 = Date.now();
+                    var executionms = t1 - t0;
+                    if (executionms < 1000) {    // make sure each api call at least 1 sec ; 60 call / min
+                        var sleeptime = 1000 - executionms;
+                        sleep(sleeptime);
+                    }
+                    totalexcutime = Date.now() - t0;
+                    t0 = Date.now();
+                    console.log(" ///  " + matchcount + " ///  MatchID : " + oneMatch.match_id + " in " + totalexcutime + "ms");
+                });
+                matchcount++;
+            }
+            return matchcount;
         });
     },
     insertMatchFantasy: function (matchid, day) {       // Match ID to be changed to league id
@@ -1576,4 +1625,18 @@ aggregateTeam = function (teamid){
     });
 
     console.log("Team : " + teamid + "Parsed");
+}
+
+getDay = function(time){
+    if(1565827200<time && time <1565913600){return 1;}
+    else if(1565913600<time && time <1566000000){return 2;}
+    else if(1566000000<time && time <1566086400){return 3;}
+    else if(1566086400<time && time <1566259200){return 4;}
+    else if(1566259200<time && time <1566345600){return 5;}
+    else if(1566345600<time && time <1566432000){return 6;}
+    else if(1566432000<time && time <1566518400){return 7;}
+    else if(1566518400<time && time <1566604800){return 8;}
+    else if(1566604800<time && time <1566691200){return 9;}
+    else if(1566691200<time && time <1566777600){return 10;}
+    else{ return 0;}
 }

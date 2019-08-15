@@ -18,6 +18,15 @@ Meteor.startup(() => {
         });
     }
 
+    callbackInterval();
+    Meteor.setInterval(callbackInterval, 300000)
+
 });
+function callbackInterval() {
+    console.log("INSIDE CALLBACK INTERVAL'");
+    Meteor.call("autoInsertTI9Fantasy", function (error, results) {
+        console.log("UPDATING TI9 MVP");
+        Meteor.call("UpdateTI19MVP", function (error, results) {});
+    })
 
-
+}
