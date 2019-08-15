@@ -1428,7 +1428,7 @@ aggregateTI9MVP = function (role, day){
         },
         {
             $sort: {
-                total: -1
+                fantasy_point: -1
             }
         }
         ,
