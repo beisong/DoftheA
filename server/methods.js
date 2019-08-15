@@ -545,8 +545,14 @@ Meteor.methods({
         aggregateMVP  ('Core');
         aggregateMVP  ('Support');
         aggregateMVP  ('Mid');
-    }
-    ,UpdateTeamsAVG: function () {
+    },
+    UpdateTI19MVP: function () {
+        TI9MvpData.rawCollection().drop();
+        aggregateTI9MVP  ('Core');
+        aggregateTI9MVP  ('Support');
+        aggregateTI9MVP  ('Mid');
+    },
+    UpdateTeamsAVG: function () {
         TeamAVGData.rawCollection().drop();
         TeamList.forEach(function(oneTeam){
             aggregateTeam (oneTeam);
@@ -751,7 +757,6 @@ Meteor.methods({
             case 3:
                 startime = 1534500000;
                 endtime = 1534586400;
-                // endtime = 1534525200;
                 break;
             case 4:
                 startime = 1534586400;
@@ -816,6 +821,103 @@ Meteor.methods({
             return matchcount;
 
         });
+    },insertTI9Fantasy: function (day) {
+        this.unblock();
+//TI9 Group
+//THUR, August 15, 2018 0:00:00 PM GMT+08:00                 1565827200
+//FRI, August 16, 2018 0:00:00 PM GMT+08:00                 1565913600
+//SAT, August 17, 2018 0:00:00 PM GMT+08:00                 1566000000
+//SUN, August 18, 2018 0:00:00 PM GMT+08:00                 1566086400
+
+//TI8
+//MON, August 20, 2018 0:00:00 PM GMT+08:00                 1566259200
+//TUE, August 21, 2018 0:00:00 PM GMT+08:00                 1566345600
+//WED, August 22, 2018 0:00:00 PM GMT+08:00                 1566432000
+//THUR, August 23, 2018 0:00:00 PM GMT+08:00                1566518400
+//FRI, August 24, 2018 0:00:00 PM GMT+08:00                 1566604800
+//SAT, August 25, 2018 0:00:00 PM GMT+08:00                 1566691200
+//SUN, August 26, 2018 0:00:00 PM GMT+08:00                 1566777600
+
+
+        var startime, endtime;
+        console.log(day);
+        switch (day) {
+            case 1:
+                startime = 1565827200;
+                endtime = 1565913600;
+                break;
+            case 2:
+                startime = 1565913600;
+                endtime = 1566000000;
+                break;
+            case 3:
+                startime = 1566000000;
+                endtime = 1566086400;
+                // endtime = 1534525200;
+                break;
+            case 4:
+                startime = 1566086400;
+                endtime = 1566259200;
+                break;
+            case 5:
+                startime = 1566259200;
+                endtime = 1566345600;
+                break;
+                break;
+            case 6:
+                startime = 1566345600;
+                endtime = 1566432000;
+                break;
+                break;
+            case 7:
+                startime = 1566432000;
+                endtime = 1566518400;
+                break;
+                break;
+            case 8:
+                startime = 1566518400;
+                endtime = 1566604800;
+                break;
+                break;
+            case 9:
+                startime = 1566604800;
+                endtime = 1566691200;
+                break;
+            case 10:
+                startime = 1566691200;
+                endtime = 1566777600;
+                break;
+            default:
+        }
+
+        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=10749&key=" + Meteor.settings.steamKey
+        console.log(apistring);
+        var result = HTTP.call("GET", apistring);
+        // console.log(result.data);
+        var leaguedata = result.data;
+        var leaguematches = leaguedata.result.matches;
+        var matchcount = 0;
+        leaguematches.forEach(function (oneMatch) {
+            if (oneMatch.start_time > startime && endtime > oneMatch.start_time) {
+                var t0 = Date.now();
+                var totalexcutime = 0;
+                Meteor.call("insertMatchFantasy", oneMatch.match_id, day, function (error, results) {
+                    var t1 = Date.now();
+                    var executionms = t1 - t0;
+                    if (executionms < 1000) {    // make sure each api call at least 1 sec ; 60 call / min
+                        var sleeptime = 1000 - executionms;
+                        sleep(sleeptime);
+                    }
+                    totalexcutime = Date.now() - t0;
+                    t0 = Date.now();
+                    console.log(" ///  " + matchcount + " ///  MatchID : " + oneMatch.match_id + " in " + totalexcutime + "ms");
+                });
+                matchcount++;
+
+            }
+            return matchcount;
+
+        });
     },
     insertMatchFantasy: function (matchid, day) {       // Match ID to be changed to league id
         this.unblock();
@@ -827,15 +929,15 @@ Meteor.methods({
 
         var matchdata = results.data;
         var playerdata = matchdata.players;
-        // if (day) {
-        //     if (day <= 4) {
-        //         fantasydata.day = day;
-        //         fantasydata.stage = 'group';
-        //     } else {
-        //         fantasydata.day = day - 4;
-        //         fantasydata.stage = 'main';
-        //     }
-        // }
+        if (day) {
+            if (day <= 4) {
+                fantasydata.day = day;
+                fantasydata.stage = 'group';
+            } else {
+                fantasydata.day = day - 4;
+                fantasydata.stage = 'main';
+            }
+        }
 
         fantasydata.matchid = matchdata.match_id;
         fantasydata.leagueid = matchdata.league.leagueid;
@@ -1138,8 +1240,6 @@ sleep = function (milliseconds) {
     }
 }
 
-
-
 aggregateMVP = function (role){
     var pipeline = [
         {
@@ -1216,6 +1316,87 @@ aggregateMVP = function (role){
         oneMVP.rank = rank;
         oneMVP.role = role;
         MvpData.insert(oneMVP);
+    });
+
+    console.log(role + "MVP Parsed");
+}
+
+aggregateTI9MVP = function (role){
+    var pipeline = [
+        {
+            $match: {
+                "role": role,
+                "teamid": {"$in": TI9teams},
+                "leagueid": 10749
+
+                //time later than last year
+            }
+        },
+        {
+            $group: {
+                _id: "$name",
+                team: {$first: "$team"},
+                teamid: {$first: "$teamid"},
+                fantasy_point: {$avg: "$fantasy_point"},
+                match_played: {$sum: 1},
+                match_won: {
+                    $sum: {
+                        $cond: [
+                            {"$eq": ["$gamewon", "Won"]}, 1, 0
+                        ]
+                    }
+                }
+
+            }
+        },
+        {
+            $sort: {
+                fantasy_point: -1
+            }
+        }
+        ,
+        {
+            $project: {
+                fantasy_point: {
+                    $divide: [
+                        {
+                            $subtract: [
+                                {$multiply: ['$fantasy_point', 100]},
+                                {$mod: [{$multiply: ['$fantasy_point', 100]}, 1]}
+                            ]
+                        },
+                        100]
+                }
+                ,
+                role:1,
+                team: 1,
+                teamid: 1,
+                match_played: 1,
+                winrate: {
+                    $trunc: {
+                        $multiply: [
+                            {
+                                $divide: ['$match_won', '$match_played']
+                            }, 100]
+                    }
+                }
+
+            }
+        }
+        ,
+        {$limit: 18}
+    ]
+    var result = FantasyData.aggregate(
+        pipeline
+    );
+
+    let rank = 0;
+
+    result.forEach(function (oneMVP) {
+        rank ++;
+        oneMVP.rank = rank;
+        oneMVP.role = role;
+        TI9MvpData.insert(oneMVP);
     });
 
     console.log(role + "MVP Parsed");

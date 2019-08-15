@@ -35,6 +35,11 @@ Template.admin.events({
             // console.log(results);
         });
     },
+    'click #updateTI9mvp': function (event) {
+        Meteor.call("UpdateTI19MVP", function (error, results) {
+            // console.log(results);
+        });
+    },
     'click #updateTeams': function (event) {
         Meteor.call("UpdateTeamsAVG", function (error, results) {
             // console.log(results);
@@ -57,10 +62,10 @@ Template.admin.events({
             alert(results + " matches parsed");
         });
     },
-    'click #fetch_ti8': function (event) {
-        var selectValue = parseInt($("#fetch_ti8_day").val());
+    'click #fetch_ti9': function (event) {
+        var selectValue = parseInt($("#fetch_ti9_day").val());
         console.log(selectValue);
-        Meteor.call("insertTI8Fantasy", selectValue, function (error, results) {
+        Meteor.call("insertTI9Fantasy", selectValue, function (error, results) {
         });
     },
 
