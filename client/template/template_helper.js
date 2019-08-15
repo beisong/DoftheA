@@ -19,3 +19,10 @@ Template.registerHelper('getPickRate', function (heroid) {
         return pickRate;
     }
 });
+
+Template.registerHelper('dayParamExist', function () {
+    if (Router.current().params.day) {
+        return true;
+    }
+    return false;
+});

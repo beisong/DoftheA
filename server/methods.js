@@ -557,6 +557,12 @@ Meteor.methods({
         aggregateTI9MVP  ('Support',day);
         aggregateTI9MVP  ('Mid', day);
     },
+    UpdateTI19LEAGUEMVP: function () {
+        TI9MvpData.remove({league:true});
+        aggregateTI9LEAGUEMVP  ('Core');
+        aggregateTI9LEAGUEMVP  ('Support');
+        aggregateTI9LEAGUEMVP  ('Mid');
+    },
     UpdateTeamsAVG: function () {
         TeamAVGData.rawCollection().drop();
         TeamList.forEach(function(oneTeam){
@@ -1390,7 +1396,85 @@ aggregateTI9MVP = function (role, day){
         },
         {
             $group: {
+                // _id: new Meteor.Collection.ObjectID()._str,
+                _id: {
+                    name:"$name",
+                    day:"$day"
+                    },
+                name: {$first:"$name"},
+                team: {$first: "$team"},
+                teamid: {$first: "$teamid"},
+                fantasy_point: {$avg: "$fantasy_point"},
+                match_played: {$sum: 1},
+                match_won: {
+                    $sum: {
+                        $cond: [
+                            {"$eq": ["$gamewon", "Won"]}, 1, 0
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            $project: {
+                name:1,
+                fantasy_point:1,
+                total: {
+                    $multiply: ['$match_played', '$fantasy_point']
+                },
+                role:1,
+                team: 1,
+                teamid: 1,
+                match_played: 1,
+                winrate: {
+                    $trunc: {
+                        $multiply: [
+                            {
+                                $divide: ['$match_won', '$match_played']
+                            }, 100]
+                    }
+                }
+            }
+        },
+        {
+            $sort: {
+                total: -1
+            }
+        }
+        ,
+        {$limit: 18}
+    ]
+    var result = FantasyData.aggregate(
+        pipeline
+    );
+
+    let rank = 0;
+    
+    result.forEach(function (oneMVP) {
+        rank++;
+        oneMVP.rank = rank;
+        oneMVP.role = role;
+        oneMVP.day = day;
+        oneMVP._id = new Mongo.ObjectID()._str;
+        TI9MvpData.insert(oneMVP);
+    });
+
+    console.log(role + "MVP DAY Parsed");
+}
+aggregateTI9LEAGUEMVP = function (role){
+    console.log("aggregateTI9LEAGUEMVP");
+    var pipeline = [
+        {
+            $match: {
+                "role": role,
+                "teamid": {"$in": TI9teams},
+                "leagueid": 10749,
+            }
+        },
+        {
+            $group: {
                 _id: "$name",
+                name:{$first:  "$name"},
                 team: {$first: "$team"},
                 teamid: {$first: "$teamid"},
                 fantasy_point: {$avg: "$fantasy_point"},
@@ -1441,14 +1525,15 @@ aggregateTI9MVP = function (role, day){
     let rank = 0;
 
     result.forEach(function (oneMVP) {
+        oneMVP._id = new Mongo.ObjectID()._str;
         rank++;
         oneMVP.rank = rank;
         oneMVP.role = role;
-        oneMVP.day = day;
+        oneMVP.league = true;
         TI9MvpData.insert(oneMVP);
     });
 
-    console.log(role + "MVP Parsed");
+    console.log(role + " LEAGUE MVP Parsed");
 }
 
 aggregateTeam = function (teamid){

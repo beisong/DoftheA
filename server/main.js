@@ -23,14 +23,20 @@ Meteor.startup(() => {
         LeagueInfo.insert({TI9latestmatch:true, data:0});
     }
 
-    callbackInterval();
-    Meteor.setInterval(callbackInterval, 300000)
+    fiveMinLoopInterval();
+    threeHrLoopInterval();
+    Meteor.setInterval(fiveMinLoopInterval, 300000)
+    Meteor.setInterval(threeHrLoopInterval, 108000000)
 
 });
-function callbackInterval() {
+
+function fiveMinLoopInterval() {
     Meteor.call("autoInsertTI9Fantasy", function (error, results) {
-        console.log("UPDATING TI9 MVP");
         Meteor.call("UpdateTI19MVP", function (error, results) {});
     })
+}
 
+function threeHrLoopInterval(){
+    console.log("UPDATING TI9 LEAGUE MVP");
+    Meteor.call("UpdateTI19LEAGUEMVP", function (error, results) {});
 }

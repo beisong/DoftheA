@@ -46,18 +46,18 @@
                 <th>Average</th>
                 <th>Played</th>
                 <th>% Won</th>
-                <th>Total</th>
+                {{#if dayParamExist}}<th>Total</th>{{/if}}
             </tr>
             </thead>
             <tbody>
             {{#each league_core_mvp this.role}}
                 <tr>
-                    <td>{{_id}}</td>
+                    <td>{{name}}</td>
                     <td><a href="/fantasy/leagueteam/{{thisLeagueID}}/{{teamid}}">{{team}}</a></td>
                     <td>{{roundTo2Deci fantasy_point}}</td>
                     <td>{{match_played}}</td>
                     <td>{{winrate}}%</td>
-                    <td>{{roundTo1Deci total}}</td>
+                    {{#if dayParamExist}}<td>{{roundTo1Deci total}}</td>{{/if}}
                 </tr>
             {{/each}}
             </tbody>

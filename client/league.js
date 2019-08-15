@@ -104,14 +104,18 @@ Template.league.events({
 Template.MVP_table.helpers({
     league_core_mvp: function (role) {
         if(Router.current().params.leagueid == 10749){
-            var stage = parseInt(Router.current().params.stage);
-            var day =parseInt(Router.current().params.day);
+            if(Router.current().params.stage && Router.current().params.day){
+                var stage = parseInt(Router.current().params.stage);
+                var day =parseInt(Router.current().params.day);
 
-            if(stage == 'main'){
-                day +=4;
+                if(stage == 'main'){
+                    day +=4;
+                }
+                return TI9MvpData.find({role:role, day:day},{sort: {rank: 1}}).fetch();
             }
-
-            return TI9MvpData.find({role:role, day:day},{sort: {rank: 1}}).fetch();
+            else{
+                return TI9MvpData.find({role:role, league:true},{sort: {rank: 1}}).fetch();
+            }
         }
         else{
             return ReactiveMethod.call('getLeagueMVP', role, parseInt(Router.current().params.leagueid), Router.current().params.stage, parseInt(Router.current().params.day));
