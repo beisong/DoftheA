@@ -46,6 +46,7 @@
                 <th>Average</th>
                 <th>Played</th>
                 <th>% Won</th>
+                <th>Total</th>
             </tr>
             </thead>
             <tbody>
@@ -53,9 +54,10 @@
                 <tr>
                     <td>{{_id}}</td>
                     <td><a href="/fantasy/leagueteam/{{thisLeagueID}}/{{teamid}}">{{team}}</a></td>
-                    <td>{{fantasy_point}}</td>
+                    <td>{{roundTo2Deci fantasy_point}}</td>
                     <td>{{match_played}}</td>
                     <td>{{winrate}}%</td>
+                    <td>{{roundTo1Deci total}}</td>
                 </tr>
             {{/each}}
             </tbody>

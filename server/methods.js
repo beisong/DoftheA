@@ -1399,24 +1399,11 @@ aggregateTI9MVP = function (role){
             }
         },
         {
-            $sort: {
-                fantasy_point: -1
-            }
-        }
-        ,
-        {
             $project: {
-                fantasy_point: {
-                    $divide: [
-                        {
-                            $subtract: [
-                                {$multiply: ['$fantasy_point', 100]},
-                                {$mod: [{$multiply: ['$fantasy_point', 100]}, 1]}
-                            ]
-                        },
-                        100]
-                }
-                ,
+                fantasy_point:1,
+                total: {
+                    $multiply: ['$match_played', '$fantasy_point']
+                },
                 role:1,
                 team: 1,
                 teamid: 1,
@@ -1431,6 +1418,11 @@ aggregateTI9MVP = function (role){
                 }
 
             }
+        },
+        {
+            $sort: {
+                total: -1
+            }
         }
         ,
         {$limit: 18}
@@ -1438,7 +1430,7 @@ aggregateTI9MVP = function (role){
     var result = FantasyData.aggregate(
         pipeline
     );
-
+    
     let rank = 0;
 
     result.forEach(function (oneMVP) {

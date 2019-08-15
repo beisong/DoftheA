@@ -53,3 +53,11 @@ Template.registerHelper('highlightCell', function(val) {
     }
     return "";
 });
+
+Template.registerHelper('roundTo2Deci', function(val) {
+    return val.toFixed(2);
+});
+
+Template.registerHelper('roundTo1Deci', function(val) {
+    return val.toFixed(1);
+});
