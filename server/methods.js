@@ -548,10 +548,14 @@ Meteor.methods({
         aggregateMVP  ('Mid');
     },
     UpdateTI19MVP: function () {
-        TI9MvpData.rawCollection().drop();
-        aggregateTI9MVP  ('Core');
-        aggregateTI9MVP  ('Support');
-        aggregateTI9MVP  ('Mid');
+        var now= parseInt(new Date() / 1000);
+        var day = getDay(now);
+
+        // TI9MvpData.rawCollection().drop();
+        TI9MvpData.remove({day:day});
+        aggregateTI9MVP  ('Core', day);
+        aggregateTI9MVP  ('Support',day);
+        aggregateTI9MVP  ('Mid', day);
     },
     UpdateTeamsAVG: function () {
         TeamAVGData.rawCollection().drop();
@@ -840,7 +844,6 @@ Meteor.methods({
 //SAT, August 25, 2018 0:00:00 PM GMT+08:00                 1566691200
 //SUN, August 26, 2018 0:00:00 PM GMT+08:00                 1566777600
 
-
         var startime, endtime;
         console.log(day);
         switch (day) {
@@ -855,7 +858,6 @@ Meteor.methods({
             case 3:
                 startime = 1566000000;
                 endtime = 1566086400;
-                // endtime = 1534525200;
                 break;
             case 4:
                 startime = 1566086400;
@@ -865,11 +867,9 @@ Meteor.methods({
                 startime = 1566259200;
                 endtime = 1566345600;
                 break;
-                break;
             case 6:
                 startime = 1566345600;
                 endtime = 1566432000;
-                break;
                 break;
             case 7:
                 startime = 1566432000;
@@ -879,7 +879,6 @@ Meteor.methods({
             case 8:
                 startime = 1566518400;
                 endtime = 1566604800;
-                break;
                 break;
             case 9:
                 startime = 1566604800;
@@ -1370,15 +1369,23 @@ aggregateMVP = function (role){
     console.log(role + "MVP Parsed");
 }
 
-aggregateTI9MVP = function (role){
+aggregateTI9MVP = function (role, day){
+    var stageday ,stage;
+    if (day <= 4) {
+        stageday = day;
+        stage = 'group';
+    } else {
+        stageday = day - 4;
+        stage = 'main';
+    }
     var pipeline = [
         {
             $match: {
                 "role": role,
                 "teamid": {"$in": TI9teams},
-                "leagueid": 10749
-
-                //time later than last year
+                "leagueid": 10749,
+                "stage": stage,
+                "day": day
             }
         },
         {
@@ -1430,13 +1437,14 @@ aggregateTI9MVP = function (role){
     var result = FantasyData.aggregate(
         pipeline
     );
-    
+
     let rank = 0;
 
     result.forEach(function (oneMVP) {
-        rank ++;
+        rank++;
         oneMVP.rank = rank;
         oneMVP.role = role;
+        oneMVP.day = day;
         TI9MvpData.insert(oneMVP);
     });
 
@@ -1617,18 +1625,4 @@ aggregateTeam = function (teamid){
     });
 
     console.log("Team : " + teamid + "Parsed");
-}
-
-getDay = function(time){
-    if(1565827200<time && time <1565913600){return 1;}
-    else if(1565913600<time && time <1566000000){return 2;}
-    else if(1566000000<time && time <1566086400){return 3;}
-    else if(1566086400<time && time <1566259200){return 4;}
-    else if(1566259200<time && time <1566345600){return 5;}
-    else if(1566345600<time && time <1566432000){return 6;}
-    else if(1566432000<time && time <1566518400){return 7;}
-    else if(1566518400<time && time <1566604800){return 8;}
-    else if(1566604800<time && time <1566691200){return 9;}
-    else if(1566691200<time && time <1566777600){return 10;}
-    else{ return 0;}
 }
