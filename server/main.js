@@ -18,6 +18,10 @@ Meteor.startup(() => {
         });
     }
 
+    if (TI9MvpData.find({latestmatch:true}).count() === 0) {
+        TI9MvpData.insert({latestmatch:true, data:0});
+    }
+
     callbackInterval();
     Meteor.setInterval(callbackInterval, 300000)
 
