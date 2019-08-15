@@ -53,3 +53,17 @@ Mr. Kingão
 
  db.fantasydata.update({name:'w33'},{$set:{teamid:2163}}, {multi: true})
 db.fantasydata.update({name:'MATUMBAMAN'},{$set:{teamid:6666989}}, {multi: true})
+
+
+// Change ti9 to new league ti9 qualifier
+
+db.leagueinfo.insert({
+        "leagueid" : 107492,
+        "name" : "The International 2019 Qualifier",
+        "tier" : "premium",
+        "banner" : null,
+        "ticket" : null
+});
+
+db.fantasydata.update({leagueid:10749},{$set:{leaguename:"The International 2019 Qualifier"}},{multi:true})
+db.fantasydata.update({leagueid:10749},{$set:{leagueid:107492}},{multi:true})
