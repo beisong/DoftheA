@@ -1449,7 +1449,7 @@ aggregateTI9MVP = function (role, day){
     );
 
     let rank = 0;
-    
+
     result.forEach(function (oneMVP) {
         rank++;
         oneMVP.rank = rank;

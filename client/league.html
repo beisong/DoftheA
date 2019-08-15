@@ -19,7 +19,14 @@
 
     <!--TODO    ADD   GAMES PLAYED, % GAMES WON-->
     <div class="row">
-        <h2 class="text-center"><strong>MVPs (Highest Average Points)</strong></h2>
+        <h2 class="text-center"><strong>
+            MVPs
+            {{#if dayParamExist}}
+                (Highest Points)
+            {{else}}
+                (Highest Average)
+            {{/if}}
+        </strong></h2>
 
         {{>MVP_table role="Core"}}
         {{>MVP_table role="Support"}}
