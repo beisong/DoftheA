@@ -16,10 +16,6 @@ Template.outpicker.helpers({
     intheroes: function () {
         var heroesinfo = Heroes.find({primary_attr: 'int'}, {sort: {localized_name: 1}}).fetch();
         return heroesinfo;
-    },
-    heroes: function () {
-        var heroesinfo = Heroes.find({}).fetch();
-        return heroesinfo;
     }
 });
 
