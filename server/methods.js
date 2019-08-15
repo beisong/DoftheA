@@ -1491,6 +1491,7 @@ aggregateTI9LEAGUEMVP = function (role){
         },
         {
             $project: {
+                name:1,
                 fantasy_point:1,
                 total: {
                     $multiply: ['$match_played', '$fantasy_point']
