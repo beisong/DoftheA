@@ -18,8 +18,9 @@ Meteor.startup(() => {
         });
     }
 
-    if (TI9MvpData.find({latestmatch:true}).count() === 0) {
-        TI9MvpData.insert({latestmatch:true, data:0});
+    if (LeagueInfo.find({TI9latestmatch:true}).count() === 0) {
+        console.log("Setting Latest Match = 0");
+        LeagueInfo.insert({TI9latestmatch:true, data:0});
     }
 
     callbackInterval();
@@ -27,7 +28,6 @@ Meteor.startup(() => {
 
 });
 function callbackInterval() {
-    console.log("INSIDE CALLBACK INTERVAL'");
     Meteor.call("autoInsertTI9Fantasy", function (error, results) {
         console.log("UPDATING TI9 MVP");
         Meteor.call("UpdateTI19MVP", function (error, results) {});

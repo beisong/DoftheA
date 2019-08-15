@@ -923,7 +923,7 @@ Meteor.methods({
     },
     autoInsertTI9Fantasy: function () {
         this.unblock();
-        var latestMatchInDB = TI9MvpData.find({latestmatch:true}).fetch()[0].data;
+        var latestMatchInDB = LeagueInfo.find({TI9latestmatch:true}).fetch()[0].data;
         console.log(latestMatchInDB);
 
         var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=10749&key=" + Meteor.settings.steamKey
@@ -940,8 +940,8 @@ Meteor.methods({
             }
             if (oneMatch.start_time > (latestMatchInDB -5400)) { // if within 90 min of latestMatchInDB parse
                 latestMatchInDB = oneMatch.start_time;
-                TI9MvpData.update(
-                    {latestmatch:true},
+                LeagueInfo.update(
+                    {TI9latestmatch:true},
                     {$set:
                         {data:oneMatch.start_time}
                     },
