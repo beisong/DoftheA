@@ -1123,7 +1123,6 @@ Meteor.methods({
                         // FantasyData.insert(
                         //     fantasydata
                         // );
-                        console.log(fantasydata);
                         FantasyData.update(
                             {
                                 leagueid: matchdata.league.leagueid,
@@ -1451,8 +1450,7 @@ aggregateTI9MVP = function (role, day){
     var result = FantasyData.aggregate(
         pipeline
     );
-
-    console.log(result);
+    
     let rank = 0;
 
     result.forEach(function (oneMVP) {
