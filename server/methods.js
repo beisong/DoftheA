@@ -548,14 +548,15 @@ Meteor.methods({
         aggregateMVP  ('Mid');
     },
     UpdateTI19MVP: function () {
-        var now= parseInt(new Date() / 1000);
-        var day = getDay(now);
-
-        // TI9MvpData.rawCollection().drop();
-        TI9MvpData.remove({day:day});
-        aggregateTI9MVP  ('Core', day);
-        aggregateTI9MVP  ('Support',day);
-        aggregateTI9MVP  ('Mid', day);
+        // var now= parseInt(new Date() / 1000);
+        // var day = getDay(now);
+        var i;
+        for ( i =1; i<=10; i++){
+            TI9MvpData.remove({day:i});
+            aggregateTI9MVP  ('Core', i);
+            aggregateTI9MVP  ('Support',i);
+            aggregateTI9MVP  ('Mid', i);
+        }
     },
     UpdateTI19LEAGUEMVP: function () {
         TI9MvpData.remove({league:true});
@@ -928,6 +929,7 @@ Meteor.methods({
     },
     autoInsertTI9Fantasy: function () {
         this.unblock();
+        console.log("Auto Inserting");
         var latestMatchInDB = LeagueInfo.find({TI9latestmatch:true}).fetch()[0].data;
         console.log(latestMatchInDB);
 
@@ -1121,6 +1123,7 @@ Meteor.methods({
                         // FantasyData.insert(
                         //     fantasydata
                         // );
+                        console.log(fantasydata);
                         FantasyData.update(
                             {
                                 leagueid: matchdata.league.leagueid,
@@ -1391,7 +1394,7 @@ aggregateTI9MVP = function (role, day){
                 "teamid": {"$in": TI9teams},
                 "leagueid": 10749,
                 "stage": stage,
-                "day": day
+                "day": stageday
             }
         },
         {
@@ -1399,6 +1402,7 @@ aggregateTI9MVP = function (role, day){
                 // _id: new Meteor.Collection.ObjectID()._str,
                 _id: {
                     name:"$name",
+                    // stage:"$stage",
                     day:"$day"
                     },
                 name: {$first:"$name"},
@@ -1448,6 +1452,7 @@ aggregateTI9MVP = function (role, day){
         pipeline
     );
 
+    console.log(result);
     let rank = 0;
 
     result.forEach(function (oneMVP) {
