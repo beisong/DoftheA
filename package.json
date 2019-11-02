@@ -9,7 +9,7 @@
     "bcrypt-nodejs": "0.0.3",
     "datatables.net-bs": "~1.10.15",
     "datatables.net-responsive": "^2.2.3",
-    "jquery": "~1.11.2",
+    "jquery": "~3.4.0",
     "meteor-node-stubs": "~0.2.4"
   }
 }
