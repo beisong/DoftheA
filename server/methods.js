@@ -32,13 +32,16 @@ var TI8teams = TeamData.find({leaguename: 'The International 2018'})
 //     [2586976, 39, 5, 15, 1883502, 2163, 1375614, 1838315, 2108395, 350190, 67, 543897, 726228, 5066616, 5026801, 5027210, 5228654, 5229127];
 
 
-// TI 9 TEAM
-var TI9teams = TeamData.find({leaguename: 'The International 2019'})
-    .map(function (team) {
-        return team.teamid;
-    });
+// TI TEAMS
+// var TIteams = TeamData.find({leaguename: 'The International 2021'})
+//     .map(function (team) {
+//         return team.teamid;
+//     });
 
-var TeamList = TI9teams;
+
+var TIteams = [726228, 1883502, 39, 15, 350190, 2586976, 111474, 7390454, 5,8214850, 6209166, 8254400, 7391077, 8260983, 8255756, 7119388, 8204512, 1838315];
+
+var TeamList = TIteams;
 
 
 Meteor.methods({
@@ -148,11 +151,11 @@ Meteor.methods({
     //  ----------     PRETI8
 
     //  ----------     DPC19
-    getTI9TeamList: function () {
+    getTITeamList: function () {
         var pipeline = [
             {
                 "$match": {
-                    "teamid": {"$in": TI9teams}
+                    "teamid": {"$in": TIteams}
                 }
             },
             {
@@ -541,13 +544,13 @@ Meteor.methods({
             pipeline
         );
 
-    },UpdateDPC19MVP: function () {
+    },UpdateDPCMVP: function () {
         MvpData.rawCollection().drop();
         aggregateMVP  ('Core');
         aggregateMVP  ('Support');
         aggregateMVP  ('Mid');
     },
-    UpdateTI19MVP: function () {
+    UpdateTI10MVP: function () {
         // var now= parseInt(new Date() / 1000);
         // var day = getDay(now);
         var i;
@@ -564,17 +567,22 @@ Meteor.methods({
         aggregateTI9LEAGUEMVP  ('Support');
         aggregateTI9LEAGUEMVP  ('Mid');
     },
-    UpdateTeamsAVG: function () {
+    UpdateTeamsAVG: function () {   // db.fantasydata.remove({teamid:39, name:'gpk~'})
         TeamAVGData.rawCollection().drop();
-        TeamList.forEach(function(oneTeam){
+        // TeamList.forEach(function(oneTeam){
+        //     aggregateTeam (oneTeam);
+        // })
+        TIteams.forEach(function(oneTeam){
             aggregateTeam (oneTeam);
         })
+        // aggregateTeam (1883502);
+
     },
     initLeagueData: function () {
         this.unblock();
         var result = HTTP.call("GET", "https://api.opendota.com/api/leagues");
         var allleaguedata = result.data;
-        console.log(allleaguedata);
+        // console.log(allleaguedata);
         allleaguedata.forEach(function (oneLeague) {
             LeagueInfo.update(
                 {leagueid: oneLeague.leagueid},
@@ -607,6 +615,8 @@ Meteor.methods({
         allPlayerData.forEach(function (onePlayer) {
             ProPlayerData.insert(onePlayer);
         });
+
+        console.log(allPlayerData.length + "  Proplayer inserted");
         return 'initPlayerData done';
     },
     initTI7Teams: function () {
@@ -656,27 +666,28 @@ Meteor.methods({
         return 'initTI8Teams done';
 
     },
-    initTI9Teams: function () {
+    initTI10Teams: function () {
         this.unblock();
-        TeamData.insert({teamid: 1838315, teamname: 'Team Secret', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 1883502, teamname: 'Virtus Pro', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 726228, teamname: 'Vici Gaming', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 39, teamname: 'Evil Geniuses', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 2163, teamname: 'Team Liquid', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 15, teamname: 'PSG.LGD', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 350190, teamname: 'Fnatic', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 6214973, teamname: 'NIP', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 2108395, teamname: 'TNC', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 2586976, teamname: 'OG', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 111474, teamname: 'Alliance', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 2626685, teamname: 'Keen Gaming', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 6214538, teamname: 'Forward Gaming', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 2672298, teamname: 'Infamous', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 7203342, teamname: 'Chaos', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 36, teamname: 'Navi', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 6209804, teamname: 'Royal Never Give Up', leaguename: 'The International 2019'});
-        TeamData.insert({teamid: 543897, teamname: 'Mineski', leaguename: 'The International 2019'});
-        return 'initTI9Teams done';
+        TeamData.insert({teamid: 1838315, teamname: 'Team Secret', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 1883502, teamname: 'Virtus Pro', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 726228, teamname: 'Vici Gaming', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 39, teamname: 'Evil Geniuses', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 15, teamname: 'PSG.LGD', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 350190, teamname: 'Fnatic', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 2586976, teamname: 'OG', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 111474, teamname: 'Alliance', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 7390454, teamname: 'Quincy Crew', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 5, teamname: 'Invictus Gaming', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 8214850, teamname: 'T1', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 6209166, teamname: 'Team Aster', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 8254400, teamname: 'Beastcoast', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 7391077, teamname: 'Thunder Predator', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 8260983, teamname: 'Team Undying', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 8255756, teamname: 'SG esports', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 7119388, teamname: 'Team Spirit', leaguename: 'The International 2021'});
+        TeamData.insert({teamid: 8204512, teamname: 'Elephant', leaguename: 'The International 2021'});
+        console.log("TI10 Teams inserted");
+        return 'initTI10Teams done';
 
     },
     updateDPCmvp: function(){
@@ -719,6 +730,47 @@ Meteor.methods({
                 }
             }
         );
+        return count;
+    },
+    fetchParseLeague: function (leagueid) {
+        this.unblock();
+        console.log("LEAGUE ID IS :" + leagueid);
+        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=" + leagueid + "&key=" + Meteor.settings.steamKey
+
+        console.log(apistring);
+        var result = HTTP.call("GET", apistring);
+        var leaguedata = result.data;
+        var leaguematches = leaguedata.result.matches;
+        // var leagueinfo = LeagueInfo.findOne({leagueid: parseInt(leagueid)});
+        // var leaguename = leagueinfo.name;
+        var t0 = Date.now();
+        var totalexcutime;
+        var count = 0;
+        var rollingcount=0;
+
+        leaguematches.forEach(function (oneMatch) {
+            rollingcount++;
+//          Compare radient dire team belongs to ti7 teams before adding to db
+            if (TeamList.includes(oneMatch.radiant_team_id) || TeamList.includes(oneMatch.dire_team_id)) {
+                Meteor.call("insertMatchFantasy", oneMatch.match_id, function (error, results) {
+                        var t1 = Date.now();
+                        var executionms = t1 - t0;
+
+                        if (executionms < 1000) {    // make sure each api call at least 1 sec ; 60 call / min
+                            var sleeptime = 1000 - executionms;
+                            sleep(sleeptime);
+                        }
+                        totalexcutime = Date.now() - t0;
+                        t0 = Date.now();
+                    });
+                    count++;
+                    console.log(rollingcount+" / "+leaguematches.length+" -- "+count+" MatchID : " + oneMatch.match_id + " in " + totalexcutime + "ms");
+            }
+            else{
+                    console.log(rollingcount+"/ "+leaguematches.length);
+            }
+
+        });
         return count;
     },
     insertLeagueFantasy: function (leagueid) {
@@ -1301,8 +1353,8 @@ aggregateMVP = function (role){
         {
             $match: {
                 "role": role,
-                "teamid": {"$in": TI9teams},
-                "starttime": {"$gt": new Date("2017-09-01T00:00:00.000Z")}
+                "teamid": {"$in": TIteams},
+                "starttime": {"$gt": new Date("2020-09-01T00:00:00.000Z")}
 
                 //time later than last year
             }
@@ -1390,7 +1442,7 @@ aggregateTI9MVP = function (role, day){
         {
             $match: {
                 "role": role,
-                "teamid": {"$in": TI9teams},
+                "teamid": {"$in": TIteams},
                 "leagueid": 10749,
                 "stage": stage,
                 "day": stageday
@@ -1470,7 +1522,7 @@ aggregateTI9LEAGUEMVP = function (role){
         {
             $match: {
                 "role": role,
-                "teamid": {"$in": TI9teams},
+                "teamid": {"$in": TIteams},
                 "leagueid": 10749,
             }
         },

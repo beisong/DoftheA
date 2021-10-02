@@ -25,18 +25,18 @@ Template.admin.events({
             alert(results);
         });
     },
-    'click #initTI9Teams': function (event) {
-        Meteor.call("initTI9Teams", function (error, results) {
+    'click #initTITeams': function (event) {
+        Meteor.call("initTI10Teams", function (error, results) {
             alert(results);
         });
     },
     'click #updateDPCmvp': function (event) {
-        Meteor.call("UpdateDPC19MVP", function (error, results) {
+        Meteor.call("UpdateDPCMVP", function (error, results) {
             // console.log(results);
         });
     },
-    'click #updateTI9mvp': function (event) {
-        Meteor.call("UpdateTI19MVP", function (error, results) {
+    'click #updateTImvp': function (event) {
+        Meteor.call("UpdateTI10MVP", function (error, results) {
             // console.log(results);
         });
     },
@@ -48,6 +48,12 @@ Template.admin.events({
     'click #fetchleaguedata': function (event) {
         var league_id = $("#leaguedata_input").val();
         Meteor.call("getLeagueData", league_id, function (error, results) {
+            alert(results + " matches fetched");
+        });
+    },
+    'click #fetchparseleague': function (event) {
+        var league_id = $("#fetch_parse_league_input").val();
+        Meteor.call("fetchParseLeague", league_id, function (error, results) {
             alert(results + " matches fetched");
         });
     },
@@ -88,7 +94,7 @@ Template.admin.events({
         });
     },
     'click #testbut': function (event) {
-        Meteor.call("getTI9Teams", function (error, results) {
+        Meteor.call("getTITeams", function (error, results) {
             if (error) {
                 console.log(error);
             }

@@ -1,13 +1,14 @@
-<template name="dpc19">
-    <h2 class="text-center"><strong>DPC19 + TI9 Qualifier</strong></h2>
+<template name="dpc">
+    <h2 class="text-center"><strong>DPC + TI Qualifier</strong></h2>
     <div class="row">
         {{#each leagueteamlist}}
             {{#with leaguedata this}}
                 <div class="smallbox">
                     <a href="/fantasy/team/{{teamid}}">
                         <div class="smallboxInner">
-                            <img src="/teamlogo/{{teamid}}.png">
+                            <img src="/ti10teamlogo/{{teamid}}.png">
                         </div>
+<!--                        <p>{{teamname}}</p>-->
                     </a>
                 </div>
             {{/with}}
@@ -17,9 +18,9 @@
     <div class="row">
         <h2 class="text-center"><strong>MVPs (Highest Average Points)</strong></h2>
 
-        {{>dpc19_MVP_table role="Core"}}
-        {{>dpc19_MVP_table role="Support"}}
-        {{>dpc19_MVP_table role="Mid"}}
+        {{>dpc_MVP_table role="Core"}}
+        {{>dpc_MVP_table role="Support"}}
+        {{>dpc_MVP_table role="Mid"}}
 
     </div>
 
@@ -31,7 +32,7 @@
 </template>
 
 
-<template name="dpc19_MVP_table">
+<template name="dpc_MVP_table">
     <div class="col-md-4 col-xs-12">
         <h3 class="text-center">{{role}}</h3>
         <table class="table table-striped table-condensed">
@@ -41,13 +42,13 @@
                 <th>Team</th>
                 <th>Average</th>
                 <th>Played</th>
-                <th>% Won</th>
+                <th>%Won</th>
             </tr>
             </thead>
             <tbody>
             {{#each league_core_mvp this.role}}
                 <tr>
-                    <td>{{name}}</td>
+                    <td>{{_id}}</td>
                     <td><a href="/fantasy/team/{{teamid}}">{{team}}</a></td>
                     <td>{{fantasy_point}}</td>
                     <td>{{match_played}}</td>

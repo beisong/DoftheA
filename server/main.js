@@ -17,6 +17,28 @@ Meteor.startup(() => {
             }
         });
     }
+    if (LeagueInfo.find().count() === 0) {
+        Meteor.call("initLeagueData", function (error, results) {
+            if (error) {
+                console.log(error);
+            }
+            else{console.log(results);}
+        });
+    }
+    if (ProPlayerData.find().count() === 0) {
+        Meteor.call("initPlayerData", function (error, results) {
+            if (error) {
+                console.log(error);
+            }
+        });
+    }
+    if (TeamData.find().count() === 0) {
+        Meteor.call("initTI10Teams", function (error, results) {
+            if (error) {
+                console.log(error);
+            }
+        });
+    }
 
     if (LeagueInfo.find({TI9latestmatch:true}).count() === 0) {
         console.log("Setting Latest Match = 0");
