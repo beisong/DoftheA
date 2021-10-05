@@ -985,13 +985,13 @@ Meteor.methods({
         var latestMatchInDB = LeagueInfo.find({TI9latestmatch:true}).fetch()[0].data;
         console.log(latestMatchInDB);
 
-        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=10749&key=" + Meteor.settings.steamKey
+        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=13256&key=" + Meteor.settings.steamKey
         var result = HTTP.call("GET", apistring);
         var leaguedata = result.data;
         var leaguematches = leaguedata.result.matches;
         var matchcount = 0;
-        var ti9start = 1565827200;
-        var ti9end = 1566777600;
+        var ti9 start = 1633564800;
+        var ti9end = 1633910400;
 
         leaguematches.forEach(function (oneMatch) {
             if(oneMatch.start_time < ti9start || ti9end < oneMatch.start_time){
