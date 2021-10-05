@@ -990,7 +990,7 @@ Meteor.methods({
         var leaguedata = result.data;
         var leaguematches = leaguedata.result.matches;
         var matchcount = 0;
-        var ti9 start = 1633564800;
+        var ti9start = 1633564800;
         var ti9end = 1633910400;
 
         leaguematches.forEach(function (oneMatch) {
