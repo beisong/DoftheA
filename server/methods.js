@@ -1443,7 +1443,7 @@ aggregateTI9MVP = function (role, day){
             $match: {
                 "role": role,
                 "teamid": {"$in": TIteams},
-                "leagueid": 10749,
+                "leagueid": 13256,
                 "stage": stage,
                 "day": stageday
             }
@@ -1523,7 +1523,7 @@ aggregateTI9LEAGUEMVP = function (role){
             $match: {
                 "role": role,
                 "teamid": {"$in": TIteams},
-                "leagueid": 10749,
+                "leagueid": 13256,
             }
         },
         {
