@@ -950,7 +950,7 @@ Meteor.methods({
             default:
         }
 
-        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=10749&key=" + Meteor.settings.steamKey
+        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=13256&key=" + Meteor.settings.steamKey
         console.log(apistring);
         var result = HTTP.call("GET", apistring);
         // console.log(result.data);
