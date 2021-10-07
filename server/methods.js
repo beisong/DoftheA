@@ -907,20 +907,20 @@ Meteor.methods({
         console.log(day);
         switch (day) {
             case 1:
-                startime = 1565827200;
-                endtime = 1565913600;
+                startime = 1633564800;
+                endtime = 1633651200;
                 break;
             case 2:
-                startime = 1565913600;
-                endtime = 1566000000;
+                startime = 1633651200;
+                endtime = 1633737600;
                 break;
             case 3:
-                startime = 1566000000;
-                endtime = 1566086400;
+                startime = 1633737600;
+                endtime = 1633824000;
                 break;
             case 4:
-                startime = 1566086400;
-                endtime = 1566259200;
+                startime = 1633824000;
+                endtime = 1633910400;
                 break;
             case 5:
                 startime = 1566259200;
