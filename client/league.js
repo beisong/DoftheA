@@ -103,7 +103,7 @@ Template.league.events({
 
 Template.MVP_table.helpers({
     league_core_mvp: function (role) {
-        if(Router.current().params.leagueid == 10749){
+        if(Router.current().params.leagueid == 13256){
             if(Router.current().params.stage && Router.current().params.day){
                 var stage = Router.current().params.stage;
                 var day =parseInt(Router.current().params.day);
