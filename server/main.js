@@ -46,9 +46,9 @@ Meteor.startup(() => {
     }
 
     fiveMinLoopInterval();
-    // threeHrLoopInterval();
-    Meteor.setInterval(fiveMinLoopInterval, 300000)
-    // Meteor.setInterval(threeHrLoopInterval, 108000000)
+    threeHrLoopInterval();
+    Meteor.setInterval(fiveMinLoopInterval, 900000)//changed to15min
+    Meteor.setInterval(threeHrLoopInterval, 108000000)
 
 });
 
