@@ -36,7 +36,7 @@ Template.admin.events({
         });
     },
     'click #updateTImvp': function (event) {
-        Meteor.call("UpdateTI10MVP", function (error, results) {
+        Meteor.call("UpdateTIMVP", function (error, results) {
             // console.log(results);
         });
     },
@@ -68,10 +68,10 @@ Template.admin.events({
             alert(results + " matches parsed");
         });
     },
-    'click #fetch_ti9': function (event) {
-        var selectValue = parseInt($("#fetch_ti9_day").val());
+    'click #fetch_ti': function (event) {
+        var selectValue = parseInt($("#fetch_ti_day").val());
         console.log(selectValue);
-        Meteor.call("insertTI9Fantasy", selectValue, function (error, results) {
+        Meteor.call("insertTIFantasy", selectValue, function (error, results) {
         });
     },
 

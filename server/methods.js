@@ -1,4 +1,5 @@
 import { HTTP } from "meteor/http";
+import { TIleagueId } from "./../lib/methods";
 
 
 //WED, August 15, 2018 6:00:00 PM GMT+08:00                 1534327200
@@ -934,7 +935,7 @@ Meteor.methods({
             default:
         }
 
-        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=13256&key=" + Meteor.settings.steamKey
+        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id="+ TIleagueId +"&key=" + Meteor.settings.steamKey
         console.log(apistring);
         var result = HTTP.call("GET", apistring);
         // console.log(result.data);
@@ -963,13 +964,13 @@ Meteor.methods({
 
         });
     },
-    autoInsertTI9Fantasy: function () {
+    autoInsertTIFantasy: function () {
         this.unblock();
         console.log("Auto Inserting");
         var latestMatchInDB = LeagueInfo.find({TI9latestmatch:true}).fetch()[0].data;
         console.log(latestMatchInDB);
 
-        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=13256&key=" + Meteor.settings.steamKey
+        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id="+TIleagueId+"&key=" + Meteor.settings.steamKey
         var result = HTTP.call("GET", apistring);
         var leaguedata = result.data;
         var leaguematches = leaguedata.result.matches;
@@ -1427,7 +1428,7 @@ aggregateTIMVP = function (role, day){
             $match: {
                 "role": role,
                 "teamid": {"$in": TIteams},
-                "leagueid": 13256,
+                "leagueid": TIleagueId,
                 "stage": stage,
                 "day": stageday
             }
@@ -1507,7 +1508,7 @@ aggregateTILEAGUEMVP = function (role){
             $match: {
                 "role": role,
                 "teamid": {"$in": TIteams},
-                "leagueid": 13256,
+                "leagueid": TIleagueId,
             }
         },
         {
