@@ -54,11 +54,11 @@ Meteor.startup(() => {
 
 function fiveMinLoopInterval() {
     Meteor.call("autoInsertTI9Fantasy", function (error, results) {
-        Meteor.call("UpdateTI10MVP", function (error, results) {});
+        Meteor.call("UpdateTIMVP", function (error, results) {});
     })
 }
 
 function threeHrLoopInterval(){
     console.log("UPDATING TI9 LEAGUE MVP");
-    Meteor.call("UpdateTI19LEAGUEMVP", function (error, results) {});
+    Meteor.call("UpdateTILEAGUEMVP", function (error, results) {});
 }

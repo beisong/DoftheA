@@ -550,22 +550,22 @@ Meteor.methods({
         aggregateMVP  ('Support');
         aggregateMVP  ('Mid');
     },
-    UpdateTI10MVP: function () {
+    UpdateTIMVP: function () {
         // var now= parseInt(new Date() / 1000);
         // var day = getDay(now);
         var i;
         for ( i =1; i<=10; i++){
-            TI9MvpData.remove({day:i});
-            aggregateTI9MVP  ('Core', i);
-            aggregateTI9MVP  ('Support',i);
-            aggregateTI9MVP  ('Mid', i);
+            TIMvpData.remove({day:i});
+            aggregateTIMVP  ('Core', i);
+            aggregateTIMVP  ('Support',i);
+            aggregateTIMVP  ('Mid', i);
         }
     },
-    UpdateTI19LEAGUEMVP: function () {
-        TI9MvpData.remove({league:true});
-        aggregateTI9LEAGUEMVP  ('Core');
-        aggregateTI9LEAGUEMVP  ('Support');
-        aggregateTI9LEAGUEMVP  ('Mid');
+    UpdateTILEAGUEMVP: function () {
+        TIMvpData.remove({league:true});
+        aggregateTILEAGUEMVP  ('Core');
+        aggregateTILEAGUEMVP  ('Support');
+        aggregateTILEAGUEMVP  ('Mid');
     },
     UpdateTeamsAVG: function () {   // db.fantasydata.remove({teamid:39, name:'gpk~'})
         TeamAVGData.rawCollection().drop();
@@ -886,66 +886,50 @@ Meteor.methods({
 
         });
     },
-    insertTI9Fantasy: function (day) {
+    insertTIFantasy: function (day) {
         this.unblock();
-//TI9 Group
-//THUR, August 15, 2018 0:00:00 PM GMT+08:00                 1565827200
-//FRI, August 16, 2018 0:00:00 PM GMT+08:00                 1565913600
-//SAT, August 17, 2018 0:00:00 PM GMT+08:00                 1566000000
-//SUN, August 18, 2018 0:00:00 PM GMT+08:00                 1566086400
-
-//TI8
-//MON, August 20, 2018 0:00:00 PM GMT+08:00                 1566259200
-//TUE, August 21, 2018 0:00:00 PM GMT+08:00                 1566345600
-//WED, August 22, 2018 0:00:00 PM GMT+08:00                 1566432000
-//THUR, August 23, 2018 0:00:00 PM GMT+08:00                1566518400
-//FRI, August 24, 2018 0:00:00 PM GMT+08:00                 1566604800
-//SAT, August 25, 2018 0:00:00 PM GMT+08:00                 1566691200
-//SUN, August 26, 2018 0:00:00 PM GMT+08:00                 1566777600
-
         var startime, endtime;
         console.log(day);
         switch (day) {
             case 1:
-                startime = 1633564800;
-                endtime = 1633651200;
+                startime = getDayStartEpoch(1);
+                endtime = getDayStartEpoch(2);
                 break;
             case 2:
-                startime = 1633651200;
-                endtime = 1633737600;
+                startime = getDayStartEpoch(2);
+                endtime = getDayStartEpoch(3);
                 break;
             case 3:
-                startime = 1633737600;
-                endtime = 1633824000;
+                startime = getDayStartEpoch(3);
+                endtime = getDayStartEpoch(4);
                 break;
             case 4:
-                startime = 1633824000;
-                endtime = 1633910400;
+                startime = getDayStartEpoch(4);
+                endtime = getDayStartEpoch(5);
                 break;
             case 5:
-                startime = 1566259200;
-                endtime = 1566345600;
+                startime = getDayStartEpoch(5);
+                endtime = getDayStartEpoch(6);
                 break;
             case 6:
-                startime = 1566345600;
-                endtime = 1566432000;
+                startime = getDayStartEpoch(6);
+                endtime = getDayStartEpoch(7);
                 break;
             case 7:
-                startime = 1566432000;
-                endtime = 1566518400;
-                break;
+                startime = getDayStartEpoch(7);
+                endtime = getDayStartEpoch(8);
                 break;
             case 8:
-                startime = 1566518400;
-                endtime = 1566604800;
+                startime = getDayStartEpoch(8);
+                endtime = getDayStartEpoch(9);
                 break;
             case 9:
-                startime = 1566604800;
-                endtime = 1566691200;
+                startime = getDayStartEpoch(9);
+                endtime = getDayStartEpoch(10);
                 break;
             case 10:
-                startime = 1566691200;
-                endtime = 1566777600;
+                startime = getDayStartEpoch(10);
+                endtime = getDayStartEpoch(11);
                 break;
             default:
         }
@@ -1221,7 +1205,7 @@ Meteor.methods({
                     }
                 }
                 else {
-                    // console.log("Team not in TI7");
+                    console.log("Team not in TI");
                 }
             }
         );
@@ -1429,7 +1413,7 @@ aggregateMVP = function (role){
     console.log(role + "MVP Parsed");
 }
 
-aggregateTI9MVP = function (role, day){
+aggregateTIMVP = function (role, day){
     var stageday ,stage;
     if (day <= 4) {
         stageday = day;
@@ -1511,13 +1495,13 @@ aggregateTI9MVP = function (role, day){
         oneMVP.role = role;
         oneMVP.day = day;
         oneMVP._id = new Mongo.ObjectID()._str;
-        TI9MvpData.insert(oneMVP);
+        TIMvpData.insert(oneMVP);
     });
 
-    console.log(role + "MVP DAY Parsed");
+    console.log(role + "MVP DAY "+day+" Parsed");
 }
-aggregateTI9LEAGUEMVP = function (role){
-    console.log("aggregateTI9LEAGUEMVP");
+aggregateTILEAGUEMVP = function (role){
+    console.log("aggregateTILEAGUEMVP");
     var pipeline = [
         {
             $match: {
@@ -1586,7 +1570,7 @@ aggregateTI9LEAGUEMVP = function (role){
         oneMVP.rank = rank;
         oneMVP.role = role;
         oneMVP.league = true;
-        TI9MvpData.insert(oneMVP);
+        TIMvpData.insert(oneMVP);
     });
 
     console.log(role + " LEAGUE MVP Parsed");
