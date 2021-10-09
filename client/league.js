@@ -104,7 +104,7 @@ Template.league.events({
 
 Template.MVP_table.helpers({
     league_core_mvp: function (role) {
-        if(Router.current().params.leagueid == TIleagueId){
+        if(Router.current().params.leagueid == 13256){
             if(Router.current().params.stage && Router.current().params.day){
                 var stage = Router.current().params.stage;
                 var day =parseInt(Router.current().params.day);
@@ -112,7 +112,8 @@ Template.MVP_table.helpers({
                 if(stage == 'main'){
                     day +=4;
                 }
-                return TIMvpData.find({role:role, day:day},{sort: {rank: 1}}).fetch();
+                let mvpdata = TIMvpData.find({role:role, day:day},{sort: {rank: 1}}).fetch()
+                return mvpdata;
             }
             else{
                 return TIMvpData.find({role:role, league:true},{sort: {rank: 1}}).fetch();
