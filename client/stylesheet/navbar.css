@@ -116,6 +116,15 @@
     font-size: 1.2vw;
 }
 
+.logo-image img{
+    height: 30px;
+}
+.navbar-coffee{
+    padding-top:10px !important;
+    padding-bottom:10px !important;
+    padding-right:15px !important;
+}
+
 @media (max-width: 767px) {
     .navbar-default .navbar-nav .open .dropdown-menu > li > a {
         color: #ffffff;
