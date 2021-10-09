@@ -61,3 +61,8 @@ Template.registerHelper('roundTo2Deci', function(val) {
 Template.registerHelper('roundTo1Deci', function(val) {
     return val.toFixed(1);
 });
+
+Template.registerHelper('shortname', function(val) {
+    let shortname = val.replace(/(.{8})..+/, "$1..");
+    return shortname;
+});
