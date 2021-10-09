@@ -22,7 +22,7 @@ Meteor.publish('heroes', function () {
 Meteor.publish('mvp_data', function () {
     return MvpData.find({});
 });
-Meteor.publish('ti9_mvp_data', function () {
+Meteor.publish('ti_mvp_data', function () {
     return TIMvpData.find({});
 });
 Meteor.publish('team_avg_data', function () {
