@@ -1,5 +1,6 @@
 <template name="team">
-    <h2><strong>{{teamname}}</strong></h2>
+    {{setTitle teamname "Dota" "Fantasy" "Points"}}
+    <h1><strong>{{teamname}}</strong></h1>
     <div class="btn-group">
         {{#each teamtournamentlist}}
             {{#with teamdata this}}

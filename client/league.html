@@ -1,7 +1,8 @@
 <!--TODO ADDED UNTIL CHANGESHA-->
 <!--https://www.dotabuff.com/procircuit/events-->
 <template name="league">
-    <h2 class="text-center"><strong>{{leaguename}} {{thisStage}} {{thisDay}}</strong></h2>
+    {{setTitle leaguename "Dota" "Fantasy"}}
+    <h1 class="text-center"><strong>{{leaguename}} {{thisStage}} {{thisDay}}</strong></h1>
     <div class="row">
         {{#each leagueteamlist}}
             {{#with leaguedata this}}
