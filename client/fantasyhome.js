@@ -27,7 +27,7 @@ Template.fantasyhome.helpers({
     league_support_mvp: function () {
         return ReactiveMethod.call('getLeagueMVP', 'Support', false, false, false);
     },
-    league_offlane_mvp: function () {c
+    league_offlane_mvp: function () {
         return ReactiveMethod.call('getLeagueMVP', 'Offlane', false, false, false);
     },
 
