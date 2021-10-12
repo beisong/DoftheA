@@ -970,7 +970,7 @@ Meteor.methods({
         var latestMatchInDB = LeagueInfo.find({TI9latestmatch:true}).fetch()[0].data;
         console.log(latestMatchInDB);
 
-        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id="+TIleagueId+"&key=" + Meteor.settings.steamKey
+        var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=13256&key=" + Meteor.settings.steamKey
         var result = HTTP.call("GET", apistring);
         var leaguedata = result.data;
         var leaguematches = leaguedata.result.matches;
