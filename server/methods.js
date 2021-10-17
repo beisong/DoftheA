@@ -1,5 +1,6 @@
 import { HTTP } from "meteor/http";
 import { TIleagueId } from "./../lib/methods";
+import {Meteor} from "meteor/meteor";
 
 
 //WED, August 15, 2018 6:00:00 PM GMT+08:00                 1534327200
@@ -551,15 +552,20 @@ Meteor.methods({
         aggregateMVP  ('Support');
         aggregateMVP  ('Mid');
     },
-    UpdateTIMVP: function () {
-        // var now= parseInt(new Date() / 1000);
-        // var day = getDay(now);
-        var i;
-        for ( i =1; i<=10; i++){
-            TIMvpData.remove({day:i});
-            aggregateTIMVP  ('Core', i);
-            aggregateTIMVP  ('Support',i);
-            aggregateTIMVP  ('Mid', i);
+    UpdateTIMVP: function (day) {
+        if(day){
+            TIMvpData.remove({day:day});
+            aggregateTIMVP  ('Core', day);
+            aggregateTIMVP  ('Support',day);
+            aggregateTIMVP  ('Mid', day);
+        }
+        else{
+            for ( let i =1; i<=10; i++){
+                TIMvpData.remove({day:i});
+                aggregateTIMVP  ('Core', i);
+                aggregateTIMVP  ('Support',i);
+                aggregateTIMVP  ('Mid', i);
+            }
         }
     },
     UpdateTILEAGUEMVP: function () {
@@ -964,25 +970,38 @@ Meteor.methods({
 
         });
     },
-    autoInsertTIFantasy: function () {
+        autoInsertTIFantasy: function () {
         this.unblock();
         console.log("Auto Inserting");
         var latestMatchInDB = LeagueInfo.find({TI9latestmatch:true}).fetch()[0].data;
-        console.log(latestMatchInDB);
+        console.log("Latest Match Time in DB : " + latestMatchInDB);
 
         var apistring = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?league_id=13256&key=" + Meteor.settings.steamKey
         var result = HTTP.call("GET", apistring);
         var leaguedata = result.data;
         var leaguematches = leaguedata.result.matches;
         var matchcount = 0;
-        var ti9start = 1633564800;
-        var ti9end = 1633910400;
 
+
+        let now= parseInt(new Date() / 1000);
+        let day = getDay(now);
+        // console.log("day is : " + day);
+
+        // var ti9start = 1633564800;
+        // var ti9end = 1633910400;
+        let daystart = getDayStartEpoch(10);
+        let dayend = getDayStartEpoch(11);
+
+        var logfirstmatch = true;
         leaguematches.forEach(function (oneMatch) {
-            if(oneMatch.start_time < ti9start || ti9end < oneMatch.start_time){
+            if(logfirstmatch){
+                console.log("Latest MatchID fetch    : "+oneMatch.match_id);
+                logfirstmatch = false;
+            }
+            if(oneMatch.start_time < daystart || dayend < oneMatch.start_time){
                 return;
             }
-            if (oneMatch.start_time > (latestMatchInDB -5400)) { // if within 90 min of latestMatchInDB parse
+            if (oneMatch.start_time > (latestMatchInDB - 600)) { // if within 10 min of latestMatchInDB parse
                 latestMatchInDB = oneMatch.start_time;
                 LeagueInfo.update(
                     {TI9latestmatch:true},
@@ -991,8 +1010,6 @@ Meteor.methods({
                     },
                     {upsert: true}
                     );
-
-                var day = getDay(oneMatch.start_time);
 
                 var t0 = Date.now();
                 var totalexcutime = 0;
@@ -1499,10 +1516,10 @@ aggregateTIMVP = function (role, day){
         TIMvpData.insert(oneMVP);
     });
 
-    console.log(role + "MVP DAY "+day+" Parsed");
+    console.log("DAY "+ day + " : " + role + " Parsed");
 }
 aggregateTILEAGUEMVP = function (role){
-    console.log("aggregateTILEAGUEMVP");
+    // console.log("aggregateTILEAGUEMVP");
     var pipeline = [
         {
             $match: {
@@ -1574,7 +1591,7 @@ aggregateTILEAGUEMVP = function (role){
         TIMvpData.insert(oneMVP);
     });
 
-    console.log(role + " LEAGUE MVP Parsed");
+    console.log("TI10   : "+role + " Parsed");
 }
 
 aggregateTeam = function (teamid){

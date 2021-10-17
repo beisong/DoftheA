@@ -47,18 +47,21 @@ Meteor.startup(() => {
 
     fiveMinLoopInterval();
     threeHrLoopInterval();
-    Meteor.setInterval(fiveMinLoopInterval, 900000)//changed to15min
+    // Meteor.setInterval(fiveMinLoopInterval, 300000)//changed to 5min
+    Meteor.setInterval(fiveMinLoopInterval, 60000)//changed to 1min
     Meteor.setInterval(threeHrLoopInterval, 108000000)
 
 });
 
 function fiveMinLoopInterval() {
+    let now= parseInt(new Date() / 1000);
+    let day = getDay(now);
     Meteor.call("autoInsertTIFantasy", function (error, results) {
-        Meteor.call("UpdateTIMVP", function (error, results) {});
+        Meteor.call("UpdateTIMVP", day,  function (error, results) {});
     })
 }
 
 function threeHrLoopInterval(){
-    console.log("UPDATING TI LEAGUE MVP");
+    // console.log("UPDATING TI LEAGUE MVP");
     Meteor.call("UpdateTILEAGUEMVP", function (error, results) {});
 }
