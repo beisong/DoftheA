@@ -1,7 +1,8 @@
 
 .outpick_container {
     display: grid;
-    grid-gap: 5px;
+    grid-gap: 2px;
+    column-gap: 10px;
     grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
     grid-template-rows: minmax(90px) repeat(auto-fill, 200px) 20%;
 }
@@ -10,23 +11,39 @@
     display: grid;
     grid-gap: 5px;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    grid-template-rows: minmax(150px) repeat(auto-fill, 200px) 20%;
+}
+
+.counter_container > figure > img {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    box-shadow:  3px 3px 6px rgba(0, 0, 0, .3);
+}
+.counter_container > figure > figcaption  {
+    font-size: 15px;
+    font-weight: bolder;
+}
+
+.outpick_container > figure{
+    padding-bottom:15px;
 }
 
 .outpick_container > figure > a > img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    box-shadow:  3px 3px 6px rgba(0, 0, 0, .3);
 }
 
-.counter_container > figure  > img {
-    width: 100%;
-    object-fit: cover;
+
+figcaption{
+    font-size: 12px;
+    padding-top: 0.3vh;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
-figcaption {
-    font-size: 1.5em;
-}
 
 .jumbotron {
     background-color: inherit;

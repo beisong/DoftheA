@@ -153,11 +153,6 @@ body {
     color: yellow;
 }
 
-figcaption{
-    font-size: 16px;
-    padding-top: 0.5vh;
-    text-align: center;
-}
 
 body.no-touch .boxInner:hover .titleBox, body.touch .boxInner.touchFocus .titleBox {
     margin-bottom: 0;

@@ -4,11 +4,17 @@
 Template.registerHelper('getHeroesName', function (heroid) {
     if (heroid) {
         var res = Heroes.findOne({id: +heroid});
-        // console.log(Session.get('heroesinfo'));
         if (res) {
             return res.cdn_name;
         }
-
+    }
+});
+Template.registerHelper('getHeroesLocalizedName', function (heroid) {
+    if (heroid) {
+        var res = Heroes.findOne({id: +heroid});
+        if (res) {
+            return res.localized_name;
+        }
     }
 });
 
@@ -33,4 +39,9 @@ Template.registerHelper('setTitle', function () {
     title += arguments[i]+' ';
     }
     document.title = title;
+});
+
+Template.registerHelper('shortname', function(val) {
+    let shortname = val.replace(/(.{8})..+/, "$1..");
+    return shortname;
 });

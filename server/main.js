@@ -45,11 +45,11 @@ Meteor.startup(() => {
         LeagueInfo.insert({TI9latestmatch:true, data:0});
     }
 
-    fiveMinLoopInterval();
-    threeHrLoopInterval();
-    // Meteor.setInterval(fiveMinLoopInterval, 300000)//changed to 5min
-    Meteor.setInterval(fiveMinLoopInterval, 150000)//changed to 2.5min
-    Meteor.setInterval(threeHrLoopInterval, 108000000)
+    // fiveMinLoopInterval();
+    // threeHrLoopInterval();
+    // // Meteor.setInterval(fiveMinLoopInterval, 300000)//changed to 5min
+    // Meteor.setInterval(fiveMinLoopInterval, 150000)//changed to 2.5min
+    // Meteor.setInterval(threeHrLoopInterval, 108000000)
 
 });
 
