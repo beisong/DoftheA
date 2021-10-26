@@ -6,6 +6,18 @@
     grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
     grid-template-rows: minmax(90px) repeat(auto-fill, 200px) 20%;
 }
+.outpick_container > figure{
+    padding-bottom:15px;
+}
+
+.outpick_container > figure > a > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow:  3px 3px 6px rgba(0, 0, 0, .3);
+}
+
+
 
 .counter_container {
     display: grid;
@@ -24,21 +36,22 @@
     font-weight: bolder;
 }
 
-.outpick_container > figure{
-    padding-bottom:15px;
+.mainhero > img{
+    /*width: 45vw;*/
+    width: 225px;
+    height: 150px;
 }
 
-.outpick_container > figure > a > img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    box-shadow:  3px 3px 6px rgba(0, 0, 0, .3);
+.mainhero > figcaption{
+    font-size: 25px;
+    font-weight: bolder;
 }
 
 
 figcaption{
     font-size: 12px;
     padding-top: 0.3vh;
+    font-weight: 500;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
@@ -63,7 +76,9 @@ figcaption{
     }
 
     .mainhero > img{
-        width: 45vw;
+        width: 120px;
+        height: 80px;
+        /*height: 20vw*/
     }
     .outpick_container {
         display: grid;
@@ -75,7 +90,12 @@ figcaption{
     .counter_container {
         display: grid;
         grid-gap: 5px;
-        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-        grid-template-rows: minmax(90px) repeat(auto-fill) 20%;
+        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+        grid-template-rows: minmax(40px) repeat(auto-fill) 20%;
+    }
+
+    .counter_container > figure > img {
+        width: 100%;
+        height:80%;
     }
 }
