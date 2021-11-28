@@ -1,8 +1,4 @@
 import {Meteor} from "meteor/meteor";
-import '../lib/router';
-import '../lib/router_outpicker';
-
-
 
 Meteor.startup(() => {
     Meteor.call("getPickedRate", function (error, results) {
